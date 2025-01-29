@@ -272,8 +272,8 @@ Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
   | StateRead (pointer : Value.t)
-  | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
-  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
+  | StateWrite (pointer : Value.t) (value : Value.t)
+  | GetSubPointer (pointer : Value.t) (index : Pointer.Index.t)
   | AreEqual (value1 value2 : Value.t)
   | GetFunction (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
   | GetAssociatedFunction
@@ -591,11 +591,8 @@ Arguments alloc /.
 Definition read (pointer : Value.t) : M :=
   call_primitive (Primitive.StateRead pointer).
 
-Definition write (r : Value.t) (update : Value.t) : M :=
-  match r with
-  | Value.Pointer pointer => call_primitive (Primitive.StateWrite pointer update)
-  | _ => impossible "cannot write"
-  end.
+Definition write (pointer : Value.t) (update : Value.t) : M :=
+  call_primitive (Primitive.StateWrite pointer update).
 
 Definition copy (r : Value.t) : M :=
   let* v := read r in
@@ -604,12 +601,8 @@ Arguments copy /.
 
 (** If we cannot get the sub-pointer, due to a field that does not exist or to an out-of bound
     access in an array, we do a [break_match]. *)
-Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
-  match r with
-  | Value.Pointer pointer =>
-    call_primitive (Primitive.GetSubPointer pointer index)
-  | _ => impossible "cannot get sub-pointer"
-  end.
+Definition get_sub_pointer (pointer : Value.t) (index : Pointer.Index.t) : M :=
+  call_primitive (Primitive.GetSubPointer pointer index).
 
 Definition are_equal (value1 value2 : Value.t) : M :=
   call_primitive (Primitive.AreEqual value1 value2).

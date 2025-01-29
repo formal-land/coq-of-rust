@@ -423,6 +423,8 @@ Module Run.
     (forall (value : A),
       {{ k (φ value) ⇓ output_to_value }}
     ) ->
+    (* We can expect the pointers to always be the image of [φ] as they cannot be manually
+       created. This is the same for the other primitives expecting a pointer. *)
     {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k ⇓ output_to_value }}
   | CallPrimitiveStateReadImmediate {A : Set} `{Link A}
       (value : A)
@@ -432,27 +434,23 @@ Module Run.
     {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k ⇓ output_to_value }}
   | CallPrimitiveStateWrite {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
-      (pointer_core : Pointer.Core.t Value.t A)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make Pointer.Kind.Raw (Φ A) φ pointer_core in
-    pointer_core = Ref.Core.to_core ref_core ->
+    let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
     value' = φ value ->
     {{ k (φ tt) ⇓ output_to_value }} ->
-    {{ LowM.CallPrimitive (Primitive.StateWrite pointer value') k ⇓ output_to_value }}
+    {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k ⇓ output_to_value }}
   | CallPrimitiveGetSubPointer {A Sub_A : Set} `{Link A} `{Link Sub_A}
       (ref_core : Ref.Core.t A)
-      (pointer_core : Pointer.Core.t Value.t A)
       (runner : SubPointer.Runner.t A Sub_A)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make Pointer.Kind.Raw (Φ A) φ pointer_core in
-    pointer_core = Ref.Core.to_core ref_core ->
+    let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
     SubPointer.Runner.Valid.t runner ->
     (forall (sub_ref : Ref.t Pointer.Kind.Raw Sub_A),
       {{ k (φ sub_ref) ⇓ output_to_value }}
     ) ->
     {{
-      LowM.CallPrimitive (Primitive.GetSubPointer pointer runner.(SubPointer.Runner.index)) k ⇓
+      LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) runner.(SubPointer.Runner.index)) k ⇓
       output_to_value
     }}
   | CallPrimitiveAreEqual {A : Set} `{Link A}
@@ -461,7 +459,7 @@ Module Run.
     x' = φ x ->
     y' = φ y ->
     (forall (b : bool),
-      {{ k (Value.Bool b) ⇓ output_to_value }}
+      {{ k (φ b) ⇓ output_to_value }}
     ) ->
     {{
       LowM.CallPrimitive (Primitive.AreEqual x' y') k ⇓
@@ -528,6 +526,8 @@ Module Run.
       {{ k (output_to_value' value_inter) ⇓ output_to_value }}
     ) ->
     {{ LowM.Let e k ⇓ output_to_value }}
+  (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
+      that is hard to eliminate. *)
   | Rewrite (e e' : M) :
     e = e' ->
     {{ e' ⇓ output_to_value }} ->
@@ -541,6 +541,7 @@ End Run.
 
 Import Run.
 
+(*
 (** This lemma is convenient to handle the case of sub-pointers. We also have a dedicated tactic
     using it (defined below). Using the tactic is the recommended way. *)
 Definition run_sub_pointer {Output A Sub_A : Set}
@@ -567,6 +568,7 @@ Proof.
     try apply H_runner;
     try apply H_k.
 Defined.
+*)
 
 Module Primitive.
   (** These primitives are equivalent to the ones in the generated code, except that we are now
@@ -786,7 +788,7 @@ Ltac run_panic :=
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)
 Ltac run_sub_pointer sub_pointer_is_valid :=
-  cbn; eapply (run_sub_pointer sub_pointer_is_valid); [reflexivity|]; intros.
+  cbn; apply (Run.CallPrimitiveGetSubPointer _ _ _ _ sub_pointer_is_valid); intros.
 
 Module Function.
   Record t (Args Output : Set)
