@@ -240,7 +240,8 @@ Module error.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.apply (Ty.path "*const") [] [ T ])
                                     (M.read (|
                                       M.use
                                         (M.alloc (|
@@ -311,7 +312,8 @@ Module error.
                               M.borrow (|
                                 Pointer.Kind.MutRef,
                                 M.deref (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.apply (Ty.path "*mut") [] [ T ])
                                     (M.read (|
                                       M.use
                                         (M.alloc (|
@@ -1550,7 +1552,8 @@ Module error.
                           M.borrow (|
                             Pointer.Kind.MutRef,
                             M.deref (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.apply (Ty.path "*mut") [] [ Ty.path "core::error::Request" ])
                                 (M.read (|
                                   M.use
                                     (M.alloc (|

@@ -876,7 +876,8 @@ Module limits.
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::StructHandle"
                                                                             [];
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "u16")
                                                                             (M.read (| idx |))
                                                                         ]
                                                                       |)
@@ -1180,7 +1181,8 @@ Module limits.
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
                                                                               [];
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u16")
                                                                               (M.read (| idx |))
                                                                           ]
                                                                         |)
@@ -1333,7 +1335,8 @@ Module limits.
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
                                                                               [];
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u16")
                                                                               (M.read (| idx |))
                                                                           ]
                                                                         |)
@@ -3428,7 +3431,9 @@ Module limits.
                                                                                               Value.StructTuple
                                                                                                 "move_binary_format::IndexKind::ConstantPool"
                                                                                                 [];
-                                                                                              M.rust_cast
+                                                                                              M.cast
+                                                                                                (Ty.path
+                                                                                                  "u16")
                                                                                                 (M.read (|
                                                                                                   idx
                                                                                                 |))
@@ -3570,7 +3575,9 @@ Module limits.
                                                                                       |)
                                                                                     ]
                                                                                   |),
-                                                                                  M.rust_cast
+                                                                                  M.cast
+                                                                                    (Ty.path
+                                                                                      "usize")
                                                                                     (M.read (|
                                                                                       lim
                                                                                     |))
@@ -3744,7 +3751,8 @@ Module limits.
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::ConstantPool"
                                                                             [];
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "u16")
                                                                             (M.read (| idx |))
                                                                         ]
                                                                       |)
@@ -4013,7 +4021,8 @@ Module limits.
                                                                       |)
                                                                     ]
                                                                   |),
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "usize")
                                                                     (M.read (|
                                                                       max_idenfitier_len
                                                                     |))
@@ -4044,7 +4053,8 @@ Module limits.
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::Identifier"
                                                                             [];
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "u16")
                                                                             (M.read (| idx |))
                                                                         ]
                                                                       |)

@@ -727,7 +727,8 @@ Module instructions.
                                     "bytecode"
                                   |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "isize")
                                   (M.read (|
                                     M.get_constant (|
                                       "revm_interpreter::instructions::stack::push::N"
@@ -1406,7 +1407,7 @@ Module instructions.
                                         |)
                                       |);
                                       BinOp.Wrap.add (|
-                                        M.rust_cast (M.read (| imm |)),
+                                        M.cast (Ty.path "usize") (M.read (| imm |)),
                                         Value.Integer IntegerKind.Usize 1
                                       |)
                                     ]
@@ -1723,7 +1724,7 @@ Module instructions.
                                       |);
                                       Value.Integer IntegerKind.Usize 0;
                                       BinOp.Wrap.add (|
-                                        M.rust_cast (M.read (| imm |)),
+                                        M.cast (Ty.path "usize") (M.read (| imm |)),
                                         Value.Integer IntegerKind.Usize 1
                                       |)
                                     ]
@@ -2054,8 +2055,8 @@ Module instructions.
                                           "stack"
                                         |)
                                       |);
-                                      M.rust_cast (M.read (| n |));
-                                      M.rust_cast (M.read (| m |))
+                                      M.cast (Ty.path "usize") (M.read (| n |));
+                                      M.cast (Ty.path "usize") (M.read (| m |))
                                     ]
                                   |)
                                 |)

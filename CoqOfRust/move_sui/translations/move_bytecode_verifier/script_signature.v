@@ -394,7 +394,7 @@ Module script_signature.
                                                     |);
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                      [ M.rust_cast (M.read (| idx |)) ];
+                                                      [ M.cast (Ty.path "u16") (M.read (| idx |)) ];
                                                     M.read (| check_signature |)
                                                   ]
                                                 |)
@@ -934,7 +934,7 @@ Module script_signature.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                             Value.StructTuple
                               "move_binary_format::file_format::FunctionDefinitionIndex"
-                              [ M.rust_cast (M.read (| idx |)) ];
+                              [ M.cast (Ty.path "u16") (M.read (| idx |)) ];
                             M.read (| check_signature |)
                           ]
                         |)

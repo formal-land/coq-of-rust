@@ -606,7 +606,8 @@ Module control_flow_graph.
           M.read (|
             let~ code_len :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u16")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
@@ -749,7 +750,7 @@ Module control_flow_graph.
                                               []
                                             |),
                                             [
-                                              M.rust_cast (M.read (| pc |));
+                                              M.cast (Ty.path "u16") (M.read (| pc |));
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (| M.read (| code |) |)
@@ -888,7 +889,8 @@ Module control_flow_graph.
                                           0
                                         |) in
                                       let pc := M.copy (| γ0_0 |) in
-                                      let~ co_pc := M.alloc (| M.rust_cast (M.read (| pc |)) |) in
+                                      let~ co_pc :=
+                                        M.alloc (| M.cast (Ty.path "u16") (M.read (| pc |)) |) in
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -2316,7 +2318,8 @@ Module control_flow_graph.
           LogicalOp.or (|
             BinOp.eq (|
               BinOp.Wrap.add (| M.read (| pc |), Value.Integer IntegerKind.U16 1 |),
-              M.rust_cast
+              M.cast
+                (Ty.path "u16")
                 (M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
@@ -2390,7 +2393,7 @@ Module control_flow_graph.
                   Pointer.Kind.Ref,
                   M.SubPointer.get_array_field (|
                     M.deref (| M.read (| code |) |),
-                    M.alloc (| M.rust_cast (M.read (| pc |)) |)
+                    M.alloc (| M.cast (Ty.path "usize") (M.read (| pc |)) |)
                   |)
                 |)
               |) in
@@ -2469,7 +2472,8 @@ Module control_flow_graph.
                                   M.read (| pc |),
                                   Value.Integer IntegerKind.U16 1
                                 |),
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u16")
                                   (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -3408,7 +3412,8 @@ Module control_flow_graph.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u16")
             (M.call_closure (|
               M.get_associated_function (|
                 Ty.apply

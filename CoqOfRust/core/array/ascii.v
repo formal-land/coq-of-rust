@@ -100,7 +100,20 @@ Module array.
                 M.alloc (|
                   M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
                 |) in
-              let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
+              let~ ascii_ptr :=
+                M.alloc (|
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                      ])
+                    (M.read (| byte_ptr |))
+                |) in
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,

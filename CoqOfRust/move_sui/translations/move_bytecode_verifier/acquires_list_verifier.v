@@ -829,7 +829,7 @@ Module acquires_list_verifier.
                                                         Pointer.Kind.Ref,
                                                         M.deref (| M.read (| instruction |) |)
                                                       |);
-                                                      M.rust_cast (M.read (| offset |))
+                                                      M.cast (Ty.path "u16") (M.read (| offset |))
                                                     ]
                                                   |)
                                                 ]
@@ -1108,7 +1108,8 @@ Module acquires_list_verifier.
                                                           |)
                                                         |)
                                                       |);
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.path "usize")
                                                         (M.read (|
                                                           M.SubPointer.get_struct_tuple_field (|
                                                             annotation,

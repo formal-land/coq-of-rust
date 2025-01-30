@@ -2023,7 +2023,11 @@ Module ffi.
                     []
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ])
                       (M.read (|
                         M.use
                           (M.alloc (|
@@ -2214,7 +2218,11 @@ Module ffi.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                       (M.borrow (|
                         Pointer.Kind.ConstPointer,
                         M.SubPointer.get_struct_record_field (|

@@ -198,7 +198,8 @@ Module str.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.deref (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ])
                             (M.read (|
                               M.use
                                 (M.alloc (|

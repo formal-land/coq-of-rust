@@ -525,7 +525,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -1069,7 +1070,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -1613,7 +1615,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -2157,7 +2160,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -2716,7 +2720,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -3262,7 +3267,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -3806,7 +3812,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -4350,7 +4357,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -4894,7 +4902,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -5438,7 +5447,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -5980,7 +5990,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -6524,7 +6535,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -7068,7 +7080,8 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -9614,7 +9627,7 @@ Module file_format.
                               M.read (| Value.String "StructTypeParameter" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -13070,7 +13083,8 @@ Module file_format.
                       Value.StructTuple
                         "core::result::Result::Ok"
                         [
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -13976,7 +13990,8 @@ Module file_format.
                       M.alloc (|
                         BinOp.eq (|
                           M.read (| x |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u8")
                             (BinOp.Wrap.add (|
                               M.get_constant (|
                                 "move_binary_format::file_format::Visibility::Private_discriminant"
@@ -14002,7 +14017,8 @@ Module file_format.
                       M.alloc (|
                         BinOp.eq (|
                           M.read (| x |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u8")
                             (BinOp.Wrap.add (|
                               M.get_constant (|
                                 "move_binary_format::file_format::Visibility::Public_discriminant"
@@ -14025,7 +14041,8 @@ Module file_format.
                       M.alloc (|
                         BinOp.eq (|
                           M.read (| x |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u8")
                             (BinOp.Wrap.add (|
                               M.get_constant (|
                                 "move_binary_format::file_format::Visibility::Friend_discriminant"
@@ -17159,21 +17176,24 @@ Module file_format.
               [
                 BinOp.bit_or
                   (BinOp.bit_or
-                    (M.rust_cast
+                    (M.cast
+                      (Ty.path "u8")
                       (BinOp.Wrap.add (|
                         M.get_constant (|
                           "move_binary_format::file_format::Ability::Copy_discriminant"
                         |),
                         Value.Integer IntegerKind.U8 0
                       |)))
-                    (M.rust_cast
+                    (M.cast
+                      (Ty.path "u8")
                       (BinOp.Wrap.add (|
                         M.get_constant (|
                           "move_binary_format::file_format::Ability::Drop_discriminant"
                         |),
                         Value.Integer IntegerKind.U8 0
                       |))))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "u8")
                     (BinOp.Wrap.add (|
                       M.get_constant (|
                         "move_binary_format::file_format::Ability::Store_discriminant"
@@ -17196,14 +17216,16 @@ Module file_format.
               "move_binary_format::file_format::AbilitySet"
               [
                 BinOp.bit_or
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "u8")
                     (BinOp.Wrap.add (|
                       M.get_constant (|
                         "move_binary_format::file_format::Ability::Copy_discriminant"
                       |),
                       Value.Integer IntegerKind.U8 0
                     |)))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "u8")
                     (BinOp.Wrap.add (|
                       M.get_constant (|
                         "move_binary_format::file_format::Ability::Drop_discriminant"
@@ -17225,7 +17247,8 @@ Module file_format.
             Value.StructTuple
               "move_binary_format::file_format::AbilitySet"
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (BinOp.Wrap.add (|
                     M.get_constant (|
                       "move_binary_format::file_format::Ability::Drop_discriminant"
@@ -17251,21 +17274,24 @@ Module file_format.
               [
                 BinOp.bit_or
                   (BinOp.bit_or
-                    (M.rust_cast
+                    (M.cast
+                      (Ty.path "u8")
                       (BinOp.Wrap.add (|
                         M.get_constant (|
                           "move_binary_format::file_format::Ability::Copy_discriminant"
                         |),
                         Value.Integer IntegerKind.U8 0
                       |)))
-                    (M.rust_cast
+                    (M.cast
+                      (Ty.path "u8")
                       (BinOp.Wrap.add (|
                         M.get_constant (|
                           "move_binary_format::file_format::Ability::Drop_discriminant"
                         |),
                         Value.Integer IntegerKind.U8 0
                       |))))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "u8")
                     (BinOp.Wrap.add (|
                       M.get_constant (|
                         "move_binary_format::file_format::Ability::Store_discriminant"
@@ -17297,28 +17323,32 @@ Module file_format.
                 BinOp.bit_or
                   (BinOp.bit_or
                     (BinOp.bit_or
-                      (M.rust_cast
+                      (M.cast
+                        (Ty.path "u8")
                         (BinOp.Wrap.add (|
                           M.get_constant (|
                             "move_binary_format::file_format::Ability::Copy_discriminant"
                           |),
                           Value.Integer IntegerKind.U8 0
                         |)))
-                      (M.rust_cast
+                      (M.cast
+                        (Ty.path "u8")
                         (BinOp.Wrap.add (|
                           M.get_constant (|
                             "move_binary_format::file_format::Ability::Drop_discriminant"
                           |),
                           Value.Integer IntegerKind.U8 0
                         |))))
-                    (M.rust_cast
+                    (M.cast
+                      (Ty.path "u8")
                       (BinOp.Wrap.add (|
                         M.get_constant (|
                           "move_binary_format::file_format::Ability::Store_discriminant"
                         |),
                         Value.Integer IntegerKind.U8 0
                       |))))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "u8")
                     (BinOp.Wrap.add (|
                       M.get_constant (|
                         "move_binary_format::file_format::Ability::Key_discriminant"
@@ -17342,7 +17372,7 @@ Module file_format.
           (let ability := M.alloc (| ability |) in
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
-            [ M.rust_cast (M.read (| ability |)) ]))
+            [ M.cast (Ty.path "u8") (M.read (| ability |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -17361,7 +17391,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           let ability := M.alloc (| ability |) in
           M.read (|
-            let~ a := M.alloc (| M.rust_cast (M.read (| ability |)) |) in
+            let~ a := M.alloc (| M.cast (Ty.path "u8") (M.read (| ability |)) |) in
             M.alloc (|
               BinOp.eq (|
                 BinOp.bit_and
@@ -17512,7 +17542,7 @@ Module file_format.
                     0
                   |)
                 |))
-                (UnOp.not (| M.rust_cast (M.read (| ability |)) |))
+                (UnOp.not (| M.cast (Ty.path "u8") (M.read (| ability |)) |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -18341,7 +18371,7 @@ Module file_format.
                     0
                   |)
                 |))
-                (M.rust_cast (M.read (| rhs |)))
+                (M.cast (Ty.path "u8") (M.read (| rhs |)))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -28790,7 +28820,7 @@ Module file_format.
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.lt (|
-                                        M.rust_cast (M.read (| pc |)),
+                                        M.cast (Ty.path "usize") (M.read (| pc |)),
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
@@ -28859,7 +28889,7 @@ Module file_format.
                       Pointer.Kind.Ref,
                       M.SubPointer.get_array_field (|
                         M.deref (| M.read (| code |) |),
-                        M.alloc (| M.rust_cast (M.read (| pc |)) |)
+                        M.alloc (| M.cast (Ty.path "usize") (M.read (| pc |)) |)
                       |)
                     |)
                   |) in
@@ -28945,7 +28975,8 @@ Module file_format.
                               (M.alloc (|
                                 BinOp.ge (|
                                   M.read (| next_pc |),
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u16")
                                     (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
@@ -43208,7 +43239,9 @@ Module file_format.
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| constraints |) |),
                                   M.alloc (|
-                                    M.rust_cast (M.read (| M.deref (| M.read (| idx |) |) |))
+                                    M.cast
+                                      (Ty.path "usize")
+                                      (M.read (| M.deref (| M.read (| idx |) |) |))
                                   |)
                                 |)
                               |)
@@ -44657,7 +44690,8 @@ Module file_format.
                         Value.StructTuple
                           "move_binary_format::file_format::IdentifierIndex"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
@@ -44929,7 +44963,8 @@ Module file_format.
                         Value.StructTuple
                           "move_binary_format::file_format::IdentifierIndex"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
@@ -45122,7 +45157,8 @@ Module file_format.
                                                   Value.StructTuple
                                                     "move_binary_format::file_format::IdentifierIndex"
                                                     [
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.path "u16")
                                                         (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply

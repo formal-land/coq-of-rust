@@ -66,7 +66,8 @@ Module unicode.
               (M.read (|
                 let~ bucket_idx :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (BinOp.Wrap.div (| M.read (| needle |), Value.Integer IntegerKind.U32 64 |))
                   |) in
                 let~ chunk_map_idx :=
@@ -135,12 +136,13 @@ Module unicode.
                   |) in
                 let~ idx :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_array_field (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| bitset_chunk_idx |) |),
-                            M.alloc (| M.rust_cast (M.read (| chunk_idx |)) |)
+                            M.alloc (| M.cast (Ty.path "usize") (M.read (| chunk_idx |)) |)
                           |),
                           chunk_piece
                         |)
@@ -216,7 +218,9 @@ Module unicode.
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
                                           M.deref (| M.read (| bitset_canonical |) |),
-                                          M.alloc (| M.rust_cast (M.read (| real_idx |)) |)
+                                          M.alloc (|
+                                            M.cast (Ty.path "usize") (M.read (| real_idx |))
+                                          |)
                                         |)
                                       |) in
                                     let~ should_invert :=
@@ -294,7 +298,7 @@ Module unicode.
                                                   β,
                                                   BinOp.Wrap.shr (|
                                                     M.read (| β |),
-                                                    M.rust_cast (M.read (| quantity |))
+                                                    M.cast (Ty.path "u64") (M.read (| quantity |))
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
@@ -312,7 +316,7 @@ Module unicode.
                                                     |),
                                                     [
                                                       M.read (| word |);
-                                                      M.rust_cast (M.read (| quantity |))
+                                                      M.cast (Ty.path "u32") (M.read (| quantity |))
                                                     ]
                                                   |)
                                                 |) in
@@ -331,7 +335,8 @@ Module unicode.
                       (M.read (| word |))
                       (BinOp.Wrap.shl (|
                         Value.Integer IntegerKind.U64 1,
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "u64")
                           (BinOp.Wrap.rem (|
                             M.read (| needle |),
                             Value.Integer IntegerKind.U32 64
@@ -383,7 +388,8 @@ Module unicode.
       | [], [], [ short_offset_run_header ] =>
         ltac:(M.monadic
           (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (BinOp.Wrap.shr (|
               M.read (| short_offset_run_header |),
               Value.Integer IntegerKind.I32 21
@@ -770,7 +776,7 @@ Module unicode.
                                           β,
                                           BinOp.Wrap.add (|
                                             M.read (| β |),
-                                            M.rust_cast (M.read (| offset |))
+                                            M.cast (Ty.path "u32") (M.read (| offset |))
                                           |)
                                         |) in
                                       let~ _ :=
@@ -2451,7 +2457,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3474,7 +3480,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3899,7 +3905,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3979,7 +3985,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -4831,7 +4837,10 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             LogicalOp.and (|
-              BinOp.ge (| M.rust_cast (M.read (| c |)), Value.Integer IntegerKind.U32 768 |),
+              BinOp.ge (|
+                M.cast (Ty.path "u32") (M.read (| c |)),
+                Value.Integer IntegerKind.U32 768
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_function (|
@@ -4869,7 +4878,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5618,7 +5627,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6062,7 +6071,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6743,7 +6752,7 @@ Module unicode.
                 []
               |),
               [
-                M.rust_cast (M.read (| c |));
+                M.cast (Ty.path "u32") (M.read (| c |));
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7099,7 +7108,10 @@ Module unicode.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  BinOp.Wrap.shr (| M.rust_cast (M.read (| c |)), Value.Integer IntegerKind.I32 8 |)
+                  BinOp.Wrap.shr (|
+                    M.cast (Ty.path "u32") (M.read (| c |)),
+                    Value.Integer IntegerKind.I32 8
+                  |)
                 |),
                 [
                   fun γ =>
@@ -7123,7 +7135,7 @@ Module unicode.
                                 |),
                                 M.alloc (|
                                   BinOp.bit_and
-                                    (M.rust_cast (M.read (| c |)))
+                                    (M.cast (Ty.path "usize") (M.read (| c |)))
                                     (Value.Integer IntegerKind.Usize 255)
                                 |)
                               |)
@@ -7141,7 +7153,7 @@ Module unicode.
                         |) in
                       M.alloc (|
                         BinOp.eq (|
-                          M.rust_cast (M.read (| c |)),
+                          M.cast (Ty.path "u32") (M.read (| c |)),
                           Value.Integer IntegerKind.U32 5760
                         |)
                       |)));
@@ -7166,7 +7178,7 @@ Module unicode.
                                 |),
                                 M.alloc (|
                                   BinOp.bit_and
-                                    (M.rust_cast (M.read (| c |)))
+                                    (M.cast (Ty.path "usize") (M.read (| c |)))
                                     (Value.Integer IntegerKind.Usize 255)
                                 |)
                               |)
@@ -7184,7 +7196,7 @@ Module unicode.
                         |) in
                       M.alloc (|
                         BinOp.eq (|
-                          M.rust_cast (M.read (| c |)),
+                          M.cast (Ty.path "u32") (M.read (| c |)),
                           Value.Integer IntegerKind.U32 12288
                         |)
                       |)));
@@ -7244,7 +7256,8 @@ Module unicode.
                       M.alloc (|
                         Value.Array
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "char")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "u8",
@@ -7255,7 +7268,7 @@ Module unicode.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| M.rust_cast (M.read (| c |)) |)
+                                    M.alloc (| M.cast (Ty.path "u8") (M.read (| c |)) |)
                                   |)
                                 ]
                               |));
@@ -7567,7 +7580,9 @@ Module unicode.
                                                                                         |)
                                                                                       |)
                                                                                     |);
-                                                                                    M.rust_cast
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "usize")
                                                                                       (BinOp.bit_and
                                                                                         (M.read (|
                                                                                           u
@@ -7656,7 +7671,8 @@ Module unicode.
                       M.alloc (|
                         Value.Array
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "char")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "u8",
@@ -7667,7 +7683,7 @@ Module unicode.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| M.rust_cast (M.read (| c |)) |)
+                                    M.alloc (| M.cast (Ty.path "u8") (M.read (| c |)) |)
                                   |)
                                 ]
                               |));
@@ -7979,7 +7995,9 @@ Module unicode.
                                                                                         |)
                                                                                       |)
                                                                                     |);
-                                                                                    M.rust_cast
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "usize")
                                                                                       (BinOp.bit_and
                                                                                         (M.read (|
                                                                                           u

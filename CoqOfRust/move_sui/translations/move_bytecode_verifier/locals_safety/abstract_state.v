@@ -1421,7 +1421,7 @@ Module locals_safety.
                         "all_local_abilities"
                       |)
                     |);
-                    M.rust_cast (M.read (| idx |))
+                    M.cast (Ty.path "usize") (M.read (| idx |))
                   ]
                 |)
               |)
@@ -1499,7 +1499,7 @@ Module locals_safety.
                         "local_states"
                       |)
                     |);
-                    M.rust_cast (M.read (| idx |))
+                    M.cast (Ty.path "usize") (M.read (| idx |))
                   ]
                 |)
               |)
@@ -1578,7 +1578,7 @@ Module locals_safety.
                           "local_states"
                         |)
                       |);
-                      M.rust_cast (M.read (| idx |))
+                      M.cast (Ty.path "usize") (M.read (| idx |))
                     ]
                   |)
                 |),
@@ -1660,7 +1660,7 @@ Module locals_safety.
                                                 "local_states"
                                               |)
                                             |);
-                                            M.rust_cast (M.read (| idx |))
+                                            M.cast (Ty.path "usize") (M.read (| idx |))
                                           ]
                                         |)
                                       |)
@@ -1723,7 +1723,7 @@ Module locals_safety.
                           "local_states"
                         |)
                       |);
-                      M.rust_cast (M.read (| idx |))
+                      M.cast (Ty.path "usize") (M.read (| idx |))
                     ]
                   |)
                 |),

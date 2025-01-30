@@ -66,7 +66,7 @@ Module secp256k1.
                             [],
                             []
                           |),
-                          [ M.rust_cast (M.read (| recid |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| recid |)) ]
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,

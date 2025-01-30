@@ -407,7 +407,8 @@ Module modexp.
                               M.write (|
                                 iteration_count,
                                 BinOp.Wrap.sub (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u64")
                                     (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
@@ -490,7 +491,8 @@ Module modexp.
                                                 |),
                                                 [
                                                   Value.Integer IntegerKind.U64 1;
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "u64")
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
@@ -1211,9 +1213,9 @@ Module modexp.
                                               M.read (| calc_gas |);
                                               Value.Tuple
                                                 [
-                                                  M.rust_cast (M.read (| base_len |));
-                                                  M.rust_cast (M.read (| exp_len |));
-                                                  M.rust_cast (M.read (| mod_len |));
+                                                  M.cast (Ty.path "u64") (M.read (| base_len |));
+                                                  M.cast (Ty.path "u64") (M.read (| exp_len |));
+                                                  M.cast (Ty.path "u64") (M.read (| mod_len |));
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.deref (|

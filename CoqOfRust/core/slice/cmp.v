@@ -534,7 +534,8 @@ Module slice.
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::compare_bytes", [], [] |),
                         [
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ A ],
@@ -544,7 +545,8 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |));
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ B ],
@@ -1600,7 +1602,8 @@ Module slice.
               let~ diff :=
                 M.alloc (|
                   BinOp.Wrap.sub (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "isize")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ A ],
@@ -1610,7 +1613,8 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left |) |) |) ]
                       |)),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "isize")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ A ],
@@ -1738,7 +1742,8 @@ Module slice.
                 |) in
               let~ order :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "isize")
                     (M.call_closure (|
                       M.get_function (| "core::intrinsics::compare_bytes", [], [] |),
                       [ M.read (| left |); M.read (| right |); M.read (| len |) ]
@@ -1957,7 +1962,9 @@ Module slice.
             let x := M.alloc (| x |) in
             M.read (|
               let~ byte :=
-                M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))
+                |) in
               let~ bytes :=
                 M.alloc (|
                   M.borrow (|
@@ -1970,7 +1977,8 @@ Module slice.
                           [ Ty.path "u8" ]
                         |),
                         [
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],

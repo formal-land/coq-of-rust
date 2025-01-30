@@ -484,7 +484,8 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.path "usize")
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
@@ -1379,7 +1380,8 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.path "usize")
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.SubPointer.get_struct_record_field (|

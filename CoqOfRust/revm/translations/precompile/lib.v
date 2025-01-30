@@ -17,7 +17,7 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
         BinOp.Wrap.mul (|
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "div_ceil", [], [] |),
-            [ M.rust_cast (M.read (| len |)); Value.Integer IntegerKind.U64 32 ]
+            [ M.cast (Ty.path "u64") (M.read (| len |)); Value.Integer IntegerKind.U64 32 ]
           |),
           M.read (| word |)
         |),

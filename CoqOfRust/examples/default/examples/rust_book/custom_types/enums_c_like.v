@@ -120,7 +120,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast (Value.Integer IntegerKind.Isize 0)
+                                              M.cast
+                                                (Ty.path "i32")
+                                                (Value.Integer IntegerKind.Isize 0)
                                             |)
                                           |)
                                         |)
@@ -188,7 +190,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast (Value.Integer IntegerKind.Isize 1)
+                                              M.cast
+                                                (Ty.path "i32")
+                                                (Value.Integer IntegerKind.Isize 1)
                                             |)
                                           |)
                                         |)
@@ -258,7 +262,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "i32")
                                                 (BinOp.Wrap.add (|
                                                   M.get_constant (|
                                                     "enums_c_like::Color::Red_discriminant"
@@ -374,7 +379,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "i32")
                                                 (BinOp.Wrap.add (|
                                                   M.get_constant (|
                                                     "enums_c_like::Color::Blue_discriminant"

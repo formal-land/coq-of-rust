@@ -1250,7 +1250,8 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "f32")
             (BinOp.Wrap.div (|
               BinOp.Wrap.add (|
                 M.call_closure (|
@@ -1556,7 +1557,8 @@ Module f32.
           M.read (|
             let~ left :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i32")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
@@ -1564,7 +1566,8 @@ Module f32.
               |) in
             let~ right :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i32")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                     [ M.read (| M.deref (| M.read (| other |) |) |) ]
@@ -1576,9 +1579,11 @@ Module f32.
                 β,
                 BinOp.bit_xor
                   (M.read (| β |))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "i32")
                     (BinOp.Wrap.shr (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u32")
                         (BinOp.Wrap.shr (| M.read (| left |), Value.Integer IntegerKind.I32 31 |)),
                       Value.Integer IntegerKind.I32 1
                     |)))
@@ -1589,9 +1594,11 @@ Module f32.
                 β,
                 BinOp.bit_xor
                   (M.read (| β |))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "i32")
                     (BinOp.Wrap.shr (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u32")
                         (BinOp.Wrap.shr (| M.read (| right |), Value.Integer IntegerKind.I32 31 |)),
                       Value.Integer IntegerKind.I32 1
                     |)))

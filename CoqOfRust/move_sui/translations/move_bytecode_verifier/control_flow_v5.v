@@ -341,7 +341,8 @@ Module control_flow_v5.
                               ]
                             |);
                             M.read (| current_function |);
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.sub (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1012,7 +1013,7 @@ Module control_flow_v5.
                                                 |),
                                                 [
                                                   M.borrow (| Pointer.Kind.MutRef, labels |);
-                                                  M.rust_cast (M.read (| loop_idx |))
+                                                  M.cast (Ty.path "usize") (M.read (| loop_idx |))
                                                 ]
                                               |)
                                             |),
@@ -3976,7 +3977,8 @@ Module control_flow_v5.
                                                                               |)
                                                                             |),
                                                                             M.alloc (|
-                                                                              M.rust_cast
+                                                                              M.cast
+                                                                                (Ty.path "usize")
                                                                                 (M.read (| i |))
                                                                             |)
                                                                           |)
@@ -3994,7 +3996,9 @@ Module control_flow_v5.
                                                                                     |)
                                                                                   |),
                                                                                   M.alloc (|
-                                                                                    M.rust_cast
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "usize")
                                                                                       (M.read (|
                                                                                         j
                                                                                       |))
@@ -4024,7 +4028,9 @@ Module control_flow_v5.
                                                                                             |)
                                                                                           |),
                                                                                           M.alloc (|
-                                                                                            M.rust_cast
+                                                                                            M.cast
+                                                                                              (Ty.path
+                                                                                                "usize")
                                                                                               (M.read (|
                                                                                                 j
                                                                                               |))
@@ -4054,7 +4060,9 @@ Module control_flow_v5.
                                                                                       |)
                                                                                     |),
                                                                                     M.alloc (|
-                                                                                      M.rust_cast
+                                                                                      M.cast
+                                                                                        (Ty.path
+                                                                                          "usize")
                                                                                         (M.read (|
                                                                                           j
                                                                                         |))
@@ -4307,7 +4315,8 @@ Module control_flow_v5.
                                                                                 |)
                                                                               |),
                                                                               M.alloc (|
-                                                                                M.rust_cast
+                                                                                M.cast
+                                                                                  (Ty.path "usize")
                                                                                   (M.read (| i |))
                                                                               |)
                                                                             |)

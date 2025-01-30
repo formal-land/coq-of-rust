@@ -592,7 +592,8 @@ Module num.
                       |) in
                     let~ dp :=
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
@@ -717,7 +718,8 @@ Module num.
                                                           β,
                                                           BinOp.Wrap.add (|
                                                             M.read (| β |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.SubPointer.get_struct_record_field (|
@@ -1069,7 +1071,8 @@ Module num.
                                       BinOp.Wrap.add (|
                                         M.read (| β |),
                                         BinOp.Wrap.shl (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u64")
                                             (M.read (|
                                               M.SubPointer.get_array_field (|
                                                 M.SubPointer.get_struct_record_field (|
@@ -1134,7 +1137,7 @@ Module num.
                                                   |),
                                                   write_index
                                                 |),
-                                                M.rust_cast (M.read (| remainder |))
+                                                M.cast (Ty.path "u8") (M.read (| remainder |))
                                               |) in
                                             M.alloc (| Value.Tuple [] |)));
                                         fun γ =>
@@ -1271,7 +1274,7 @@ Module num.
                                                   |),
                                                   write_index
                                                 |),
-                                                M.rust_cast (M.read (| remainder |))
+                                                M.cast (Ty.path "u8") (M.read (| remainder |))
                                               |) in
                                             M.alloc (| Value.Tuple [] |)));
                                         fun γ =>
@@ -1394,7 +1397,7 @@ Module num.
                         β,
                         BinOp.Wrap.add (|
                           M.read (| β |),
-                          M.rust_cast (M.read (| num_new_digits |))
+                          M.cast (Ty.path "i32") (M.read (| num_new_digits |))
                         |)
                       |) in
                     let~ _ :=
@@ -1531,7 +1534,8 @@ Module num.
                                                   Value.Integer IntegerKind.U64 10,
                                                   M.read (| n |)
                                                 |),
-                                                M.rust_cast
+                                                M.cast
+                                                  (Ty.path "u64")
                                                   (M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.SubPointer.get_struct_record_field (|
@@ -1693,7 +1697,7 @@ Module num.
                         BinOp.Wrap.sub (|
                           M.read (| β |),
                           BinOp.Wrap.sub (|
-                            M.rust_cast (M.read (| read_index |)),
+                            M.cast (Ty.path "i32") (M.read (| read_index |)),
                             Value.Integer IntegerKind.I32 1
                           |)
                         |)
@@ -1802,7 +1806,8 @@ Module num.
                                     |) in
                                   let~ new_digit :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u8")
                                         (BinOp.Wrap.shr (| M.read (| n |), M.read (| shift |) |))
                                     |) in
                                   let~ _ :=
@@ -1813,7 +1818,8 @@ Module num.
                                           Value.Integer IntegerKind.U64 10,
                                           BinOp.bit_and (M.read (| n |)) (M.read (| mask |))
                                         |),
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u64")
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.SubPointer.get_struct_record_field (|
@@ -1896,7 +1902,8 @@ Module num.
                                     |) in
                                   let~ new_digit :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u8")
                                         (BinOp.Wrap.shr (| M.read (| n |), M.read (| shift |) |))
                                     |) in
                                   let~ _ :=
@@ -2684,7 +2691,8 @@ Module num.
                               "decimal_point"
                             |),
                             BinOp.Wrap.sub (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "i32")
                                 (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -2694,7 +2702,8 @@ Module num.
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |)),
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "i32")
                                 (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -2995,7 +3004,7 @@ Module num.
                             β,
                             BinOp.Wrap.add (|
                               M.read (| β |),
-                              M.rust_cast (M.read (| n_trailing_zeros |))
+                              M.cast (Ty.path "i32") (M.read (| n_trailing_zeros |))
                             |)
                           |) in
                         let~ _ :=
@@ -3020,7 +3029,8 @@ Module num.
                             β,
                             BinOp.Wrap.add (|
                               M.read (| β |),
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "i32")
                                 (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     d,
@@ -3292,7 +3302,8 @@ Module num.
                                                                               10,
                                                                             M.read (| exp_num |)
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "i32")
                                                                             (M.read (| digit |))
                                                                         |)
                                                                       |) in
@@ -3578,17 +3589,20 @@ Module num.
                     |) in
                   let~ num_new_digits :=
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "usize")
                         (BinOp.Wrap.shr (| M.read (| x_a |), Value.Integer IntegerKind.I32 11 |))
                     |) in
                   let~ pow5_a :=
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "usize")
                         (BinOp.bit_and (Value.Integer IntegerKind.U16 2047) (M.read (| x_a |)))
                     |) in
                   let~ pow5_b :=
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "usize")
                         (BinOp.bit_and (Value.Integer IntegerKind.U16 2047) (M.read (| x_b |)))
                     |) in
                   let~ pow5 :=

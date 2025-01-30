@@ -76,7 +76,7 @@ Module type_safety.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.read (|
-            let~ idx := M.alloc (| M.rust_cast (M.read (| i |)) |) in
+            let~ idx := M.alloc (| M.cast (Ty.path "usize") (M.read (| i |)) |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -1457,7 +1457,7 @@ Module type_safety.
                     |)
                   ]
                 |),
-                M.rust_cast (M.read (| n |))
+                M.cast (Ty.path "usize") (M.read (| n |))
               |)
             ]
           |)))
@@ -2026,7 +2026,8 @@ Module type_safety.
                                                                                 "code"
                                                                               |)
                                                                             |);
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "usize")
                                                                               (M.read (| offset |))
                                                                           ]
                                                                         |)
@@ -2866,7 +2867,8 @@ Module type_safety.
                                       Pointer.Kind.Ref,
                                       M.deref (| M.read (| fields |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "usize")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| field_handle |) |),
@@ -35126,7 +35128,8 @@ Module type_safety.
                                               (M.alloc (|
                                                 UnOp.not (|
                                                   BinOp.lt (|
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "usize")
                                                       (M.read (| M.deref (| M.read (| idx |) |) |)),
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -35215,7 +35218,9 @@ Module type_safety.
                                         0
                                       |)
                                     |);
-                                    M.rust_cast (M.read (| M.deref (| M.read (| idx |) |) |))
+                                    M.cast
+                                      (Ty.path "usize")
+                                      (M.read (| M.deref (| M.read (| idx |) |) |))
                                   ]
                                 |)
                               |)

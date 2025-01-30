@@ -27,7 +27,10 @@ Module instructions.
                 []
               |)
             |) in
-          M.SubPointer.get_array_field (| table, M.alloc (| M.rust_cast (M.read (| opcode |)) |) |)
+          M.SubPointer.get_array_field (|
+            table,
+            M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -258,7 +261,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::STOP" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::STOP" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -274,7 +279,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::ADD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -290,7 +297,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::STOP" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::STOP" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -306,7 +315,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::ADD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -322,7 +333,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MUL" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MUL" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -338,7 +351,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SUB" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SUB" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -354,7 +369,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DIV" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DIV" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -370,7 +387,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SDIV" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SDIV" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -386,7 +405,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MOD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MOD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -402,7 +423,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SMOD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SMOD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -418,7 +441,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::ADDMOD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADDMOD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -434,7 +459,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MULMOD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MULMOD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -450,7 +477,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::EXP" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXP" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -466,7 +495,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::SIGNEXTEND" |) |))
                 |)
               |),
@@ -483,7 +513,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::LT" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LT" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -499,7 +531,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::GT" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GT" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -515,7 +549,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SLT" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SLT" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -531,7 +567,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SGT" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SGT" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -547,7 +585,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::EQ" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EQ" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -563,7 +603,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::ISZERO" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ISZERO" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -579,7 +621,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::AND" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::AND" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -595,7 +639,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::OR" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::OR" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -611,7 +657,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::XOR" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::XOR" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -627,7 +675,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::NOT" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::NOT" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -643,7 +693,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::BYTE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BYTE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -659,7 +711,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SHL" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SHL" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -675,7 +729,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SHR" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SHR" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -691,7 +747,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SAR" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SAR" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -707,7 +765,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::KECCAK256" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::KECCAK256" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -723,7 +783,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::ADDRESS" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADDRESS" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -739,7 +801,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::BALANCE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BALANCE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -755,7 +819,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::ORIGIN" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ORIGIN" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -771,7 +837,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLER" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLER" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -787,7 +855,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLVALUE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLVALUE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -803,7 +873,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLDATALOAD" |) |))
                 |)
               |),
@@ -820,7 +891,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLDATASIZE" |) |))
                 |)
               |),
@@ -837,7 +909,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLDATACOPY" |) |))
                 |)
               |),
@@ -854,7 +927,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CODESIZE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CODESIZE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -870,7 +945,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CODECOPY" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CODECOPY" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -886,7 +963,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::GASPRICE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GASPRICE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -902,7 +981,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCODESIZE" |) |))
                 |)
               |),
@@ -919,7 +999,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCODECOPY" |) |))
                 |)
               |),
@@ -936,7 +1017,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNDATASIZE" |) |))
                 |)
               |),
@@ -953,7 +1035,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNDATACOPY" |) |))
                 |)
               |),
@@ -970,7 +1053,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCODEHASH" |) |))
                 |)
               |),
@@ -987,7 +1071,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOCKHASH" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOCKHASH" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1003,7 +1089,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::COINBASE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::COINBASE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1019,7 +1107,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::TIMESTAMP" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::TIMESTAMP" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1035,7 +1125,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::NUMBER" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::NUMBER" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1051,7 +1143,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::DIFFICULTY" |) |))
                 |)
               |),
@@ -1068,7 +1161,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::GASLIMIT" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GASLIMIT" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1084,7 +1179,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CHAINID" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CHAINID" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1100,7 +1197,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::SELFBALANCE" |) |))
                 |)
               |),
@@ -1117,7 +1215,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::BASEFEE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BASEFEE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1133,7 +1233,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOBHASH" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOBHASH" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1149,7 +1251,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOBBASEFEE" |) |))
                 |)
               |),
@@ -1166,7 +1269,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::POP" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::POP" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1178,7 +1283,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MLOAD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MLOAD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1194,7 +1301,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MSTORE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MSTORE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1210,7 +1319,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MSTORE8" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MSTORE8" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1226,7 +1337,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SLOAD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SLOAD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1242,7 +1355,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SSTORE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SSTORE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1258,7 +1373,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMP" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMP" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1274,7 +1391,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPI" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPI" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1290,7 +1409,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PC" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PC" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1306,7 +1427,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MSIZE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MSIZE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1322,7 +1445,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::GAS" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GAS" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1338,7 +1463,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPDEST" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPDEST" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1354,7 +1481,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::TLOAD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::TLOAD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1370,7 +1499,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::TSTORE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::TSTORE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1386,7 +1517,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::MCOPY" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MCOPY" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1402,7 +1535,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH0" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH0" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1418,7 +1553,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH1" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH1" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1434,7 +1571,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH2" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH2" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1450,7 +1589,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH3" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH3" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1466,7 +1607,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH4" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH4" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1482,7 +1625,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH5" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH5" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1498,7 +1643,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH6" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH6" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1514,7 +1661,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH7" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH7" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1530,7 +1679,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH8" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH8" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1546,7 +1697,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH9" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH9" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1562,7 +1715,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH10" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH10" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1578,7 +1733,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH11" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH11" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1594,7 +1751,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH12" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH12" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1610,7 +1769,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH13" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH13" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1626,7 +1787,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH14" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH14" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1642,7 +1805,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH15" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH15" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1658,7 +1823,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH16" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH16" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1674,7 +1841,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH17" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH17" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1690,7 +1859,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH18" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH18" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1706,7 +1877,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH19" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH19" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1722,7 +1895,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH20" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH20" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1738,7 +1913,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH21" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH21" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1754,7 +1931,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH22" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH22" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1770,7 +1949,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH23" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH23" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1786,7 +1967,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH24" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH24" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1802,7 +1985,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH25" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH25" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1818,7 +2003,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH26" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH26" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1834,7 +2021,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH27" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH27" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1850,7 +2039,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH28" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH28" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1866,7 +2057,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH29" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH29" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1882,7 +2075,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH30" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH30" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1898,7 +2093,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH31" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH31" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1914,7 +2111,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH32" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH32" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1930,7 +2129,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP1" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP1" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1946,7 +2147,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP2" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP2" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1962,7 +2165,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP3" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP3" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1978,7 +2183,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP4" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP4" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1994,7 +2201,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP5" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP5" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2010,7 +2219,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP6" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP6" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2026,7 +2237,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP7" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP7" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2042,7 +2255,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP8" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP8" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2058,7 +2273,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP9" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP9" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2074,7 +2291,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP10" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP10" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2090,7 +2309,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP11" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP11" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2106,7 +2327,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP12" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP12" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2122,7 +2345,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP13" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP13" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2138,7 +2363,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP14" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP14" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2154,7 +2381,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP15" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP15" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2170,7 +2399,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP16" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP16" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2186,7 +2417,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP1" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP1" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2202,7 +2435,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP2" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP2" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2218,7 +2453,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP3" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP3" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2234,7 +2471,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP4" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP4" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2250,7 +2489,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP5" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP5" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2266,7 +2507,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP6" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP6" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2282,7 +2525,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP7" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP7" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2298,7 +2543,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP8" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP8" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2314,7 +2561,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP9" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP9" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2330,7 +2579,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP10" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP10" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2346,7 +2597,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP11" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP11" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2362,7 +2615,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP12" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP12" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2378,7 +2633,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP13" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP13" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2394,7 +2651,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP14" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP14" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2410,7 +2669,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP15" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP15" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2426,7 +2687,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP16" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP16" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2442,7 +2705,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG0" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG0" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2458,7 +2723,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG1" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG1" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2474,7 +2741,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG2" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG2" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2490,7 +2759,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG3" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG3" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2506,7 +2777,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG4" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG4" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2522,7 +2795,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DATALOAD" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATALOAD" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2538,7 +2813,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DATALOADN" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATALOADN" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2554,7 +2831,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DATASIZE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATASIZE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2570,7 +2849,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DATACOPY" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATACOPY" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2586,7 +2867,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMP" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMP" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2602,7 +2885,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMPI" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMPI" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2618,7 +2903,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMPV" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMPV" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2634,7 +2921,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLF" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLF" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2650,7 +2939,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::RETF" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETF" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2666,7 +2957,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPF" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPF" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2682,7 +2975,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::DUPN" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUPN" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2698,7 +2993,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAPN" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAPN" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2714,7 +3011,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::EXCHANGE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXCHANGE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2730,7 +3029,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::EOFCREATE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EOFCREATE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2746,7 +3047,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNCONTRACT" |) |))
                 |)
               |),
@@ -2763,7 +3065,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CREATE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CREATE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2779,7 +3083,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CALL" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALL" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2795,7 +3101,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLCODE" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLCODE" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2811,7 +3119,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURN" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURN" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2827,7 +3137,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::DELEGATECALL" |) |))
                 |)
               |),
@@ -2844,7 +3155,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::CREATE2" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CREATE2" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2860,7 +3173,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNDATALOAD" |) |))
                 |)
               |),
@@ -2877,7 +3191,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCALL" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCALL" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2893,7 +3209,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTDELEGATECALL" |) |))
                 |)
               |),
@@ -2910,7 +3227,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::STATICCALL" |) |))
                 |)
               |),
@@ -2927,7 +3245,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTSTATICCALL" |) |))
                 |)
               |),
@@ -2944,7 +3263,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::REVERT" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::REVERT" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2960,7 +3281,9 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast (M.read (| M.get_constant (| "revm_bytecode::opcode::INVALID" |) |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant (| "revm_bytecode::opcode::INVALID" |) |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2976,7 +3299,8 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (| M.get_constant (| "revm_bytecode::opcode::SELFDESTRUCT" |) |))
                 |)
               |),

@@ -4562,7 +4562,8 @@ Module rc.
               |) in
             let~ rc_ptr :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
@@ -6021,7 +6022,15 @@ Module rc.
                                     [],
                                     [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                   |),
-                                  [ M.read (| mem |); M.rust_cast (M.read (| ptr |)) ]
+                                  [
+                                    M.read (| mem |);
+                                    M.cast
+                                      (Ty.apply
+                                        (Ty.path "*const")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
+                                      (M.read (| ptr |))
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -6122,9 +6131,11 @@ Module rc.
                     [ Ty.path "u8" ]
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                       (M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| src |) |) |));
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                       (M.borrow (|
                         Pointer.Kind.MutPointer,
                         M.SubPointer.get_struct_record_field (|
@@ -6175,7 +6186,17 @@ Module rc.
                             []
                           |),
                           [
-                            M.rust_cast (M.read (| bptr |));
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ T ]
+                                ])
+                              (M.read (| bptr |));
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::alloc::Allocator",
@@ -6464,7 +6485,26 @@ Module rc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let mem := M.copy (| γ |) in
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::rc::RcBox")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ]
+                                                ]
+                                            ]
+                                        ])
                                       (M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::slice_from_raw_parts_mut",
@@ -6626,7 +6666,16 @@ Module rc.
                             fun γ =>
                               ltac:(M.monadic
                                 (let mem := M.copy (| γ |) in
-                                M.rust_cast
+                                M.cast
+                                  (Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::rc::RcBox")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                    ])
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::ptr::slice_from_raw_parts_mut",
@@ -6719,7 +6768,8 @@ Module rc.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
                       (M.borrow (|
                         Pointer.Kind.MutPointer,
                         M.SubPointer.get_struct_record_field (|
@@ -6836,7 +6886,22 @@ Module rc.
                   [ M.read (| len |) ]
                 |)
               |) in
-            let~ mem := M.alloc (| M.rust_cast (M.rust_cast (M.read (| ptr |))) |) in
+            let~ mem :=
+              M.alloc (|
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                  (M.cast
+                    (Ty.apply
+                      (Ty.path "*mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::rc::RcBox")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                      ])
+                    (M.read (| ptr |)))
+              |) in
             let~ layout :=
               M.alloc (|
                 M.call_closure (|
@@ -6856,7 +6921,8 @@ Module rc.
               |) in
             let~ elems :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ T ])
                   (M.borrow (|
                     Pointer.Kind.MutPointer,
                     M.SubPointer.get_struct_record_field (|
@@ -7273,7 +7339,26 @@ Module rc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let mem := M.copy (| γ |) in
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::rc::RcBox")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ]
+                                                ]
+                                            ]
+                                        ])
                                       (M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::slice_from_raw_parts_mut",
@@ -7437,7 +7522,16 @@ Module rc.
                             fun γ =>
                               ltac:(M.monadic
                                 (let mem := M.copy (| γ |) in
-                                M.rust_cast
+                                M.cast
+                                  (Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::rc::RcBox")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                    ])
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::ptr::slice_from_raw_parts_mut",
@@ -7625,7 +7719,16 @@ Module rc.
                           []
                         |),
                         [
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::rc::RcBox")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                              ])
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -9807,7 +9910,8 @@ Module rc.
                   []
                 |),
                 [
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -10011,7 +10115,8 @@ Module rc.
                           M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |));
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
                               (M.borrow (|
                                 Pointer.Kind.MutPointer,
                                 M.SubPointer.get_struct_record_field (|
@@ -10192,7 +10297,8 @@ Module rc.
               []
             |),
             [
-              M.rust_cast
+              M.cast
+                (Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                 (M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
@@ -11130,7 +11236,9 @@ Module rc.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| M.rust_cast (M.read (| ptr |)) |)));
+                    M.alloc (|
+                      M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| ptr |))
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
@@ -11381,7 +11489,14 @@ Module rc.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| M.rust_cast (M.read (| ptr |)) |)));
+                        M.alloc (|
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
+                            (M.read (| ptr |))
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let~ offset :=
@@ -11392,7 +11507,11 @@ Module rc.
                             |)
                           |) in
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [] [ T ],
@@ -14237,7 +14356,11 @@ Module rc.
                                         |),
                                         [
                                           M.read (| mem |);
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.apply
+                                              (Ty.path "*const")
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
                                             (M.call_closure (|
                                               M.get_function (| "core::ptr::from_ref", [], [ T ] |),
                                               [
@@ -14343,7 +14466,8 @@ Module rc.
                 |)
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.apply (Ty.path "*mut") [] [ T ])
                 (M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],

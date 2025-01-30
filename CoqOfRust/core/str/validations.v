@@ -14,7 +14,8 @@ Module str.
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
           let width := M.alloc (| width |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u32")
             (BinOp.bit_and
               (M.read (| byte |))
               (BinOp.Wrap.shr (| Value.Integer IntegerKind.U8 127, M.read (| width |) |)))))
@@ -37,7 +38,8 @@ Module str.
           let byte := M.alloc (| byte |) in
           BinOp.bit_or
             (BinOp.Wrap.shl (| M.read (| ch |), Value.Integer IntegerKind.I32 6 |))
-            (M.rust_cast
+            (M.cast
+              (Ty.path "u32")
               (BinOp.bit_and
                 (M.read (| byte |))
                 (M.read (| M.get_constant (| "core::str::validations::CONT_MASK" |) |))))))
@@ -57,7 +59,10 @@ Module str.
       | [], [], [ byte ] =>
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
-          BinOp.lt (| M.rust_cast (M.read (| byte |)), Value.Integer IntegerKind.I8 (-64) |)))
+          BinOp.lt (|
+            M.cast (Ty.path "i8") (M.read (| byte |)),
+            Value.Integer IntegerKind.I8 (-64)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -221,7 +226,7 @@ Module str.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ M.rust_cast (M.read (| x |)) ]
+                                    [ M.cast (Ty.path "u32") (M.read (| x |)) ]
                                 |)
                               |)
                             |)
@@ -330,7 +335,8 @@ Module str.
                                   []
                                 |),
                                 [
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.bit_and
                                       (M.read (| y |))
                                       (M.read (|
@@ -595,7 +601,7 @@ Module str.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
-                                      [ M.rust_cast (M.read (| next_byte |)) ]
+                                      [ M.cast (Ty.path "u32") (M.read (| next_byte |)) ]
                                   |)
                                 |)
                               |)
@@ -1139,7 +1145,8 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.ge (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "i8")
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
@@ -1457,7 +1464,8 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.ge (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "i8")
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
@@ -1763,7 +1771,8 @@ Module str.
                                                             M.use
                                                               (M.alloc (|
                                                                 BinOp.ge (|
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "i8")
                                                                     (M.read (|
                                                                       let~ _ :=
                                                                         let β := index in
@@ -1889,7 +1898,8 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.ge (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "i8")
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
@@ -2126,7 +2136,11 @@ Module str.
                                                             let~ _ :=
                                                               let~ block :=
                                                                 M.alloc (|
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ Ty.path "usize" ])
                                                                     (M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.apply
@@ -2642,13 +2656,14 @@ Module str.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_array_field (|
                 M.deref (|
                   M.read (| M.get_constant (| "core::str::validations::UTF8_CHAR_WIDTH" |) |)
                 |),
-                M.alloc (| M.rust_cast (M.read (| b |)) |)
+                M.alloc (| M.cast (Ty.path "usize") (M.read (| b |)) |)
               |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"

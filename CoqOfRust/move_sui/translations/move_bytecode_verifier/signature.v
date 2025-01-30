@@ -703,7 +703,7 @@ Module signature.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.rust_cast (M.read (| i |)) ]
+                                                        [ M.cast (Ty.path "u16") (M.read (| i |)) ]
                                                       |)
                                                     ]
                                                   |)
@@ -859,13 +859,13 @@ Module signature.
                                                       Value.StructTuple
                                                         "move_binary_format::IndexKind::Signature"
                                                         [];
-                                                      M.rust_cast (M.read (| idx |))
+                                                      M.cast (Ty.path "u16") (M.read (| idx |))
                                                     ]
                                                   |);
                                                   Value.StructTuple
                                                     "move_binary_format::IndexKind::FunctionHandle"
                                                     [];
-                                                  M.rust_cast (M.read (| idx |))
+                                                  M.cast (Ty.path "u16") (M.read (| idx |))
                                                 ]
                                               |)))
                                         ]
@@ -1804,14 +1804,16 @@ Module signature.
                                                                                 Value.StructTuple
                                                                                   "move_binary_format::IndexKind::FieldDefinition"
                                                                                   [];
-                                                                                M.rust_cast
+                                                                                M.cast
+                                                                                  (Ty.path "u16")
                                                                                   (M.read (| idx |))
                                                                               ]
                                                                             |);
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::StructDefinition"
                                                                               [];
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u16")
                                                                               (M.read (|
                                                                                 struct_def_idx
                                                                               |))
@@ -3055,7 +3057,8 @@ Module signature.
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| function_handles |) |),
                                                   M.alloc (|
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "usize")
                                                       (M.read (|
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.SubPointer.get_struct_record_field (|
@@ -3233,7 +3236,8 @@ Module signature.
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionDefinition"
                                                                               [];
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u16")
                                                                               (M.read (|
                                                                                 func_def_idx
                                                                               |))
@@ -6937,7 +6941,8 @@ Module signature.
                                               M.SubPointer.get_array_field (|
                                                 M.deref (| M.read (| type_parameters |) |),
                                                 M.alloc (|
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "usize")
                                                     (M.read (| M.deref (| M.read (| idx |) |) |))
                                                 |)
                                               |),

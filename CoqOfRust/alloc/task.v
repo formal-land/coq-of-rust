@@ -167,7 +167,8 @@ Module task.
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
           [
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
@@ -241,7 +242,7 @@ Module task.
                     [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (|
@@ -311,7 +312,7 @@ Module task.
                     [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             let~ _ :=
@@ -368,7 +369,7 @@ Module task.
                         [],
                         []
                       |),
-                      [ M.rust_cast (M.read (| waker |)) ]
+                      [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                     |)
                   ]
                 |)
@@ -438,7 +439,7 @@ Module task.
                     [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -614,7 +615,8 @@ Module task.
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
           [
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
@@ -688,7 +690,7 @@ Module task.
                     [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (|
@@ -771,7 +773,7 @@ Module task.
                     [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             let~ _ :=
@@ -821,7 +823,7 @@ Module task.
                         [],
                         []
                       |),
-                      [ M.rust_cast (M.read (| waker |)) ]
+                      [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                     |)
                   ]
                 |)
@@ -900,7 +902,7 @@ Module task.
                     [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)

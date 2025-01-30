@@ -1836,7 +1836,8 @@ Module num.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, scale |);
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (UnOp.neg (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -1863,7 +1864,8 @@ Module num.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, mant |);
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| d |) |),
@@ -1885,7 +1887,8 @@ Module num.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, minus |);
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| d |) |),
@@ -1907,7 +1910,8 @@ Module num.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, plus |);
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| d |) |),
@@ -1947,7 +1951,7 @@ Module num.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.borrow (| Pointer.Kind.MutRef, scale |) |)
                                   |);
-                                  M.rust_cast (M.read (| k |))
+                                  M.cast (Ty.path "usize") (M.read (| k |))
                                 ]
                               |)
                             |) in
@@ -1967,7 +1971,7 @@ Module num.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.borrow (| Pointer.Kind.MutRef, mant |) |)
                                   |);
-                                  M.rust_cast (UnOp.neg (| M.read (| k |) |))
+                                  M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
                                 ]
                               |)
                             |) in
@@ -1984,7 +1988,7 @@ Module num.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.borrow (| Pointer.Kind.MutRef, minus |) |)
                                   |);
-                                  M.rust_cast (UnOp.neg (| M.read (| k |) |))
+                                  M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
                                 ]
                               |)
                             |) in
@@ -2001,7 +2005,7 @@ Module num.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.borrow (| Pointer.Kind.MutRef, plus |) |)
                                   |);
-                                  M.rust_cast (UnOp.neg (| M.read (| k |) |))
+                                  M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
                                 ]
                               |)
                             |) in
@@ -3319,7 +3323,8 @@ Module num.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, scale |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (UnOp.neg (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
@@ -3346,7 +3351,8 @@ Module num.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, mant |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.deref (| M.read (| d |) |),
@@ -3389,7 +3395,7 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.borrow (| Pointer.Kind.MutRef, scale |) |)
                                       |);
-                                      M.rust_cast (M.read (| k |))
+                                      M.cast (Ty.path "usize") (M.read (| k |))
                                     ]
                                   |)
                                 |) in
@@ -3409,7 +3415,7 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.borrow (| Pointer.Kind.MutRef, mant |) |)
                                       |);
-                                      M.rust_cast (UnOp.neg (| M.read (| k |) |))
+                                      M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
                                     ]
                                   |)
                                 |) in
@@ -3590,10 +3596,11 @@ Module num.
                                           M.use
                                             (M.alloc (|
                                               BinOp.lt (|
-                                                M.rust_cast
+                                                M.cast
+                                                  (Ty.path "usize")
                                                   (BinOp.Wrap.sub (|
-                                                    M.rust_cast (M.read (| k |)),
-                                                    M.rust_cast (M.read (| limit |))
+                                                    M.cast (Ty.path "i32") (M.read (| k |)),
+                                                    M.cast (Ty.path "i32") (M.read (| limit |))
                                                   |)),
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -3626,7 +3633,8 @@ Module num.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "usize")
                                             (BinOp.Wrap.sub (|
                                               M.read (| k |),
                                               M.read (| limit |)

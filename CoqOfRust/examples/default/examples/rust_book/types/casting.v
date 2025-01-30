@@ -87,8 +87,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ decimal := M.copy (| UnsupportedLiteral |) in
-        let~ integer := M.alloc (| M.rust_cast (M.read (| decimal |)) |) in
-        let~ character := M.alloc (| M.rust_cast (M.read (| integer |)) |) in
+        let~ integer := M.alloc (| M.cast (Ty.path "u8") (M.read (| decimal |)) |) in
+        let~ character := M.alloc (| M.cast (Ty.path "char") (M.read (| integer |)) |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -370,7 +370,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast (Value.Integer IntegerKind.I8 (-1))
+                                              M.cast
+                                                (Ty.path "u8")
+                                                (Value.Integer IntegerKind.I8 (-1))
                                             |)
                                           |)
                                         |)
@@ -785,7 +787,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                                              M.cast
+                                                (Ty.path "u8")
+                                                (M.read (| UnsupportedLiteral |))
                                             |)
                                           |)
                                         |)
@@ -855,7 +859,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                                              M.cast
+                                                (Ty.path "u8")
+                                                (M.read (| UnsupportedLiteral |))
                                             |)
                                           |)
                                         |)
@@ -925,7 +931,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "u8")
                                                 (M.read (| M.get_constant (| "core::f32::NAN" |) |))
                                             |)
                                           |)

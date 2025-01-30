@@ -278,7 +278,7 @@ Module vec.
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, v |) ]
                             |);
-                            M.rust_cast (M.read (| elem |));
+                            M.cast (Ty.path "u8") (M.read (| elem |));
                             M.read (| n |)
                           ]
                         |)

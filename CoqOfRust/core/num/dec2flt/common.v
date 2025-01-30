@@ -158,7 +158,8 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               BinOp.Wrap.sub (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "isize")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -168,7 +169,8 @@ Module num.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)),
-                M.rust_cast
+                M.cast
+                  (Ty.path "isize")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],

@@ -311,7 +311,7 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ M.rust_cast (M.read (| len |)) ]
+                          [ M.cast (Ty.path "usize") (M.read (| len |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic

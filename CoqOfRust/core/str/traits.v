@@ -748,7 +748,15 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ slice :=
+                M.alloc (|
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                    (M.read (| slice |))
+                |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -831,7 +839,8 @@ Module str.
                   |)
                 |) in
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ])
                   (M.call_closure (|
                     M.get_function (| "core::ptr::slice_from_raw_parts", [], [ Ty.path "u8" ] |),
                     [
@@ -900,7 +909,15 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ slice :=
+                M.alloc (|
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*mut")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                    (M.read (| slice |))
+                |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -983,7 +1000,8 @@ Module str.
                   |)
                 |) in
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ])
                   (M.call_closure (|
                     M.get_function (|
                       "core::ptr::slice_from_raw_parts_mut",
@@ -1663,7 +1681,15 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ slice :=
+                M.alloc (|
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                    (M.read (| slice |))
+                |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1742,7 +1768,8 @@ Module str.
                   |)
                 |) in
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ])
                   (M.call_closure (|
                     M.get_function (| "core::ptr::slice_from_raw_parts", [], [ Ty.path "u8" ] |),
                     [
@@ -1811,7 +1838,15 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ slice :=
+                M.alloc (|
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*mut")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                    (M.read (| slice |))
+                |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1890,7 +1925,8 @@ Module str.
                   |)
                 |) in
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ])
                   (M.call_closure (|
                     M.get_function (|
                       "core::ptr::slice_from_raw_parts_mut",
@@ -2518,7 +2554,14 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.rust_cast (M.read (| slice |)) ]
+                    [
+                      M.cast
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                        (M.read (| slice |))
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -2571,7 +2614,14 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.rust_cast (M.read (| slice |)) ]
+                    [
+                      M.cast
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                        (M.read (| slice |))
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -3434,7 +3484,14 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.rust_cast (M.read (| slice |)) ]
+                    [
+                      M.cast
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                        (M.read (| slice |))
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -3496,7 +3553,14 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.rust_cast (M.read (| slice |)) ]
+                    [
+                      M.cast
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                        (M.read (| slice |))
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -4018,7 +4082,14 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.rust_cast (M.read (| slice |)) ]
+                    [
+                      M.cast
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                        (M.read (| slice |))
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -4080,7 +4151,14 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.rust_cast (M.read (| slice |)) ]
+                    [
+                      M.cast
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                        (M.read (| slice |))
+                    ]
                   |)
                 |) in
               M.alloc (|

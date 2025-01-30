@@ -247,7 +247,24 @@ Module clone.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
-                        M.deref (| M.rust_cast (M.read (| dst |)) |)
+                        M.deref (|
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ])
+                            (M.read (| dst |))
+                        |)
                       |)
                     |)
                   |)

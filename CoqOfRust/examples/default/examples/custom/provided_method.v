@@ -68,7 +68,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+        M.cast (Ty.path "i32") (M.read (| M.deref (| M.read (| self |) |) |))))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

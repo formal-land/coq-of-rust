@@ -1030,7 +1030,12 @@ Module slice.
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                           |),
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ])
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
@@ -1282,7 +1287,8 @@ Module slice.
                       |) in
                     let~ scratch_base :=
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply (Ty.path "*mut") [] [ T ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -2490,7 +2496,8 @@ Module slice.
                       |) in
                     let~ scratch_base :=
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply (Ty.path "*mut") [] [ T ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -4834,7 +4841,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| v_base |); M.rust_cast (M.read (| c1 |)) ]
+                        [ M.read (| v_base |); M.cast (Ty.path "usize") (M.read (| c1 |)) ]
                       |)
                     |) in
                   let~ b :=
@@ -4846,7 +4853,10 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| v_base |); M.rust_cast (UnOp.not (| M.read (| c1 |) |)) ]
+                        [
+                          M.read (| v_base |);
+                          M.cast (Ty.path "usize") (UnOp.not (| M.read (| c1 |) |))
+                        ]
                       |)
                     |) in
                   let~ c :=
@@ -4862,7 +4872,7 @@ Module slice.
                           M.read (| v_base |);
                           BinOp.Wrap.add (|
                             Value.Integer IntegerKind.Usize 2,
-                            M.rust_cast (M.read (| c2 |))
+                            M.cast (Ty.path "usize") (M.read (| c2 |))
                           |)
                         ]
                       |)
@@ -4880,7 +4890,7 @@ Module slice.
                           M.read (| v_base |);
                           BinOp.Wrap.add (|
                             Value.Integer IntegerKind.Usize 2,
-                            M.rust_cast (UnOp.not (| M.read (| c2 |) |))
+                            M.cast (Ty.path "usize") (UnOp.not (| M.read (| c2 |) |))
                           |)
                         ]
                       |)
@@ -5431,7 +5441,10 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| right_src |); M.rust_cast (UnOp.not (| M.read (| is_l |) |)) ]
+                        [
+                          M.read (| right_src |);
+                          M.cast (Ty.path "usize") (UnOp.not (| M.read (| is_l |) |))
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -5444,7 +5457,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| left_src |); M.rust_cast (M.read (| is_l |)) ]
+                        [ M.read (| left_src |); M.cast (Ty.path "usize") (M.read (| is_l |)) ]
                       |)
                     |) in
                   let~ _ :=
@@ -5592,7 +5605,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| right_src |); M.rust_cast (M.read (| is_l |)) ]
+                        [ M.read (| right_src |); M.cast (Ty.path "usize") (M.read (| is_l |)) ]
                       |)
                     |) in
                   let~ _ :=
@@ -5605,7 +5618,10 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| left_src |); M.rust_cast (UnOp.not (| M.read (| is_l |) |)) ]
+                        [
+                          M.read (| left_src |);
+                          M.cast (Ty.path "usize") (UnOp.not (| M.read (| is_l |) |))
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -6072,7 +6088,10 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| left |); M.rust_cast (M.read (| left_nonempty |)) ]
+                                [
+                                  M.read (| left |);
+                                  M.cast (Ty.path "usize") (M.read (| left_nonempty |))
+                                ]
                               |)
                             |) in
                           let~ _ :=
@@ -6087,7 +6106,9 @@ Module slice.
                                 |),
                                 [
                                   M.read (| right |);
-                                  M.rust_cast (UnOp.not (| M.read (| left_nonempty |) |))
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (UnOp.not (| M.read (| left_nonempty |) |))
                                 ]
                               |)
                             |) in

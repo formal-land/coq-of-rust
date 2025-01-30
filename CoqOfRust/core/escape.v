@@ -296,7 +296,8 @@ Module escape.
                               M.SubPointer.get_array_field (|
                                 M.get_constant (| "core::escape::HEX_DIGITS" |),
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (BinOp.Wrap.shr (|
                                       M.read (| byte |),
                                       Value.Integer IntegerKind.I32 4
@@ -309,7 +310,8 @@ Module escape.
                               M.SubPointer.get_array_field (|
                                 M.get_constant (| "core::escape::HEX_DIGITS" |),
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (BinOp.bit_and
                                       (M.read (| byte |))
                                       (Value.Integer IntegerKind.U8 15))
@@ -404,12 +406,13 @@ Module escape.
         (let c := M.alloc (| c |) in
         M.read (|
           let~ _ := M.get_constant (| "core::escape::escape_unicode_discriminant" |) in
-          let~ c := M.alloc (| M.rust_cast (M.read (| c |)) |) in
+          let~ c := M.alloc (| M.cast (Ty.path "u32") (M.read (| c |)) |) in
           let~ start :=
             M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.div (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
                       [ BinOp.bit_or (M.read (| c |)) (Value.Integer IntegerKind.U32 1) ]
@@ -433,7 +436,8 @@ Module escape.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 20 |))
                         (Value.Integer IntegerKind.U32 15))
@@ -451,7 +455,8 @@ Module escape.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 16 |))
                         (Value.Integer IntegerKind.U32 15))
@@ -469,7 +474,8 @@ Module escape.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 12 |))
                         (Value.Integer IntegerKind.U32 15))
@@ -487,7 +493,8 @@ Module escape.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 8 |))
                         (Value.Integer IntegerKind.U32 15))
@@ -505,7 +512,8 @@ Module escape.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 4 |))
                         (Value.Integer IntegerKind.U32 15))
@@ -523,7 +531,8 @@ Module escape.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 0 |))
                         (Value.Integer IntegerKind.U32 15))
@@ -576,9 +585,10 @@ Module escape.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", M.rust_cast (M.read (| start |)));
+                    ("start", M.cast (Ty.path "u8") (M.read (| start |)));
                     ("end_",
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u8")
                         (M.read (| M.get_constant (| "core::escape::escape_unicode::N" |) |)))
                   ]
               ]

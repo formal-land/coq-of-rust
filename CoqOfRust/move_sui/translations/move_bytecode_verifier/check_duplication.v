@@ -3190,7 +3190,8 @@ Module check_duplication.
                                                                     Value.StructTuple
                                                                       "move_binary_format::IndexKind::StructDefinition"
                                                                       [];
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "u16")
                                                                       (M.read (| struct_idx |))
                                                                   ]
                                                                 |)
@@ -3631,7 +3632,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::StructDefinition"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -3881,7 +3882,11 @@ Module check_duplication.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.rust_cast (M.read (| x |)) ]
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| x |))
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (|
@@ -4043,7 +4048,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::StructHandle"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -4591,7 +4596,9 @@ Module check_duplication.
                                                                   Value.StructTuple
                                                                     "move_binary_format::IndexKind::FunctionDefinition"
                                                                     [];
-                                                                  M.rust_cast (M.read (| idx |))
+                                                                  M.cast
+                                                                    (Ty.path "u16")
+                                                                    (M.read (| idx |))
                                                                 ]
                                                               |)
                                                             ]
@@ -4830,7 +4837,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -5082,7 +5089,11 @@ Module check_duplication.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.rust_cast (M.read (| x |)) ]
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| x |))
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (|
@@ -5244,7 +5255,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionHandle"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -5446,7 +5457,11 @@ Module check_duplication.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
-                                                            [ M.rust_cast (M.read (| i |)) ]
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| i |))
+                                                            ]
                                                         |)
                                                       |)
                                                     |)

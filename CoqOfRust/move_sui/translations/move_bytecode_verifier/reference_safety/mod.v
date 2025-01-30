@@ -3183,7 +3183,8 @@ Module reference_safety.
                             Value.StructTuple
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
                               [];
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u64")
                               (M.call_closure (|
                                 M.get_function (|
                                   "move_bytecode_verifier::reference_safety::num_fields",

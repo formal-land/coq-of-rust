@@ -820,7 +820,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::BYTECODE_COUNT_MAX" |)
             |)
@@ -853,7 +853,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX" |)
             |)
@@ -886,7 +886,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::CONSTANT_SIZE_MAX" |)
             |)
@@ -921,7 +921,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX" |)
             |)
@@ -958,7 +958,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX" |)
             |)
@@ -991,7 +991,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::FIELD_COUNT_MAX" |)
             |)
@@ -1053,7 +1053,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX" |)
             |)
@@ -1086,7 +1086,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX" |)
             |)
@@ -1162,7 +1162,7 @@ Module serializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.rust_cast (M.read (| len |));
+            M.cast (Ty.path "u64") (M.read (| len |));
             M.read (|
               M.get_constant (|
                 "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX"
@@ -1861,7 +1861,8 @@ Module serializer.
                                     |),
                                     [ M.borrow (| Pointer.Kind.Ref, temp |) ]
                                   |),
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "u32",
@@ -2968,7 +2969,8 @@ Module serializer.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| index |),
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "usize")
                                   (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "u32",
@@ -3126,7 +3128,9 @@ Module serializer.
                   ]
                 |) in
               M.alloc (|
-                Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| index |)) ]
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ M.cast (Ty.path "u32") (M.read (| index |)) ]
               |)
             |)))
         |)))
@@ -3204,7 +3208,7 @@ Module serializer.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| binary |) |)
                                       |);
-                                      M.rust_cast (M.read (| kind |))
+                                      M.cast (Ty.path "u8") (M.read (| kind |))
                                     ]
                                   |)
                                 ]
@@ -5130,7 +5134,8 @@ Module serializer.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u8")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| type_param |) |),
@@ -7217,7 +7222,8 @@ Module serializer.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u8")
                               (BinOp.Wrap.add (|
                                 M.get_constant (|
                                   "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE_discriminant"
@@ -7266,7 +7272,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED_discriminant"
@@ -9258,7 +9265,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::BOOL_discriminant"
@@ -9359,7 +9367,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U8_discriminant"
@@ -9460,7 +9469,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U16_discriminant"
@@ -9561,7 +9571,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U32_discriminant"
@@ -9662,7 +9673,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U64_discriminant"
@@ -9763,7 +9775,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U128_discriminant"
@@ -9864,7 +9877,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U256_discriminant"
@@ -9965,7 +9979,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::ADDRESS_discriminant"
@@ -10066,7 +10081,8 @@ Module serializer.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| binary |) |)
                                     |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u8")
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::SIGNER_discriminant"
@@ -10169,7 +10185,8 @@ Module serializer.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| binary |) |)
                                       |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u8")
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::VECTOR_discriminant"
@@ -10274,7 +10291,8 @@ Module serializer.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| binary |) |)
                                       |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u8")
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::STRUCT_discriminant"
@@ -10485,7 +10503,8 @@ Module serializer.
                                                 Pointer.Kind.MutRef,
                                                 M.deref (| M.read (| binary |) |)
                                               |);
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "u8")
                                                 (BinOp.Wrap.add (|
                                                   M.get_constant (|
                                                     "move_binary_format::file_format_common::SerializedType::STRUCT_INST_discriminant"
@@ -10788,7 +10807,8 @@ Module serializer.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| binary |) |)
                                       |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u8")
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::REFERENCE_discriminant"
@@ -10892,7 +10912,8 @@ Module serializer.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| binary |) |)
                                       |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u8")
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE_discriminant"
@@ -10997,7 +11018,8 @@ Module serializer.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| binary |) |)
                                       |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u8")
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER_discriminant"
@@ -12522,7 +12544,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::FREEZE_REF_discriminant"
@@ -12553,7 +12576,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::POP_discriminant"
@@ -12584,7 +12608,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::RET_discriminant"
@@ -12634,7 +12659,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::BR_TRUE_discriminant"
@@ -12755,7 +12781,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::BR_FALSE_discriminant"
@@ -12876,7 +12903,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::BRANCH_discriminant"
@@ -12997,7 +13025,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U8_discriminant"
@@ -13119,7 +13148,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U64_discriminant"
@@ -13240,7 +13270,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U128_discriminant"
@@ -13344,7 +13375,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U8_discriminant"
@@ -13375,7 +13407,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U64_discriminant"
@@ -13406,7 +13439,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U128_discriminant"
@@ -13456,7 +13490,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_CONST_discriminant"
@@ -13561,7 +13596,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LD_TRUE_discriminant"
@@ -13592,7 +13628,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LD_FALSE_discriminant"
@@ -13642,7 +13679,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::COPY_LOC_discriminant"
@@ -13763,7 +13801,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_LOC_discriminant"
@@ -13884,7 +13923,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::ST_LOC_discriminant"
@@ -14005,7 +14045,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC_discriminant"
@@ -14126,7 +14167,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC_discriminant"
@@ -14247,7 +14289,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_discriminant"
@@ -14371,7 +14414,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC_discriminant"
@@ -14495,7 +14539,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_discriminant"
@@ -14619,7 +14664,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC_discriminant"
@@ -14743,7 +14789,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::CALL_discriminant"
@@ -14867,7 +14914,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::PACK_discriminant"
@@ -14991,7 +15039,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::UNPACK_discriminant"
@@ -15115,7 +15164,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::CALL_GENERIC_discriminant"
@@ -15239,7 +15289,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::PACK_GENERIC_discriminant"
@@ -15363,7 +15414,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC_discriminant"
@@ -15468,7 +15520,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::READ_REF_discriminant"
@@ -15499,7 +15552,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::WRITE_REF_discriminant"
@@ -15530,7 +15584,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::ADD_discriminant"
@@ -15561,7 +15616,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::SUB_discriminant"
@@ -15592,7 +15648,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::MUL_discriminant"
@@ -15623,7 +15680,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::MOD_discriminant"
@@ -15654,7 +15712,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::DIV_discriminant"
@@ -15685,7 +15744,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::BIT_OR_discriminant"
@@ -15716,7 +15776,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::BIT_AND_discriminant"
@@ -15747,7 +15808,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::XOR_discriminant"
@@ -15778,7 +15840,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::SHL_discriminant"
@@ -15809,7 +15872,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::SHR_discriminant"
@@ -15840,7 +15904,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::OR_discriminant"
@@ -15871,7 +15936,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::AND_discriminant"
@@ -15902,7 +15968,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::NOT_discriminant"
@@ -15933,7 +16000,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::EQ_discriminant"
@@ -15964,7 +16032,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::NEQ_discriminant"
@@ -15995,7 +16064,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LT_discriminant"
@@ -16026,7 +16096,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::GT_discriminant"
@@ -16057,7 +16128,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LE_discriminant"
@@ -16088,7 +16160,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::GE_discriminant"
@@ -16119,7 +16192,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::ABORT_discriminant"
@@ -16150,7 +16224,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::NOP_discriminant"
@@ -16200,7 +16275,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED_discriminant"
@@ -16324,7 +16400,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED_discriminant"
@@ -16448,7 +16525,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED_discriminant"
@@ -16572,7 +16650,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED_discriminant"
@@ -16696,7 +16775,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED_discriminant"
@@ -16820,7 +16900,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED_discriminant"
@@ -16944,7 +17025,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant"
@@ -17068,7 +17150,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant"
@@ -17192,7 +17275,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED_discriminant"
@@ -17316,7 +17400,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED_discriminant"
@@ -17447,7 +17532,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_PACK_discriminant"
@@ -17658,7 +17744,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_LEN_discriminant"
@@ -17779,7 +17866,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW_discriminant"
@@ -17900,7 +17988,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW_discriminant"
@@ -18021,7 +18110,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK_discriminant"
@@ -18142,7 +18232,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK_discriminant"
@@ -18270,7 +18361,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_UNPACK_discriminant"
@@ -18481,7 +18573,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_SWAP_discriminant"
@@ -18602,7 +18695,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U16_discriminant"
@@ -18723,7 +18817,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U32_discriminant"
@@ -18844,7 +18939,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U256_discriminant"
@@ -18948,7 +19044,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U16_discriminant"
@@ -18979,7 +19076,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U32_discriminant"
@@ -19010,7 +19108,8 @@ Module serializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| binary |) |)
                                 |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U256_discriminant"
@@ -31120,7 +31219,8 @@ Module serializer.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.deref (| M.read (| function_definition |) |),
@@ -31254,7 +31354,8 @@ Module serializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| binary |) |)
                                         |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u8")
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.deref (| M.read (| function_definition |) |),

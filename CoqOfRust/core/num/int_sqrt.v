@@ -49,8 +49,9 @@ Module num.
                             M.SubPointer.get_array_field (| result, n |),
                             Value.Tuple
                               [
-                                M.rust_cast (M.read (| isqrt_n |));
-                                M.rust_cast
+                                M.cast (Ty.path "u8") (M.read (| isqrt_n |));
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.sub (|
                                     M.read (| n |),
                                     M.call_closure (|
@@ -146,7 +147,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.SubPointer.get_array_field (|
                 M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                M.alloc (| M.rust_cast (M.read (| n |)) |)
+                M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
               |),
               0
             |)
@@ -241,10 +242,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i8")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u8", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u8") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -338,10 +340,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i16")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u16", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u16") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -435,10 +438,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i32")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u32", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u32") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -532,10 +536,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i64")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u64", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u64") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -629,10 +634,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i128")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u128", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u128") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -737,7 +743,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -857,7 +863,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_or
                           (BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| r |)),
+                            M.cast (Ty.path "u16") (M.read (| r |)),
                             M.read (|
                               M.get_constant (| "core::num::int_sqrt::u16_stages::QUARTER_BITS" |)
                             |)
@@ -872,7 +878,7 @@ Module num.
                     let~ denominator :=
                       M.alloc (|
                         BinOp.Wrap.shl (|
-                          M.rust_cast (M.read (| s |)),
+                          M.cast (Ty.path "u16") (M.read (| s |)),
                           Value.Integer IntegerKind.I32 1
                         |)
                       |) in
@@ -883,7 +889,8 @@ Module num.
                     let~ s :=
                       M.alloc (|
                         BinOp.Wrap.add (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shl (|
                               M.read (| s |),
                               M.read (|
@@ -1093,7 +1100,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -1202,7 +1209,8 @@ Module num.
                         |) in
                       let~ n :=
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
@@ -1224,7 +1232,7 @@ Module num.
                         M.alloc (|
                           BinOp.bit_or
                             (BinOp.Wrap.shl (|
-                              M.rust_cast (M.read (| r |)),
+                              M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
                                 M.get_constant (| "core::num::int_sqrt::u32_stages::QUARTER_BITS" |)
                               |)
@@ -1239,7 +1247,7 @@ Module num.
                       let~ denominator :=
                         M.alloc (|
                           BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| s |)),
+                            M.cast (Ty.path "u16") (M.read (| s |)),
                             Value.Integer IntegerKind.I32 1
                           |)
                         |) in
@@ -1254,7 +1262,8 @@ Module num.
                       let~ s :=
                         M.alloc (|
                           BinOp.Wrap.add (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
@@ -1462,7 +1471,7 @@ Module num.
                               M.alloc (|
                                 BinOp.bit_or
                                   (BinOp.Wrap.shl (|
-                                    M.rust_cast (M.read (| r |)),
+                                    M.cast (Ty.path "u32") (M.read (| r |)),
                                     M.read (|
                                       M.get_constant (|
                                         "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
@@ -1481,7 +1490,7 @@ Module num.
                             let~ denominator :=
                               M.alloc (|
                                 BinOp.Wrap.shl (|
-                                  M.rust_cast (M.read (| s |)),
+                                  M.cast (Ty.path "u32") (M.read (| s |)),
                                   Value.Integer IntegerKind.I32 1
                                 |)
                               |) in
@@ -1495,7 +1504,8 @@ Module num.
                             let~ s :=
                               M.alloc (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shl (|
                                       M.read (| s |),
                                       M.read (|
@@ -1771,7 +1781,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -1880,7 +1890,8 @@ Module num.
                         |) in
                       let~ n :=
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
@@ -1902,7 +1913,7 @@ Module num.
                         M.alloc (|
                           BinOp.bit_or
                             (BinOp.Wrap.shl (|
-                              M.rust_cast (M.read (| r |)),
+                              M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
                                 M.get_constant (| "core::num::int_sqrt::u64_stages::QUARTER_BITS" |)
                               |)
@@ -1917,7 +1928,7 @@ Module num.
                       let~ denominator :=
                         M.alloc (|
                           BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| s |)),
+                            M.cast (Ty.path "u16") (M.read (| s |)),
                             Value.Integer IntegerKind.I32 1
                           |)
                         |) in
@@ -1932,7 +1943,8 @@ Module num.
                       let~ s :=
                         M.alloc (|
                           BinOp.Wrap.add (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
@@ -2130,7 +2142,8 @@ Module num.
                                 |) in
                               let~ n :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
@@ -2154,7 +2167,7 @@ Module num.
                                 M.alloc (|
                                   BinOp.bit_or
                                     (BinOp.Wrap.shl (|
-                                      M.rust_cast (M.read (| r |)),
+                                      M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
                                         M.get_constant (|
                                           "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
@@ -2173,7 +2186,7 @@ Module num.
                               let~ denominator :=
                                 M.alloc (|
                                   BinOp.Wrap.shl (|
-                                    M.rust_cast (M.read (| s |)),
+                                    M.cast (Ty.path "u32") (M.read (| s |)),
                                     Value.Integer IntegerKind.I32 1
                                   |)
                                 |) in
@@ -2194,7 +2207,8 @@ Module num.
                               let~ s :=
                                 M.alloc (|
                                   BinOp.Wrap.add (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u32")
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
@@ -2412,7 +2426,7 @@ Module num.
                                       M.alloc (|
                                         BinOp.bit_or
                                           (BinOp.Wrap.shl (|
-                                            M.rust_cast (M.read (| r |)),
+                                            M.cast (Ty.path "u64") (M.read (| r |)),
                                             M.read (|
                                               M.get_constant (|
                                                 "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
@@ -2431,7 +2445,7 @@ Module num.
                                     let~ denominator :=
                                       M.alloc (|
                                         BinOp.Wrap.shl (|
-                                          M.rust_cast (M.read (| s |)),
+                                          M.cast (Ty.path "u64") (M.read (| s |)),
                                           Value.Integer IntegerKind.I32 1
                                         |)
                                       |) in
@@ -2445,7 +2459,8 @@ Module num.
                                     let~ s :=
                                       M.alloc (|
                                         BinOp.Wrap.add (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u64")
                                             (BinOp.Wrap.shl (|
                                               M.read (| s |),
                                               M.read (|
@@ -2783,7 +2798,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -2892,7 +2907,8 @@ Module num.
                         |) in
                       let~ n :=
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
@@ -2914,7 +2930,7 @@ Module num.
                         M.alloc (|
                           BinOp.bit_or
                             (BinOp.Wrap.shl (|
-                              M.rust_cast (M.read (| r |)),
+                              M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
                                 M.get_constant (|
                                   "core::num::int_sqrt::u128_stages::QUARTER_BITS"
@@ -2933,7 +2949,7 @@ Module num.
                       let~ denominator :=
                         M.alloc (|
                           BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| s |)),
+                            M.cast (Ty.path "u16") (M.read (| s |)),
                             Value.Integer IntegerKind.I32 1
                           |)
                         |) in
@@ -2948,7 +2964,8 @@ Module num.
                       let~ s :=
                         M.alloc (|
                           BinOp.Wrap.add (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
@@ -3146,7 +3163,8 @@ Module num.
                                 |) in
                               let~ n :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
@@ -3170,7 +3188,7 @@ Module num.
                                 M.alloc (|
                                   BinOp.bit_or
                                     (BinOp.Wrap.shl (|
-                                      M.rust_cast (M.read (| r |)),
+                                      M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
                                         M.get_constant (|
                                           "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
@@ -3189,7 +3207,7 @@ Module num.
                               let~ denominator :=
                                 M.alloc (|
                                   BinOp.Wrap.shl (|
-                                    M.rust_cast (M.read (| s |)),
+                                    M.cast (Ty.path "u32") (M.read (| s |)),
                                     Value.Integer IntegerKind.I32 1
                                   |)
                                 |) in
@@ -3210,7 +3228,8 @@ Module num.
                               let~ s :=
                                 M.alloc (|
                                   BinOp.Wrap.add (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u32")
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
@@ -3418,7 +3437,8 @@ Module num.
                                         |) in
                                       let~ n :=
                                         M.alloc (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u64")
                                             (BinOp.Wrap.shr (|
                                               M.read (| n |),
                                               M.read (|
@@ -3442,7 +3462,7 @@ Module num.
                                         M.alloc (|
                                           BinOp.bit_or
                                             (BinOp.Wrap.shl (|
-                                              M.rust_cast (M.read (| r |)),
+                                              M.cast (Ty.path "u64") (M.read (| r |)),
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
@@ -3461,7 +3481,7 @@ Module num.
                                       let~ denominator :=
                                         M.alloc (|
                                           BinOp.Wrap.shl (|
-                                            M.rust_cast (M.read (| s |)),
+                                            M.cast (Ty.path "u64") (M.read (| s |)),
                                             Value.Integer IntegerKind.I32 1
                                           |)
                                         |) in
@@ -3482,7 +3502,8 @@ Module num.
                                       let~ s :=
                                         M.alloc (|
                                           BinOp.Wrap.add (|
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "u64")
                                               (BinOp.Wrap.shl (|
                                                 M.read (| s |),
                                                 M.read (|
@@ -3710,7 +3731,7 @@ Module num.
                                               M.alloc (|
                                                 BinOp.bit_or
                                                   (BinOp.Wrap.shl (|
-                                                    M.rust_cast (M.read (| r |)),
+                                                    M.cast (Ty.path "u128") (M.read (| r |)),
                                                     M.read (|
                                                       M.get_constant (|
                                                         "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
@@ -3729,7 +3750,7 @@ Module num.
                                             let~ denominator :=
                                               M.alloc (|
                                                 BinOp.Wrap.shl (|
-                                                  M.rust_cast (M.read (| s |)),
+                                                  M.cast (Ty.path "u128") (M.read (| s |)),
                                                   Value.Integer IntegerKind.I32 1
                                                 |)
                                               |) in
@@ -3743,7 +3764,8 @@ Module num.
                                             let~ s :=
                                               M.alloc (|
                                                 BinOp.Wrap.add (|
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "u128")
                                                     (BinOp.Wrap.shl (|
                                                       M.read (| s |),
                                                       M.read (|
@@ -4110,15 +4132,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u16")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u16")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u8", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>
@@ -4232,15 +4257,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u32")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u32")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u16", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>
@@ -4354,15 +4382,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u32", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>
@@ -4476,15 +4507,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u128")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u128")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u64", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>

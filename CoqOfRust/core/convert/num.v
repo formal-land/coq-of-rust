@@ -1652,7 +1652,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u8") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1677,7 +1677,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1702,7 +1702,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1727,7 +1727,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1752,7 +1752,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1777,7 +1777,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1802,7 +1802,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i8") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1827,7 +1827,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1852,7 +1852,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1877,7 +1877,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1902,7 +1902,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1927,7 +1927,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1952,7 +1952,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1977,7 +1977,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2002,7 +2002,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2027,7 +2027,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2052,7 +2052,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2077,7 +2077,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2102,7 +2102,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2127,7 +2127,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2152,7 +2152,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2177,7 +2177,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2202,7 +2202,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2227,7 +2227,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2252,7 +2252,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2277,7 +2277,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2302,7 +2302,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2327,7 +2327,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2352,7 +2352,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2377,7 +2377,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2402,7 +2402,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2427,7 +2427,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2452,7 +2452,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2477,7 +2477,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2502,7 +2502,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2527,7 +2527,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2552,7 +2552,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2577,7 +2577,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2602,7 +2602,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2627,7 +2627,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2652,7 +2652,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2677,7 +2677,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2702,7 +2702,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2727,7 +2727,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2752,7 +2752,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2777,7 +2777,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2802,7 +2802,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2827,7 +2827,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2852,7 +2852,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2877,7 +2877,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2902,7 +2902,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2927,7 +2927,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2952,7 +2952,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2977,7 +2977,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3002,7 +3002,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3027,7 +3027,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3052,7 +3052,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3077,7 +3077,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3102,7 +3102,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3127,7 +3127,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3152,7 +3152,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3177,7 +3177,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3202,7 +3202,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.rust_cast (M.read (| small |)))))
+            M.cast (Ty.path "f32") (M.cast (Ty.path "u8") (M.read (| small |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3227,7 +3227,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.rust_cast (M.read (| small |)))))
+            M.cast (Ty.path "f64") (M.cast (Ty.path "u8") (M.read (| small |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3270,7 +3270,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u16")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3285,7 +3287,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3333,7 +3335,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3348,7 +3352,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3396,7 +3400,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3411,7 +3417,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3459,7 +3465,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3474,7 +3482,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3522,7 +3530,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3537,7 +3547,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3585,7 +3595,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3600,7 +3612,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3648,7 +3660,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3663,7 +3677,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3711,7 +3725,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3726,7 +3742,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3774,7 +3790,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3789,7 +3807,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3837,7 +3855,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3852,7 +3872,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3893,9 +3913,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3921,7 +3945,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3962,9 +3986,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3990,7 +4018,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4031,9 +4059,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4059,7 +4091,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4100,9 +4132,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4128,7 +4164,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4169,9 +4205,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4197,7 +4237,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4238,9 +4278,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4266,7 +4310,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4307,9 +4351,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4335,7 +4383,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4376,9 +4424,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4404,7 +4456,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4445,9 +4497,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4473,7 +4529,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4514,9 +4570,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4542,7 +4602,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4590,7 +4650,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u8")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4605,7 +4667,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4653,7 +4715,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u16")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4668,7 +4732,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4716,7 +4780,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u16")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4731,7 +4797,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4779,7 +4845,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4794,7 +4862,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4842,7 +4910,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4857,7 +4927,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4905,7 +4975,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4920,7 +4992,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4968,7 +5040,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4983,7 +5057,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5031,7 +5105,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5046,7 +5122,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5094,7 +5170,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5109,7 +5187,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5157,7 +5235,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5172,7 +5252,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5220,7 +5300,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5235,7 +5317,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5283,7 +5365,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5298,7 +5382,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5346,7 +5430,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5361,7 +5447,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5409,7 +5495,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5424,7 +5512,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5472,7 +5560,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5487,7 +5577,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i128") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5539,7 +5629,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5599,7 +5689,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5659,7 +5749,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5719,7 +5809,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5779,7 +5869,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5828,9 +5918,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -5856,7 +5950,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5908,7 +6002,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5968,7 +6062,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6028,7 +6122,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6088,7 +6182,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6137,9 +6231,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6165,7 +6263,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6206,9 +6304,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6234,7 +6336,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6286,7 +6388,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6346,7 +6448,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6406,7 +6508,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6455,9 +6557,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6483,7 +6589,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6524,9 +6630,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6552,7 +6662,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6593,9 +6703,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6621,7 +6735,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6673,7 +6787,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6733,7 +6847,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6782,9 +6896,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6810,7 +6928,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6851,9 +6969,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6879,7 +7001,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6920,9 +7042,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6948,7 +7074,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6989,9 +7115,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -7017,7 +7147,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -7069,7 +7199,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -7125,7 +7255,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "usize")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7140,7 +7272,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -7192,7 +7324,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -7249,7 +7381,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7268,7 +7402,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7316,7 +7450,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7335,7 +7471,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7383,7 +7519,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7402,7 +7540,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7435,7 +7573,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "u64") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7464,7 +7604,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "u128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7508,7 +7650,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7527,7 +7671,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7575,7 +7719,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7594,7 +7740,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7642,7 +7788,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7661,7 +7809,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7709,7 +7857,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7728,7 +7878,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7761,7 +7911,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "i128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7798,9 +7950,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7830,7 +7986,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7871,9 +8027,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7903,7 +8063,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7944,9 +8104,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7976,7 +8140,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8029,7 +8193,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8093,7 +8257,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8145,9 +8309,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8177,7 +8345,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8218,9 +8386,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8250,7 +8422,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8291,9 +8463,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8323,7 +8499,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8356,7 +8532,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "i64") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8385,7 +8563,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "i128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8414,7 +8594,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "usize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8443,7 +8625,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "usize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8487,7 +8671,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -8506,7 +8692,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8559,7 +8745,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8623,7 +8809,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8687,7 +8873,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8751,7 +8937,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8803,9 +8989,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8835,7 +9025,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8868,7 +9058,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8897,7 +9089,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8941,7 +9135,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -8960,7 +9156,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -9008,7 +9204,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -9027,7 +9225,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -9060,7 +9258,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -9089,7 +9289,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -9126,9 +9328,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -9158,7 +9364,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)

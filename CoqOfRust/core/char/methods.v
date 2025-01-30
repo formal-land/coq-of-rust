@@ -179,7 +179,10 @@ Module char.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (Value.UnicodeChar 48) ]
+                        [
+                          M.cast (Ty.path "u32") (M.read (| self |));
+                          M.cast (Ty.path "u32") (Value.UnicodeChar 48)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -315,9 +318,9 @@ Module char.
                                       |),
                                       [
                                         BinOp.bit_or
-                                          (M.rust_cast (M.read (| self |)))
+                                          (M.cast (Ty.path "u32") (M.read (| self |)))
                                           (Value.Integer IntegerKind.U32 32);
-                                        M.rust_cast (Value.UnicodeChar 97)
+                                        M.cast (Ty.path "u32") (Value.UnicodeChar 97)
                                       ]
                                     |);
                                     Value.Integer IntegerKind.U32 10
@@ -836,7 +839,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::char::methods::len_utf8", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -855,7 +858,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::char::methods::len_utf16", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -900,7 +903,7 @@ Module char.
                                     []
                                   |),
                                   [
-                                    M.rust_cast (M.read (| self |));
+                                    M.cast (Ty.path "u32") (M.read (| self |));
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| dst |) |)
@@ -942,7 +945,7 @@ Module char.
                     M.call_closure (|
                       M.get_function (| "core::char::methods::encode_utf16_raw", [], [] |),
                       [
-                        M.rust_cast (M.read (| self |));
+                        M.cast (Ty.path "u32") (M.read (| self |));
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |)
                       ]
                     |)
@@ -1359,7 +1362,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.le (|
-              M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)),
+              M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |)),
               Value.Integer IntegerKind.U32 127
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1408,7 +1411,8 @@ Module char.
                                 [],
                                 []
                               |),
-                              [ M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) ]
+                              [ M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))
+                              ]
                             |)
                           ]
                       |)));
@@ -1458,7 +1462,8 @@ Module char.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "char")
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "u8",
@@ -1470,7 +1475,9 @@ Module char.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))
+                                  M.cast
+                                    (Ty.path "u8")
+                                    (M.read (| M.deref (| M.read (| self |) |) |))
                                 |)
                               |)
                             ]
@@ -1521,7 +1528,8 @@ Module char.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "char")
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "u8",
@@ -1533,7 +1541,9 @@ Module char.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))
+                                  M.cast
+                                    (Ty.path "u8")
+                                    (M.read (| M.deref (| M.read (| self |) |) |))
                                 |)
                               |)
                             ]
@@ -2254,7 +2264,7 @@ Module char.
                           let~ _ :=
                             M.write (|
                               M.deref (| M.read (| a |) |),
-                              M.rust_cast (M.read (| code |))
+                              M.cast (Ty.path "u8") (M.read (| code |))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -2276,7 +2286,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| a |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (BinOp.Wrap.shr (|
                                       M.read (| code |),
@@ -2289,7 +2300,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| b |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (M.read (| code |))
                                     (Value.Integer IntegerKind.U32 63)))
@@ -2317,7 +2329,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| a |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (BinOp.Wrap.shr (|
                                       M.read (| code |),
@@ -2330,7 +2343,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| b |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (BinOp.Wrap.shr (|
                                       M.read (| code |),
@@ -2343,7 +2357,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| c |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (M.read (| code |))
                                     (Value.Integer IntegerKind.U32 63)))
@@ -2373,7 +2388,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| a |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (BinOp.Wrap.shr (|
                                       M.read (| code |),
@@ -2386,7 +2402,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| b |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (BinOp.Wrap.shr (|
                                       M.read (| code |),
@@ -2399,7 +2416,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| c |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (BinOp.Wrap.shr (|
                                       M.read (| code |),
@@ -2412,7 +2430,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| d |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u8")
                                   (BinOp.bit_and
                                     (M.read (| code |))
                                     (Value.Integer IntegerKind.U32 63)))
@@ -2820,7 +2839,7 @@ Module char.
                           let~ _ :=
                             M.write (|
                               M.deref (| M.read (| a |) |),
-                              M.rust_cast (M.read (| code |))
+                              M.cast (Ty.path "u16") (M.read (| code |))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -2851,7 +2870,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| a |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u16")
                                   (BinOp.Wrap.shr (|
                                     M.read (| code |),
                                     Value.Integer IntegerKind.I32 10
@@ -2862,7 +2882,8 @@ Module char.
                             M.write (|
                               M.deref (| M.read (| b |) |),
                               BinOp.bit_or
-                                (M.rust_cast
+                                (M.cast
+                                  (Ty.path "u16")
                                   (BinOp.bit_and
                                     (M.read (| code |))
                                     (Value.Integer IntegerKind.U32 1023)))

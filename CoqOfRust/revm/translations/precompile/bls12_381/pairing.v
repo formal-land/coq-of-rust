@@ -334,7 +334,7 @@ Module bls12_381.
                             "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE"
                           |)
                         |),
-                        M.rust_cast (M.read (| k |))
+                        M.cast (Ty.path "u64") (M.read (| k |))
                       |),
                       M.read (|
                         M.get_constant (|

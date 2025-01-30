@@ -4551,7 +4551,8 @@ Module fmt.
                                                                                   M.read (|
                                                                                     UnsupportedLiteral
                                                                                   |),
-                                                                                  M.rust_cast
+                                                                                  M.cast
+                                                                                    (Ty.path "u8")
                                                                                     (BinOp.Wrap.rem (|
                                                                                       M.read (|
                                                                                         v
@@ -5184,7 +5185,7 @@ Module fmt.
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 0)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 0)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -5214,7 +5215,7 @@ Module fmt.
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 1)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 1)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -5244,7 +5245,7 @@ Module fmt.
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 2)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 2)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -5274,7 +5275,7 @@ Module fmt.
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 3)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 3)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -5305,7 +5306,7 @@ Module fmt.
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 4)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 4)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -5336,7 +5337,7 @@ Module fmt.
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 5)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 5)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -12062,7 +12063,7 @@ Module fmt.
                           (M.read (| β |))
                           (BinOp.Wrap.shl (|
                             Value.Integer IntegerKind.U32 1,
-                            M.rust_cast (Value.Integer IntegerKind.Isize 3)
+                            M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 3)
                           |))
                       |) in
                     M.match_operator (|
@@ -12108,7 +12109,8 @@ Module fmt.
                                   "core::option::Option::Some"
                                   [
                                     BinOp.Wrap.add (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (BinOp.Wrap.div (|
                                           M.read (| M.get_constant (| "core::num::BITS" |) |),
                                           Value.Integer IntegerKind.U32 4
@@ -12137,7 +12139,7 @@ Module fmt.
                 (M.read (| β |))
                 (BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U32 1,
-                  M.rust_cast (Value.Integer IntegerKind.Isize 2)
+                  M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 2)
                 |))
             |) in
           let~ ret :=
@@ -12218,7 +12220,8 @@ Module fmt.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.apply (Ty.path "*const") [] [ T ])
                         (* MutToConstPointer *)
                         (M.pointer_coercion (M.read (| M.deref (| M.read (| self |) |) |)))
                     |)

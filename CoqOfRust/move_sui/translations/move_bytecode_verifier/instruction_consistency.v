@@ -322,7 +322,11 @@ Module instruction_consistency.
                                                               [
                                                                 Value.StructTuple
                                                                   "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                                  [ M.rust_cast (M.read (| idx |)) ]
+                                                                  [
+                                                                    M.cast
+                                                                      (Ty.path "u16")
+                                                                      (M.read (| idx |))
+                                                                  ]
                                                               ])
                                                         ]
                                                     |) in
@@ -3441,7 +3445,8 @@ Module instruction_consistency.
                                                                                 M.read (| num |)
                                                                               |)
                                                                             |),
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u64")
                                                                               (M.read (|
                                                                                 M.get_constant (|
                                                                                   "core::num::MAX"
@@ -3512,7 +3517,9 @@ Module instruction_consistency.
                                                                                             |)
                                                                                           ]
                                                                                         |);
-                                                                                        M.rust_cast
+                                                                                        M.cast
+                                                                                          (Ty.path
+                                                                                            "u16")
                                                                                           (M.read (|
                                                                                             offset
                                                                                           |))
@@ -4390,7 +4397,7 @@ Module instruction_consistency.
                                               |)
                                             ]
                                           |);
-                                          M.rust_cast (M.read (| offset |))
+                                          M.cast (Ty.path "u16") (M.read (| offset |))
                                         ]
                                       |)
                                     ]
@@ -4546,7 +4553,7 @@ Module instruction_consistency.
                                               |)
                                             ]
                                           |);
-                                          M.rust_cast (M.read (| offset |))
+                                          M.cast (Ty.path "u16") (M.read (| offset |))
                                         ]
                                       |)
                                     ]

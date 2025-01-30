@@ -3939,7 +3939,7 @@ Module str.
                         M.use
                           (M.alloc (|
                             BinOp.lt (|
-                              M.rust_cast (M.read (| self |)),
+                              M.cast (Ty.path "u32") (M.read (| self |)),
                               Value.Integer IntegerKind.U32 128
                             |)
                           |)) in
@@ -3972,7 +3972,7 @@ Module str.
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| M.rust_cast (M.read (| self |)) |)
+                                  M.alloc (| M.cast (Ty.path "u8") (M.read (| self |)) |)
                                 |)
                               |)
                             |)
@@ -13395,7 +13395,9 @@ Module str.
                       "byteset"
                     |)
                   |),
-                  M.rust_cast (BinOp.bit_and (M.read (| byte |)) (Value.Integer IntegerKind.U8 63))
+                  M.cast
+                    (Ty.path "usize")
+                    (BinOp.bit_and (M.read (| byte |)) (Value.Integer IntegerKind.U8 63))
                 |))
                 (Value.Integer IntegerKind.U64 1),
               Value.Integer IntegerKind.U64 0
@@ -17132,7 +17134,8 @@ Module str.
                                                                           BinOp.Wrap.add (|
                                                                             BinOp.Wrap.add (|
                                                                               M.read (| idx |),
-                                                                              M.rust_cast
+                                                                              M.cast
+                                                                                (Ty.path "usize")
                                                                                 (M.read (|
                                                                                   trailing
                                                                                 |))
@@ -17582,7 +17585,8 @@ Module str.
                                           |) in
                                         let~ mask :=
                                           M.alloc (|
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "u16")
                                               (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
@@ -18819,7 +18823,14 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.rust_cast (M.read (| px |)) ]
+                                                    [
+                                                      M.cast
+                                                        (Ty.apply
+                                                          (Ty.path "*const")
+                                                          []
+                                                          [ Ty.path "u32" ])
+                                                        (M.read (| px |))
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ vy :=
@@ -18834,7 +18845,14 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.rust_cast (M.read (| py |)) ]
+                                                    [
+                                                      M.cast
+                                                        (Ty.apply
+                                                          (Ty.path "*const")
+                                                          []
+                                                          [ Ty.path "u32" ])
+                                                        (M.read (| py |))
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ _ :=
@@ -18934,7 +18952,11 @@ Module str.
                                         [],
                                         []
                                       |),
-                                      [ M.rust_cast (M.read (| pxend |)) ]
+                                      [
+                                        M.cast
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ])
+                                          (M.read (| pxend |))
+                                      ]
                                     |)
                                   |) in
                                 let~ vy :=
@@ -18946,7 +18968,11 @@ Module str.
                                         [],
                                         []
                                       |),
-                                      [ M.rust_cast (M.read (| pyend |)) ]
+                                      [
+                                        M.cast
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ])
+                                          (M.read (| pyend |))
+                                      ]
                                     |)
                                   |) in
                                 M.alloc (| BinOp.eq (| M.read (| vx |), M.read (| vy |) |) |)))

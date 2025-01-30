@@ -121,7 +121,8 @@ Module identifier.
                                                   []
                                                 |),
                                                 [
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "char")
                                                     (M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| b |) |),
@@ -1959,7 +1960,11 @@ Module identifier.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.path "move_core_types::identifier::IdentStr" ])
                         (M.read (|
                           M.use
                             (M.alloc (|
@@ -2019,7 +2024,11 @@ Module identifier.
                           M.borrow (|
                             Pointer.Kind.MutRef,
                             M.deref (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.path "move_core_types::identifier::IdentStr" ])
                                 (M.read (|
                                   M.use
                                     (M.alloc (|
@@ -2421,7 +2430,8 @@ Module identifier.
               []
             |),
             [
-              M.rust_cast
+              M.cast
+                (Ty.path "u64")
                 (M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "move_core_types::identifier::IdentStr",

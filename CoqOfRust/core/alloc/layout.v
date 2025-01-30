@@ -533,7 +533,7 @@ Module alloc.
               M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
                 BinOp.Wrap.add (|
-                  M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::MAX" |) |)),
                   Value.Integer IntegerKind.Usize 1
                 |);
                 M.call_closure (|

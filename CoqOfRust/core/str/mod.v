@@ -1408,7 +1408,11 @@ Module str.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.deref (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                             (M.read (|
                               M.use
                                 (M.alloc (|
@@ -1441,7 +1445,8 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
             (M.read (|
               M.use
                 (M.alloc (|
@@ -1463,7 +1468,8 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
             (M.read (|
               M.use
                 (M.alloc (|

@@ -204,7 +204,8 @@ Module blake2.
                 |) in
               let~ rounds :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                       [
@@ -284,7 +285,7 @@ Module blake2.
               let~ gas_used :=
                 M.alloc (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast (M.read (| rounds |)),
+                    M.cast (Ty.path "u64") (M.read (| rounds |)),
                     M.read (| M.get_constant (| "revm_precompile::blake2::F_ROUND" |) |)
                   |)
                 |) in

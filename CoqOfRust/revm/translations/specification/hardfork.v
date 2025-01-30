@@ -1086,7 +1086,10 @@ Module hardfork.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.ge (| M.rust_cast (M.read (| self |)), M.rust_cast (M.read (| other |)) |)))
+          BinOp.ge (|
+            M.cast (Ty.path "u8") (M.read (| self |)),
+            M.cast (Ty.path "u8") (M.read (| other |))
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

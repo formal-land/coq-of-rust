@@ -475,7 +475,8 @@ Module any.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.apply (Ty.path "*const") [] [ T ])
                         (M.read (|
                           M.use
                             (M.alloc (|
@@ -582,7 +583,8 @@ Module any.
                           M.borrow (|
                             Pointer.Kind.MutRef,
                             M.deref (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.apply (Ty.path "*mut") [] [ T ])
                                 (M.read (|
                                   M.use
                                     (M.alloc (|
@@ -1185,9 +1187,11 @@ Module any.
               |) in
             let~ t1 :=
               M.alloc (|
-                M.rust_cast (BinOp.Wrap.shr (| M.read (| t |), Value.Integer IntegerKind.I32 64 |))
+                M.cast
+                  (Ty.path "u64")
+                  (BinOp.Wrap.shr (| M.read (| t |), Value.Integer IntegerKind.I32 64 |))
               |) in
-            let~ t2 := M.alloc (| M.rust_cast (M.read (| t |)) |) in
+            let~ t2 := M.alloc (| M.cast (Ty.path "u64") (M.read (| t |)) |) in
             M.alloc (|
               Value.StructRecord
                 "core::any::TypeId"

@@ -4366,7 +4366,7 @@ Module vec.
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
-                    M.rust_cast (M.read (| other |));
+                    M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| other |));
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
@@ -5196,7 +5196,12 @@ Module vec.
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         |),
                         [
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ])
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
@@ -7595,7 +7600,8 @@ Module vec.
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
                                 ]
                               |);
-                              M.rust_cast
+                              M.cast
+                                (Ty.apply (Ty.path "*mut") [] [ T ])
                                 (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -8395,7 +8401,8 @@ Module vec.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*const") [] [ T ])
                             (* MutToConstPointer *)
                             (M.pointer_coercion
                               (M.call_closure (|
@@ -10065,7 +10072,11 @@ Module vec.
                         [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                       |),
                       [
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply
+                            (Ty.path "*const")
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],

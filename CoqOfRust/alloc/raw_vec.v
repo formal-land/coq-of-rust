@@ -729,7 +729,11 @@ Module raw_vec.
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
@@ -5388,7 +5392,9 @@ Module raw_vec.
                           ltac:(M.monadic
                             (BinOp.gt (|
                               M.read (| alloc_size |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "usize")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)))
                         |)
                       |)) in

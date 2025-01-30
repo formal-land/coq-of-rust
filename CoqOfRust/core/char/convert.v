@@ -126,7 +126,7 @@ Module char.
         | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
-            M.rust_cast (M.read (| c |))))
+            M.cast (Ty.path "u32") (M.read (| c |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -153,7 +153,7 @@ Module char.
         | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
-            M.rust_cast (M.read (| c |))))
+            M.cast (Ty.path "u64") (M.read (| c |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -180,7 +180,7 @@ Module char.
         | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
-            M.rust_cast (M.read (| c |))))
+            M.cast (Ty.path "u128") (M.read (| c |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -383,7 +383,7 @@ Module char.
         | [], [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
-            M.rust_cast (M.read (| i |))))
+            M.cast (Ty.path "char") (M.read (| i |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1466,7 +1466,7 @@ Module char.
                     (let γ :=
                       M.use (M.alloc (| BinOp.lt (| M.read (| num |), M.read (| radix |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
+                    let~ num := M.alloc (| M.cast (Ty.path "u8") (M.read (| num |)) |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1483,7 +1483,8 @@ Module char.
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "char")
                                     (BinOp.Wrap.add (|
                                       M.read (| UnsupportedLiteral |),
                                       M.read (| num |)
@@ -1496,7 +1497,8 @@ Module char.
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "char")
                                     (BinOp.Wrap.sub (|
                                       BinOp.Wrap.add (|
                                         M.read (| UnsupportedLiteral |),

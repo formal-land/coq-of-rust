@@ -1941,7 +1941,10 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.add (| M.read (| β |), M.rust_cast (M.read (| towards_left |)) |)
+                      BinOp.Wrap.add (|
+                        M.read (| β |),
+                        M.cast (Ty.path "usize") (M.read (| towards_left |))
+                      |)
                     |) in
                   let~ _ :=
                     M.write (|

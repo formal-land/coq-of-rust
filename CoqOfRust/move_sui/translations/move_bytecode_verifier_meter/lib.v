@@ -409,7 +409,7 @@ Module Meter.
                     M.read (| scope |);
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "u128", "saturating_mul", [], [] |),
-                      [ M.read (| units_per_item |); M.rust_cast (M.read (| items |)) ]
+                      [ M.read (| units_per_item |); M.cast (Ty.path "u128") (M.read (| items |)) ]
                     |)
                   ]
                 |)
@@ -638,7 +638,8 @@ Module Meter.
                                         let~ _ :=
                                           M.write (|
                                             units_per_item,
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "u128")
                                               (M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::ops::arith::Mul",
@@ -651,7 +652,9 @@ Module Meter.
                                                 |),
                                                 [
                                                   M.read (| growth_factor |);
-                                                  M.rust_cast (M.read (| units_per_item |))
+                                                  M.cast
+                                                    (Ty.path "f32")
+                                                    (M.read (| units_per_item |))
                                                 ]
                                               |))
                                           |) in

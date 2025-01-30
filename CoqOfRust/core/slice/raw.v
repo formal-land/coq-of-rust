@@ -54,7 +54,9 @@ Module slice.
                               []
                             |),
                             [
-                              M.rust_cast (M.read (| data |));
+                              M.cast
+                                (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                (M.read (| data |));
                               M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [], [ T ] |),
                                 []
@@ -158,7 +160,9 @@ Module slice.
                                       []
                                     |),
                                     [
-                                      M.rust_cast (M.read (| data |));
+                                      M.cast
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                        (M.read (| data |));
                                       M.call_closure (|
                                         M.get_function (| "core::mem::size_of", [], [ T ] |),
                                         []

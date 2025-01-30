@@ -28,7 +28,8 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.sub (|
                     Value.Integer IntegerKind.I64 64,
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i64")
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                         [ BinOp.Wrap.sub (| M.read (| mant |), Value.Integer IntegerKind.U64 1 |) ]
@@ -36,10 +37,14 @@ Module num.
                   |)
                 |) in
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i16")
                   (BinOp.Wrap.shr (|
                     BinOp.Wrap.mul (|
-                      BinOp.Wrap.add (| M.read (| nbits |), M.rust_cast (M.read (| exp |)) |),
+                      BinOp.Wrap.add (|
+                        M.read (| nbits |),
+                        M.cast (Ty.path "i64") (M.read (| exp |))
+                      |),
                       Value.Integer IntegerKind.I64 1292913986
                     |),
                     Value.Integer IntegerKind.I32 32

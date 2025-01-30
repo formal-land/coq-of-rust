@@ -650,7 +650,9 @@ Module stack_usage_verifier.
                                                                         M.read (| code |)
                                                                       |)
                                                                     |);
-                                                                    M.rust_cast (M.read (| i |))
+                                                                    M.cast
+                                                                      (Ty.path "usize")
+                                                                      (M.read (| i |))
                                                                   ]
                                                                 |)
                                                               |)
@@ -799,7 +801,8 @@ Module stack_usage_verifier.
                                                                             M.read (|
                                                                               overall_push
                                                                             |),
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u64")
                                                                               (M.read (|
                                                                                 max_push_size
                                                                               |))
@@ -1162,7 +1165,8 @@ Module stack_usage_verifier.
                                                               (M.alloc (|
                                                                 BinOp.gt (|
                                                                   M.read (| stack_size_increment |),
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "u64")
                                                                     (M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.deref (|
@@ -2367,7 +2371,7 @@ Module stack_usage_verifier.
                         M.alloc (|
                           Value.Tuple
                             [
-                              M.rust_cast (M.read (| return_count |));
+                              M.cast (Ty.path "u64") (M.read (| return_count |));
                               Value.Integer IntegerKind.U64 0
                             ]
                         |)));
@@ -2409,7 +2413,8 @@ Module stack_usage_verifier.
                           |) in
                         let~ arg_count :=
                           M.alloc (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u64")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
@@ -2457,7 +2462,8 @@ Module stack_usage_verifier.
                           |) in
                         let~ return_count :=
                           M.alloc (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u64")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
@@ -2576,7 +2582,8 @@ Module stack_usage_verifier.
                           |) in
                         let~ arg_count :=
                           M.alloc (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u64")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
@@ -2624,7 +2631,8 @@ Module stack_usage_verifier.
                           |) in
                         let~ return_count :=
                           M.alloc (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u64")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
@@ -2771,7 +2779,7 @@ Module stack_usage_verifier.
                         M.alloc (|
                           Value.Tuple
                             [
-                              M.rust_cast (M.read (| field_count |));
+                              M.cast (Ty.path "u64") (M.read (| field_count |));
                               Value.Integer IntegerKind.U64 1
                             ]
                         |)));
@@ -2905,7 +2913,7 @@ Module stack_usage_verifier.
                         M.alloc (|
                           Value.Tuple
                             [
-                              M.rust_cast (M.read (| field_count |));
+                              M.cast (Ty.path "u64") (M.read (| field_count |));
                               Value.Integer IntegerKind.U64 1
                             ]
                         |)));
@@ -3008,7 +3016,7 @@ Module stack_usage_verifier.
                           Value.Tuple
                             [
                               Value.Integer IntegerKind.U64 1;
-                              M.rust_cast (M.read (| field_count |))
+                              M.cast (Ty.path "u64") (M.read (| field_count |))
                             ]
                         |)));
                     fun γ =>
@@ -3142,7 +3150,7 @@ Module stack_usage_verifier.
                           Value.Tuple
                             [
                               Value.Integer IntegerKind.U64 1;
-                              M.rust_cast (M.read (| field_count |))
+                              M.cast (Ty.path "u64") (M.read (| field_count |))
                             ]
                         |)))
                   ]

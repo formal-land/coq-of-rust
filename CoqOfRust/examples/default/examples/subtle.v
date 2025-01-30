@@ -1136,14 +1136,16 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (| M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |)) |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                  M.alloc (|
+                    M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| other |) |) |))
+                  |)
                 |)
               |)
             |)
@@ -1225,7 +1227,8 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                 []
               |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (BinOp.bit_xor
                     (M.read (| y |))
                     (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 1 |)) |)))
@@ -1264,14 +1267,16 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (| M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |)) |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                  M.alloc (|
+                    M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| other |) |) |))
+                  |)
                 |)
               |)
             |)
@@ -1353,7 +1358,8 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                 []
               |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (BinOp.bit_xor
                     (M.read (| y |))
                     (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 1 |)) |)))
@@ -1392,14 +1398,16 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (| M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |)) |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                  M.alloc (|
+                    M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| other |) |) |))
+                  |)
                 |)
               |)
             |)
@@ -1481,7 +1489,8 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                 []
               |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (BinOp.bit_xor
                     (M.read (| y |))
                     (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 1 |)) |)))
@@ -1520,14 +1529,16 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (| M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |)) |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                  M.alloc (|
+                    M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| other |) |) |))
+                  |)
                 |)
               |)
             |)
@@ -1615,7 +1626,8 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 []
               |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (BinOp.bit_xor
                     (M.read (| y |))
                     (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 1 |)) |)))
@@ -1662,14 +1674,16 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (| M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |)) |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                  M.alloc (|
+                    M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| other |) |) |))
+                  |)
                 |)
               |)
             |)
@@ -1813,9 +1827,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u8")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i8")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -1874,9 +1890,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u8")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i8")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -1920,9 +1938,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u8")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i8")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -1985,7 +2005,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i8")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2053,7 +2074,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i8")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2106,7 +2128,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i8")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2172,9 +2195,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u16")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i16")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2233,9 +2258,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u16")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i16")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2279,9 +2306,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u16")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i16")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2344,7 +2373,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i16")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2412,7 +2442,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i16")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2465,7 +2496,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i16")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2531,9 +2563,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u32")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i32")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2592,9 +2626,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u32")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i32")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2638,9 +2674,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u32")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i32")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2703,7 +2741,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i32")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2771,7 +2810,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i32")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2824,7 +2864,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i32")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -2890,9 +2931,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u64")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i64")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2951,9 +2994,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u64")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i64")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -2997,9 +3042,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         M.read (|
           let~ mask :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u64")
                 (UnOp.neg (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "i64")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, choice |) ]
@@ -3062,7 +3109,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i64")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -3130,7 +3178,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i64")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -3183,7 +3232,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.neg (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i64")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "subtle::Choice",
@@ -5152,7 +5202,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 [],
                 []
               |),
-              [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U16 1)) ]
+              [
+                M.cast
+                  (Ty.path "u8")
+                  (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U16 1))
+              ]
             |)
           |)
         |)))
@@ -5355,7 +5409,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 [],
                 []
               |),
-              [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U32 1)) ]
+              [
+                M.cast
+                  (Ty.path "u8")
+                  (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U32 1))
+              ]
             |)
           |)
         |)))
@@ -5558,7 +5616,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 [],
                 []
               |),
-              [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U64 1)) ]
+              [
+                M.cast
+                  (Ty.path "u8")
+                  (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U64 1))
+              ]
             |)
           |)
         |)))

@@ -160,7 +160,8 @@ Module num.
                                     ltac:(M.monadic
                                       (BinOp.lt (|
                                         M.read (| q |),
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "i64")
                                           (M.read (|
                                             M.get_constant (|
                                               "core::num::dec2flt::float::RawFloat::SMALLEST_POWER_OF_TEN"
@@ -186,7 +187,8 @@ Module num.
                                         (M.alloc (|
                                           BinOp.gt (|
                                             M.read (| q |),
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "i64")
                                               (M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::LARGEST_POWER_OF_TEN"
@@ -309,7 +311,8 @@ Module num.
                             |) in
                           let~ upperbit :=
                             M.alloc (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "i32")
                                 (BinOp.Wrap.shr (|
                                   M.read (| hi |),
                                   Value.Integer IntegerKind.I32 63
@@ -325,7 +328,8 @@ Module num.
                                       M.read (| upperbit |),
                                       Value.Integer IntegerKind.I32 64
                                     |),
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "i32")
                                       (M.read (|
                                         M.get_constant (|
                                           "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
@@ -347,11 +351,11 @@ Module num.
                                         [],
                                         []
                                       |),
-                                      [ M.rust_cast (M.read (| q |)) ]
+                                      [ M.cast (Ty.path "i32") (M.read (| q |)) ]
                                     |),
                                     M.read (| upperbit |)
                                   |),
-                                  M.rust_cast (M.read (| lz |))
+                                  M.cast (Ty.path "i32") (M.read (| lz |))
                                 |),
                                 M.read (|
                                   M.get_constant (|
@@ -450,7 +454,8 @@ Module num.
                                           let~ _ :=
                                             M.write (|
                                               power2,
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "i32")
                                                 (BinOp.ge (|
                                                   M.read (| mantissa |),
                                                   BinOp.Wrap.shl (|
@@ -497,7 +502,8 @@ Module num.
                                                   ltac:(M.monadic
                                                     (BinOp.ge (|
                                                       M.read (| q |),
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.path "i64")
                                                         (M.read (|
                                                           M.get_constant (|
                                                             "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_ROUND_TO_EVEN"
@@ -508,7 +514,8 @@ Module num.
                                                 ltac:(M.monadic
                                                   (BinOp.le (|
                                                     M.read (| q |),
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "i64")
                                                       (M.read (|
                                                         M.get_constant (|
                                                           "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_ROUND_TO_EVEN"
@@ -534,7 +541,8 @@ Module num.
                                                         M.read (| upperbit |),
                                                         Value.Integer IntegerKind.I32 64
                                                       |),
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.path "i32")
                                                         (M.read (|
                                                           M.get_constant (|
                                                             "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
@@ -742,13 +750,17 @@ Module num.
             M.read (|
               let~ r :=
                 M.alloc (|
-                  BinOp.Wrap.mul (| M.rust_cast (M.read (| a |)), M.rust_cast (M.read (| b |)) |)
+                  BinOp.Wrap.mul (|
+                    M.cast (Ty.path "u128") (M.read (| a |)),
+                    M.cast (Ty.path "u128") (M.read (| b |))
+                  |)
                 |) in
               M.alloc (|
                 Value.Tuple
                   [
-                    M.rust_cast (M.read (| r |));
-                    M.rust_cast
+                    M.cast (Ty.path "u64") (M.read (| r |));
+                    M.cast
+                      (Ty.path "u64")
                       (BinOp.Wrap.shr (| M.read (| r |), Value.Integer IntegerKind.I32 64 |))
                   ]
               |)
@@ -824,7 +836,8 @@ Module num.
                                         UnOp.not (|
                                           BinOp.ge (|
                                             M.read (| q |),
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "i64")
                                               (M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE"
@@ -879,7 +892,8 @@ Module num.
                                         UnOp.not (|
                                           BinOp.le (|
                                             M.read (| q |),
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "i64")
                                               (M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE"
@@ -993,10 +1007,12 @@ Module num.
                 |) in
               let~ index :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (BinOp.Wrap.sub (|
                       M.read (| q |),
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "i64")
                         (M.read (|
                           M.get_constant (| "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE" |)
                         |))

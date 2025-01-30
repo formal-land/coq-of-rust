@@ -534,7 +534,7 @@ Module constants.
                               "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
                               [];
                             Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-                            M.rust_cast (M.read (| idx |))
+                            M.cast (Ty.path "u16") (M.read (| idx |))
                           ]
                         |)
                       ]
@@ -603,7 +603,7 @@ Module constants.
                               "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
                               [];
                             Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-                            M.rust_cast (M.read (| idx |))
+                            M.cast (Ty.path "u16") (M.read (| idx |))
                           ]
                         |)
                       ]

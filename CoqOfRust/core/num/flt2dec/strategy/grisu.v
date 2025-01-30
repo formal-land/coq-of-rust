@@ -534,7 +534,8 @@ Module num.
               M.read (|
                 let~ offset :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i32")
                       (M.read (|
                         M.get_constant (|
                           "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
@@ -544,7 +545,8 @@ Module num.
                 let~ range :=
                   M.alloc (|
                     BinOp.Wrap.sub (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "i32")
                         (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -573,7 +575,8 @@ Module num.
                   |) in
                 let~ domain :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i32")
                       (BinOp.Wrap.sub (|
                         M.read (|
                           M.get_constant (|
@@ -591,7 +594,10 @@ Module num.
                   M.alloc (|
                     BinOp.Wrap.div (|
                       BinOp.Wrap.mul (|
-                        BinOp.Wrap.sub (| M.rust_cast (M.read (| gamma |)), M.read (| offset |) |),
+                        BinOp.Wrap.sub (|
+                          M.cast (Ty.path "i32") (M.read (| gamma |)),
+                          M.read (| offset |)
+                        |),
                         M.read (| range |)
                       |),
                       M.read (| domain |)
@@ -604,7 +610,7 @@ Module num.
                         M.get_constant (| "core::num::flt2dec::strategy::grisu::CACHED_POW10" |)
                       |)
                     |),
-                    M.alloc (| M.rust_cast (M.read (| idx |)) |)
+                    M.alloc (| M.cast (Ty.path "usize") (M.read (| idx |)) |)
                   |),
                   [
                     fun γ =>
@@ -2383,7 +2389,8 @@ Module num.
                                 |) in
                               let~ e :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (UnOp.neg (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -2396,7 +2403,8 @@ Module num.
                                 |) in
                               let~ plus1int :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shr (| M.read (| plus1 |), M.read (| e |) |))
                                 |) in
                               let~ plus1frac :=
@@ -2434,7 +2442,7 @@ Module num.
                                         M.alloc (|
                                           BinOp.Wrap.add (|
                                             BinOp.Wrap.sub (|
-                                              M.rust_cast (M.read (| max_kappa |)),
+                                              M.cast (Ty.path "i16") (M.read (| max_kappa |)),
                                               M.read (| minusk |)
                                             |),
                                             Value.Integer IntegerKind.I16 1
@@ -2561,7 +2569,7 @@ Module num.
                                                   [
                                                     BinOp.Wrap.add (|
                                                       M.read (| UnsupportedLiteral |),
-                                                      M.rust_cast (M.read (| q |))
+                                                      M.cast (Ty.path "u8") (M.read (| q |))
                                                     |)
                                                   ]
                                                 |)
@@ -2579,7 +2587,7 @@ Module num.
                                               M.alloc (|
                                                 BinOp.Wrap.add (|
                                                   BinOp.Wrap.shl (|
-                                                    M.rust_cast (M.read (| r |)),
+                                                    M.cast (Ty.path "u64") (M.read (| r |)),
                                                     M.read (| e |)
                                                   |),
                                                   M.read (| plus1frac |)
@@ -2610,7 +2618,8 @@ Module num.
                                                             let~ ten_kappa :=
                                                               M.alloc (|
                                                                 BinOp.Wrap.shl (|
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "u64")
                                                                     (M.read (| ten_kappa |)),
                                                                   M.read (| e |)
                                                                 |)
@@ -2744,7 +2753,9 @@ Module num.
                                                           (M.alloc (|
                                                             BinOp.gt (|
                                                               M.read (| i |),
-                                                              M.rust_cast (M.read (| max_kappa |))
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (M.read (| max_kappa |))
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -3091,7 +3102,7 @@ Module num.
                                                         [
                                                           BinOp.Wrap.add (|
                                                             M.read (| UnsupportedLiteral |),
-                                                            M.rust_cast (M.read (| q |))
+                                                            M.cast (Ty.path "u8") (M.read (| q |))
                                                           |)
                                                         ]
                                                       |)
@@ -4401,7 +4412,8 @@ Module num.
                                 |) in
                               let~ e :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (UnOp.neg (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -4414,7 +4426,8 @@ Module num.
                                 |) in
                               let~ vint :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shr (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -4550,7 +4563,7 @@ Module num.
                                         M.alloc (|
                                           BinOp.Wrap.add (|
                                             BinOp.Wrap.sub (|
-                                              M.rust_cast (M.read (| max_kappa |)),
+                                              M.cast (Ty.path "i16") (M.read (| max_kappa |)),
                                               M.read (| minusk |)
                                             |),
                                             Value.Integer IntegerKind.I16 1
@@ -4605,7 +4618,8 @@ Module num.
                                                                 Value.Integer IntegerKind.U64 10
                                                               |);
                                                               BinOp.Wrap.shl (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "u64")
                                                                   (M.read (| max_ten_kappa |)),
                                                                 M.read (| e |)
                                                               |);
@@ -4630,11 +4644,14 @@ Module num.
                                                             M.use
                                                               (M.alloc (|
                                                                 BinOp.lt (|
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "usize")
                                                                     (BinOp.Wrap.sub (|
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.path "i32")
                                                                         (M.read (| exp |)),
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.path "i32")
                                                                         (M.read (| limit |))
                                                                     |)),
                                                                   M.call_closure (|
@@ -4670,7 +4687,8 @@ Module num.
                                                               Value.Bool true
                                                             |) in
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "usize")
                                                               (BinOp.Wrap.sub (|
                                                                 M.read (| exp |),
                                                                 M.read (| limit |)
@@ -4770,7 +4788,9 @@ Module num.
                                           ]
                                         |) in
                                       let~ kappa :=
-                                        M.alloc (| M.rust_cast (M.read (| max_kappa |)) |) in
+                                        M.alloc (|
+                                          M.cast (Ty.path "i16") (M.read (| max_kappa |))
+                                        |) in
                                       let~ ten_kappa := M.copy (| max_ten_kappa |) in
                                       let~ remainder := M.copy (| vint |) in
                                       let~ _ :=
@@ -4873,7 +4893,7 @@ Module num.
                                                   [
                                                     BinOp.Wrap.add (|
                                                       M.read (| UnsupportedLiteral |),
-                                                      M.rust_cast (M.read (| q |))
+                                                      M.cast (Ty.path "u8") (M.read (| q |))
                                                     |)
                                                   ]
                                                 |)
@@ -4913,7 +4933,9 @@ Module num.
                                                               M.alloc (|
                                                                 BinOp.Wrap.add (|
                                                                   BinOp.Wrap.shl (|
-                                                                    M.rust_cast (M.read (| r |)),
+                                                                    M.cast
+                                                                      (Ty.path "u64")
+                                                                      (M.read (| r |)),
                                                                     M.read (| e |)
                                                                   |),
                                                                   M.read (| vfrac |)
@@ -4936,7 +4958,8 @@ Module num.
                                                                   M.read (| limit |);
                                                                   M.read (| vrem |);
                                                                   BinOp.Wrap.shl (|
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "u64")
                                                                       (M.read (| ten_kappa |)),
                                                                     M.read (| e |)
                                                                   |);
@@ -4965,7 +4988,9 @@ Module num.
                                                           (M.alloc (|
                                                             BinOp.gt (|
                                                               M.read (| i |),
-                                                              M.rust_cast (M.read (| max_kappa |))
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (M.read (| max_kappa |))
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -5509,7 +5534,7 @@ Module num.
                                                           [
                                                             BinOp.Wrap.add (|
                                                               M.read (| UnsupportedLiteral |),
-                                                              M.rust_cast (M.read (| q |))
+                                                              M.cast (Ty.path "u8") (M.read (| q |))
                                                             |)
                                                           ]
                                                         |)

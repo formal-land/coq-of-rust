@@ -936,7 +936,8 @@ Module hash.
                       let~ _ :=
                         M.write (|
                           out,
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u64")
                             (M.read (|
                               let~ _ :=
                                 M.match_operator (|
@@ -1063,7 +1064,8 @@ Module hash.
                                           BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
                                         ]
                                       |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                                         (M.read (|
                                           M.use
                                             (M.alloc (|
@@ -1129,7 +1131,8 @@ Module hash.
                           BinOp.bit_or
                             (M.read (| β |))
                             (BinOp.Wrap.shl (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "u64")
                                 (M.read (|
                                   let~ _ :=
                                     M.match_operator (|
@@ -1259,7 +1262,8 @@ Module hash.
                                               |)
                                             ]
                                           |);
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                                             (M.read (|
                                               M.use
                                                 (M.alloc (|
@@ -1321,7 +1325,8 @@ Module hash.
                           BinOp.bit_or
                             (M.read (| β |))
                             (BinOp.Wrap.shl (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "u64")
                                 (M.read (|
                                   M.deref (|
                                     M.call_closure (|
@@ -2457,7 +2462,8 @@ Module hash.
                                                 M.read (| i |)
                                               ]
                                             |);
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                                               (M.read (|
                                                 M.use
                                                   (M.alloc (|
@@ -2709,7 +2715,8 @@ Module hash.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       BinOp.bit_and
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "u64")
                           (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),

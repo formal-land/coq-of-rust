@@ -4897,7 +4897,7 @@ Module reference_safety.
                                 |)
                               |)
                             |);
-                            M.rust_cast (M.read (| local |))
+                            M.cast (Ty.path "usize") (M.read (| local |))
                           ]
                         |)
                       |),
@@ -5359,7 +5359,7 @@ Module reference_safety.
                                                 |)
                                               |)
                                             |);
-                                            M.rust_cast (M.read (| local |))
+                                            M.cast (Ty.path "usize") (M.read (| local |))
                                           ]
                                         |)
                                       |),
@@ -5809,7 +5809,7 @@ Module reference_safety.
                                                 |)
                                               |)
                                             |);
-                                            M.rust_cast (M.read (| local |))
+                                            M.cast (Ty.path "usize") (M.read (| local |))
                                           ]
                                         |)
                                       |),

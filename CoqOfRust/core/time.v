@@ -1026,7 +1026,8 @@ Module time.
                               M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                               [
                                 M.read (| secs |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u64")
                                   (BinOp.Wrap.div (|
                                     M.read (| nanos |),
                                     M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)
@@ -1157,7 +1158,8 @@ Module time.
               |) in
             let~ subsec_millis :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| millis |),
                     M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |)
@@ -1211,7 +1213,8 @@ Module time.
               |) in
             let~ subsec_micros :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| micros |),
                     M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |)
@@ -1265,7 +1268,8 @@ Module time.
               |) in
             let~ subsec_nanos :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| nanos |),
                     M.read (| M.get_constant (| "core::time::from_nanos::NANOS_PER_SEC" |) |)
@@ -1838,7 +1842,8 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u128")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -1846,9 +1851,12 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
             |),
-            M.rust_cast
+            M.cast
+              (Ty.path "u128")
               (BinOp.Wrap.div (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
@@ -1881,7 +1889,8 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u128")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -1889,9 +1898,12 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))
             |),
-            M.rust_cast
+            M.cast
+              (Ty.path "u128")
               (BinOp.Wrap.div (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
@@ -1924,7 +1936,8 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u128")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -1932,9 +1945,12 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |),
-            M.rust_cast
+            M.cast
+              (Ty.path "u128")
               (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.SubPointer.get_struct_record_field (|
@@ -2699,7 +2715,8 @@ Module time.
                 let~ total_nanos :=
                   M.alloc (|
                     BinOp.Wrap.mul (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (M.read (|
                           M.SubPointer.get_struct_tuple_field (|
                             M.SubPointer.get_struct_record_field (|
@@ -2711,22 +2728,27 @@ Module time.
                             0
                           |)
                         |)),
-                      M.rust_cast (M.read (| rhs |))
+                      M.cast (Ty.path "u64") (M.read (| rhs |))
                     |)
                   |) in
                 let~ extra_secs :=
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| total_nanos |),
-                      M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                      M.cast
+                        (Ty.path "u64")
+                        (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                     |)
                   |) in
                 let~ nanos :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.Wrap.rem (|
                         M.read (| total_nanos |),
-                        M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                        M.cast
+                          (Ty.path "u64")
+                          (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                       |))
                   |) in
                 let~ _ :=
@@ -2752,7 +2774,7 @@ Module time.
                                       "secs"
                                     |)
                                   |);
-                                  M.rust_cast (M.read (| rhs |))
+                                  M.cast (Ty.path "u64") (M.read (| rhs |))
                                 ]
                               |)
                             |) in
@@ -2981,7 +3003,7 @@ Module time.
                                   "secs"
                                 |)
                               |),
-                              M.rust_cast (M.read (| rhs |))
+                              M.cast (Ty.path "u64") (M.read (| rhs |))
                             |);
                             BinOp.Wrap.rem (|
                               M.read (|
@@ -2991,7 +3013,7 @@ Module time.
                                   "secs"
                                 |)
                               |),
-                              M.rust_cast (M.read (| rhs |))
+                              M.cast (Ty.path "u64") (M.read (| rhs |))
                             |)
                           ]
                       |),
@@ -3049,21 +3071,23 @@ Module time.
                                         β,
                                         BinOp.Wrap.add (|
                                           M.read (| β |),
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u32")
                                             (BinOp.Wrap.div (|
                                               BinOp.Wrap.add (|
                                                 BinOp.Wrap.mul (|
                                                   M.read (| extra_secs |),
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "u64")
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "core::time::NANOS_PER_SEC"
                                                       |)
                                                     |))
                                                 |),
-                                                M.rust_cast (M.read (| extra_nanos |))
+                                                M.cast (Ty.path "u64") (M.read (| extra_nanos |))
                                               |),
-                                              M.rust_cast (M.read (| rhs |))
+                                              M.cast (Ty.path "u64") (M.read (| rhs |))
                                             |))
                                         |)
                                       |) in
@@ -3170,7 +3194,8 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
-            M.rust_cast
+            M.cast
+              (Ty.path "f64")
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
@@ -3179,7 +3204,8 @@ Module time.
                 |)
               |)),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f64")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -3191,7 +3217,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast (Ty.path "f64") (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3210,7 +3236,8 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
-            M.rust_cast
+            M.cast
+              (Ty.path "f32")
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
@@ -3219,7 +3246,8 @@ Module time.
                 |)
               |)),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f32")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -3231,7 +3259,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast (Ty.path "f32") (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3252,7 +3280,8 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f64")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -3260,10 +3289,13 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "f64")
+                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
             |),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f64")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -3275,7 +3307,9 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
+              M.cast
+                (Ty.path "f64")
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3297,7 +3331,8 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f32")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -3305,10 +3340,13 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "f32")
+                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
             |),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f32")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -3320,7 +3358,9 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
+              M.cast
+                (Ty.path "f32")
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3639,7 +3679,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f64")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -3647,9 +3688,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f64")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f64")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3667,7 +3711,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f64")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           rhs,
@@ -3675,9 +3720,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f64")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f64")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3717,7 +3765,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f32")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -3725,9 +3774,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f32")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f32")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3745,7 +3797,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f32")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           rhs,
@@ -3753,9 +3806,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f32")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f32")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3857,7 +3913,8 @@ Module time.
                 let~ exp :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 23 |))
                           (M.read (|
@@ -3966,7 +4023,8 @@ Module time.
                                     |) in
                                   let~ nanos :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u32")
                                         (BinOp.Wrap.shr (|
                                           M.read (| nanos_tmp |),
                                           M.read (| nanos_offset |)
@@ -4035,7 +4093,7 @@ Module time.
                                     M.alloc (|
                                       BinOp.Wrap.add (|
                                         M.read (| nanos |),
-                                        M.rust_cast (M.read (| add_ns |))
+                                        M.cast (Ty.path "u32") (M.read (| add_ns |))
                                       |)
                                     |) in
                                   M.match_operator (|
@@ -4180,7 +4238,8 @@ Module time.
                                             |) in
                                           let~ nanos :=
                                             M.alloc (|
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "u32")
                                                 (BinOp.Wrap.shr (|
                                                   M.read (| nanos_tmp |),
                                                   M.read (| nanos_offset |)
@@ -4254,7 +4313,7 @@ Module time.
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.read (| nanos |),
-                                                M.rust_cast (M.read (| add_ns |))
+                                                M.cast (Ty.path "u32") (M.read (| add_ns |))
                                               |)
                                             |) in
                                           M.match_operator (|
@@ -4495,7 +4554,8 @@ Module time.
                 let~ exp :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 52 |))
                           (M.read (|
@@ -4604,7 +4664,8 @@ Module time.
                                     |) in
                                   let~ nanos :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u32")
                                         (BinOp.Wrap.shr (|
                                           M.read (| nanos_tmp |),
                                           M.read (| nanos_offset |)
@@ -4673,7 +4734,7 @@ Module time.
                                     M.alloc (|
                                       BinOp.Wrap.add (|
                                         M.read (| nanos |),
-                                        M.rust_cast (M.read (| add_ns |))
+                                        M.cast (Ty.path "u32") (M.read (| add_ns |))
                                       |)
                                     |) in
                                   M.match_operator (|
@@ -4818,7 +4879,8 @@ Module time.
                                             |) in
                                           let~ nanos :=
                                             M.alloc (|
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "u32")
                                                 (BinOp.Wrap.shr (|
                                                   M.read (| nanos_tmp |),
                                                   M.read (| nanos_offset |)
@@ -4892,7 +4954,7 @@ Module time.
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.read (| nanos |),
-                                                M.rust_cast (M.read (| add_ns |))
+                                                M.cast (Ty.path "u32") (M.read (| add_ns |))
                                               |)
                                             |) in
                                           M.match_operator (|
@@ -5613,7 +5675,8 @@ Module time.
                                                   |),
                                                   [
                                                     M.read (| total_nanos |);
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "u64")
                                                       (M.read (|
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.SubPointer.get_struct_record_field (|
@@ -5671,7 +5734,8 @@ Module time.
                                                                 M.read (| total_secs |);
                                                                 BinOp.Wrap.div (|
                                                                   M.read (| total_nanos |),
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "u64")
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::time::NANOS_PER_SEC"
@@ -5696,14 +5760,16 @@ Module time.
                                                       BinOp.Wrap.add (|
                                                         BinOp.Wrap.rem (|
                                                           M.read (| total_nanos |),
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "u64")
                                                             (M.read (|
                                                               M.get_constant (|
                                                                 "core::time::NANOS_PER_SEC"
                                                               |)
                                                             |))
                                                         |),
-                                                        M.rust_cast
+                                                        M.cast
+                                                          (Ty.path "u64")
                                                           (M.read (|
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.SubPointer.get_struct_record_field (|
@@ -5745,7 +5811,8 @@ Module time.
                         M.read (| total_secs |);
                         BinOp.Wrap.div (|
                           M.read (| total_nanos |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u64")
                             (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                         |)
                       ]
@@ -5762,13 +5829,15 @@ Module time.
                 total_nanos,
                 BinOp.Wrap.rem (|
                   M.read (| total_nanos |),
-                  M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                  M.cast
+                    (Ty.path "u64")
+                    (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
-                [ M.read (| total_secs |); M.rust_cast (M.read (| total_nanos |)) ]
+                [ M.read (| total_secs |); M.cast (Ty.path "u32") (M.read (| total_nanos |)) ]
               |)
             |)
           |)))
@@ -5919,7 +5988,8 @@ Module time.
                                                   |),
                                                   [
                                                     M.read (| total_nanos |);
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "u64")
                                                       (M.read (|
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.SubPointer.get_struct_record_field (|
@@ -5977,7 +6047,8 @@ Module time.
                                                                 M.read (| total_secs |);
                                                                 BinOp.Wrap.div (|
                                                                   M.read (| total_nanos |),
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "u64")
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::time::NANOS_PER_SEC"
@@ -6002,14 +6073,16 @@ Module time.
                                                       BinOp.Wrap.add (|
                                                         BinOp.Wrap.rem (|
                                                           M.read (| total_nanos |),
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "u64")
                                                             (M.read (|
                                                               M.get_constant (|
                                                                 "core::time::NANOS_PER_SEC"
                                                               |)
                                                             |))
                                                         |),
-                                                        M.rust_cast
+                                                        M.cast
+                                                          (Ty.path "u64")
                                                           (M.read (|
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.SubPointer.get_struct_record_field (|
@@ -6051,7 +6124,8 @@ Module time.
                         M.read (| total_secs |);
                         BinOp.Wrap.div (|
                           M.read (| total_nanos |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u64")
                             (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                         |)
                       ]
@@ -6068,13 +6142,15 @@ Module time.
                 total_nanos,
                 BinOp.Wrap.rem (|
                   M.read (| total_nanos |),
-                  M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                  M.cast
+                    (Ty.path "u64")
+                    (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
-                [ M.read (| total_secs |); M.rust_cast (M.read (| total_nanos |)) ]
+                [ M.read (| total_secs |); M.cast (Ty.path "u32") (M.read (| total_nanos |)) ]
               |)
             |)
           |)))
@@ -6410,7 +6486,8 @@ Module time.
                                 M.get_associated_function (| Self, "fmt_decimal.fmt", [], [] |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u64")
                                     (BinOp.Wrap.div (|
                                       M.read (|
                                         M.SubPointer.get_struct_tuple_field (|
@@ -6501,7 +6578,8 @@ Module time.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| f |) |)
                                           |);
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u64")
                                             (BinOp.Wrap.div (|
                                               M.read (|
                                                 M.SubPointer.get_struct_tuple_field (|
@@ -6568,7 +6646,8 @@ Module time.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| f |) |)
                                           |);
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u64")
                                             (M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|

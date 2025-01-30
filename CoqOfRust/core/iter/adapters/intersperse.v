@@ -1543,10 +1543,12 @@ Module iter.
                                       |),
                                       [
                                         M.read (| lo |);
-                                        M.rust_cast (UnOp.not (| M.read (| started |) |))
+                                        M.cast
+                                          (Ty.path "usize")
+                                          (UnOp.not (| M.read (| started |) |))
                                       ]
                                     |);
-                                    M.rust_cast (M.read (| next_is_some |))
+                                    M.cast (Ty.path "usize") (M.read (| next_is_some |))
                                   ]
                                 |);
                                 M.read (| lo |)
@@ -1606,13 +1608,16 @@ Module iter.
                                                             |),
                                                             [
                                                               M.read (| hi |);
-                                                              M.rust_cast
+                                                              M.cast
+                                                                (Ty.path "usize")
                                                                 (UnOp.not (|
                                                                   M.read (| started |)
                                                                 |))
                                                             ]
                                                           |);
-                                                          M.rust_cast (M.read (| next_is_some |))
+                                                          M.cast
+                                                            (Ty.path "usize")
+                                                            (M.read (| next_is_some |))
                                                         ]
                                                       |);
                                                       M.read (| hi |)

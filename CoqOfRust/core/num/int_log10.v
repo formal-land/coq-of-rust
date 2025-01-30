@@ -29,7 +29,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let~ val := M.alloc (| M.rust_cast (M.read (| val |)) |) in
+            let~ val := M.alloc (| M.cast (Ty.path "u32") (M.read (| val |)) |) in
             M.alloc (|
               BinOp.Wrap.shr (|
                 BinOp.bit_and
@@ -178,7 +178,7 @@ Module num.
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
-            [ M.rust_cast (M.read (| val |)) ]
+            [ M.cast (Ty.path "u32") (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -333,7 +333,7 @@ Module num.
                 M.read (| log |),
                 M.call_closure (|
                   M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
-                  [ M.rust_cast (M.read (| val |)) ]
+                  [ M.cast (Ty.path "u32") (M.read (| val |)) ]
                 |)
               |)
             |)
@@ -411,7 +411,7 @@ Module num.
                                     M.read (| log |),
                                     M.call_closure (|
                                       M.get_function (| "core::num::int_log10::u32", [], [] |),
-                                      [ M.rust_cast (M.read (| val |)) ]
+                                      [ M.cast (Ty.path "u32") (M.read (| val |)) ]
                                     |)
                                   |)
                                 |)
@@ -461,7 +461,7 @@ Module num.
                     M.read (| log |),
                     M.call_closure (|
                       M.get_function (| "core::num::int_log10::u64", [], [] |),
-                      [ M.rust_cast (M.read (| val |)) ]
+                      [ M.cast (Ty.path "u64") (M.read (| val |)) ]
                     |)
                   |)
                 |)
@@ -484,7 +484,7 @@ Module num.
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u64", [], [] |),
-            [ M.rust_cast (M.read (| val |)) ]
+            [ M.cast (Ty.path "u64") (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -503,7 +503,7 @@ Module num.
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u8", [], [] |),
-            [ M.rust_cast (M.read (| val |)) ]
+            [ M.cast (Ty.path "u8") (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -522,7 +522,7 @@ Module num.
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u16", [], [] |),
-            [ M.rust_cast (M.read (| val |)) ]
+            [ M.cast (Ty.path "u16") (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -541,7 +541,7 @@ Module num.
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u32", [], [] |),
-            [ M.rust_cast (M.read (| val |)) ]
+            [ M.cast (Ty.path "u32") (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -560,7 +560,7 @@ Module num.
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u64", [], [] |),
-            [ M.rust_cast (M.read (| val |)) ]
+            [ M.cast (Ty.path "u64") (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -579,7 +579,7 @@ Module num.
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u128", [], [] |),
-            [ M.rust_cast (M.read (| val |)) ]
+            [ M.cast (Ty.path "u128") (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

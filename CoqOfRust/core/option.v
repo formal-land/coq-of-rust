@@ -721,7 +721,7 @@ Module option.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            M.alloc (| M.rust_cast (M.read (| discriminant |)) |)
+            M.alloc (| M.cast (Ty.path "usize") (M.read (| discriminant |)) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

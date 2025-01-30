@@ -236,7 +236,8 @@ Module verifier.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 BinOp.Wrap.div (|
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "f64")
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.path "core::time::Duration",

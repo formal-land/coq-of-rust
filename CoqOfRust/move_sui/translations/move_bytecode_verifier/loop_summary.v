@@ -480,7 +480,8 @@ Module loop_summary.
           M.read (|
             let~ num_blocks :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "usize")
                   (M.call_closure (|
                     M.get_trait_method (|
                       "move_binary_format::control_flow_graph::ControlFlowGraph",
@@ -1728,7 +1729,7 @@ Module loop_summary.
                                               "descs"
                                             |)
                                           |);
-                                          M.rust_cast (M.read (| ancestor |))
+                                          M.cast (Ty.path "usize") (M.read (| ancestor |))
                                         ]
                                       |)
                                     |)
@@ -1815,7 +1816,7 @@ Module loop_summary.
                                 (let id := M.copy (| γ |) in
                                 Value.StructTuple
                                   "move_bytecode_verifier::loop_summary::NodeId"
-                                  [ M.rust_cast (M.read (| id |)) ]))
+                                  [ M.cast (Ty.path "u16") (M.read (| id |)) ]))
                           ]
                         |)))
                     | _ => M.impossible "wrong number of arguments"
@@ -2136,7 +2137,7 @@ Module loop_summary.
                                               (let id := M.copy (| γ |) in
                                               Value.StructTuple
                                                 "move_bytecode_verifier::loop_summary::NodeId"
-                                                [ M.rust_cast (M.read (| id |)) ]))
+                                                [ M.cast (Ty.path "u16") (M.read (| id |)) ]))
                                         ]
                                       |)))
                                   | _ => M.impossible "wrong number of arguments"
@@ -3355,7 +3356,7 @@ Module loop_summary.
                       0
                     |) in
                   let id := M.copy (| γ0_0 |) in
-                  M.rust_cast (M.read (| id |))))
+                  M.cast (Ty.path "usize") (M.read (| id |))))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

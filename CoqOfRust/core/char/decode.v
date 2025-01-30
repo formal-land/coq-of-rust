@@ -611,7 +611,7 @@ Module char.
                                         [],
                                         []
                                       |),
-                                      [ M.rust_cast (M.read (| u |)) ]
+                                      [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                                     |)
                                   ]
                               ]
@@ -781,13 +781,15 @@ Module char.
                                       BinOp.Wrap.add (|
                                         BinOp.bit_or
                                           (BinOp.Wrap.shl (|
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "u32")
                                               (BinOp.bit_and
                                                 (M.read (| u |))
                                                 (Value.Integer IntegerKind.U16 1023)),
                                             Value.Integer IntegerKind.I32 10
                                           |))
-                                          (M.rust_cast
+                                          (M.cast
+                                            (Ty.path "u32")
                                             (BinOp.bit_and
                                               (M.read (| u2 |))
                                               (Value.Integer IntegerKind.U16 1023))),

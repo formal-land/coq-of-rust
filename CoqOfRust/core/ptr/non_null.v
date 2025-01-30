@@ -264,7 +264,11 @@ Module ptr.
                                 [],
                                 []
                               |),
-                              [ M.rust_cast (M.read (| ptr |)) ]
+                              [
+                                M.cast
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                  (M.read (| ptr |))
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -276,7 +280,9 @@ Module ptr.
                   "core::ptr::non_null::NonNull"
                   [
                     ("pointer",
-                      M.rust_cast (* MutToConstPointer *) (M.pointer_coercion (M.read (| ptr |))))
+                      M.cast
+                        (Ty.apply (Ty.path "*const") [] [ T ])
+                        (* MutToConstPointer *) (M.pointer_coercion (M.read (| ptr |))))
                   ]
               |)
             |)))
@@ -531,7 +537,8 @@ Module ptr.
                 []
               |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ T ])
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
@@ -637,7 +644,8 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*mut") [] [ T ])
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   self,
@@ -769,7 +777,8 @@ Module ptr.
                 ("pointer",
                   (* MutToConstPointer *)
                   M.pointer_coercion
-                    (M.rust_cast
+                    (M.cast
+                      (Ty.apply (Ty.path "*mut") [] [ U ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
@@ -1029,7 +1038,7 @@ Module ptr.
                                 [],
                                 []
                               |),
-                              [ M.rust_cast (M.read (| count |)) ]
+                              [ M.cast (Ty.path "isize") (M.read (| count |)) ]
                             |)
                           ]
                         |)

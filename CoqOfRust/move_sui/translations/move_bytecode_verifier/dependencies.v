@@ -2402,7 +2402,7 @@ Module dependencies.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "move_binary_format::file_format::FunctionHandleIndex"
-                                                    [ M.rust_cast (M.read (| idx |)) ]
+                                                    [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                                 |) in
                                               let~ _ :=
                                                 M.alloc (|
@@ -3280,7 +3280,11 @@ Module dependencies.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::file_format::ModuleHandleIndex"
-                                                                  [ M.rust_cast (M.read (| idx |)) ]
+                                                                  [
+                                                                    M.cast
+                                                                      (Ty.path "u16")
+                                                                      (M.read (| idx |))
+                                                                  ]
                                                               |)
                                                             |);
                                                             M.borrow (|
@@ -3366,7 +3370,9 @@ Module dependencies.
                                                                 Value.StructTuple
                                                                   "move_binary_format::IndexKind::ModuleHandle"
                                                                   [];
-                                                                M.rust_cast (M.read (| idx |))
+                                                                M.cast
+                                                                  (Ty.path "u16")
+                                                                  (M.read (| idx |))
                                                               ]
                                                             |)
                                                           ]
@@ -4320,7 +4326,8 @@ Module dependencies.
                                                                         Value.StructTuple
                                                                           "move_binary_format::IndexKind::StructHandle"
                                                                           [];
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "u16")
                                                                           (M.read (| idx |))
                                                                       ]
                                                                     |)
@@ -4361,7 +4368,9 @@ Module dependencies.
                                                                 Value.StructTuple
                                                                   "move_binary_format::IndexKind::StructHandle"
                                                                   [];
-                                                                M.rust_cast (M.read (| idx |))
+                                                                M.cast
+                                                                  (Ty.path "u16")
+                                                                  (M.read (| idx |))
                                                               ]
                                                             |)
                                                           ]
@@ -5337,7 +5346,8 @@ Module dependencies.
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::FunctionHandle"
                                                                             [];
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "u16")
                                                                             (M.read (| idx |))
                                                                         ]
                                                                       |)
@@ -5505,7 +5515,8 @@ Module dependencies.
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
                                                                               [];
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u16")
                                                                               (M.read (| idx |))
                                                                           ]
                                                                         |)
@@ -5705,7 +5716,9 @@ Module dependencies.
                                                                                     Value.StructTuple
                                                                                       "move_binary_format::IndexKind::FunctionHandle"
                                                                                       [];
-                                                                                    M.rust_cast
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "u16")
                                                                                       (M.read (|
                                                                                         idx
                                                                                       |))
@@ -5937,7 +5950,8 @@ Module dependencies.
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
                                                                               [];
-                                                                            M.rust_cast
+                                                                            M.cast
+                                                                              (Ty.path "u16")
                                                                               (M.read (| idx |))
                                                                           ]
                                                                         |)
@@ -6137,7 +6151,9 @@ Module dependencies.
                                                                                     Value.StructTuple
                                                                                       "move_binary_format::IndexKind::FunctionHandle"
                                                                                       [];
-                                                                                    M.rust_cast
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "u16")
                                                                                       (M.read (|
                                                                                         idx
                                                                                       |))
@@ -6243,7 +6259,9 @@ Module dependencies.
                                                                 Value.StructTuple
                                                                   "move_binary_format::IndexKind::FunctionHandle"
                                                                   [];
-                                                                M.rust_cast (M.read (| idx |))
+                                                                M.cast
+                                                                  (Ty.path "u16")
+                                                                  (M.read (| idx |))
                                                               ]
                                                             |)
                                                           ]
@@ -8841,7 +8859,7 @@ Module dependencies.
                                                     |);
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                      [ M.rust_cast (M.read (| idx |)) ];
+                                                      [ M.cast (Ty.path "u16") (M.read (| idx |)) ];
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.deref (|
@@ -9114,7 +9132,8 @@ Module dependencies.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let idx := M.copy (| γ1_0 |) in
                                         let instr := M.copy (| γ1_1 |) in
-                                        let~ idx := M.alloc (| M.rust_cast (M.read (| idx |)) |) in
+                                        let~ idx :=
+                                          M.alloc (| M.cast (Ty.path "u16") (M.read (| idx |)) |) in
                                         let~ fhandle_idx :=
                                           M.copy (|
                                             M.match_operator (|

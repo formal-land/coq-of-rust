@@ -1248,7 +1248,12 @@ Module collections.
           | [], [], [ this ] =>
             ltac:(M.monadic
               (let this := M.alloc (| this |) in
-              M.rust_cast
+              M.cast
+                (Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::collections::btree::node::InternalNode") [] [ K; V ]
+                  ])
                 (M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
@@ -4668,7 +4673,7 @@ Module collections.
                             "parent_idx"
                           |)
                         |);
-                        M.rust_cast (M.read (| parent_idx |))
+                        M.cast (Ty.path "u16") (M.read (| parent_idx |))
                       ]
                     |)
                   |) in
@@ -8247,7 +8252,7 @@ Module collections.
                         ]
                       |)
                     |),
-                    M.rust_cast (M.read (| new_len |))
+                    M.cast (Ty.path "u16") (M.read (| new_len |))
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -9894,7 +9899,7 @@ Module collections.
                         ]
                       |)
                     |),
-                    M.rust_cast (M.read (| new_len |))
+                    M.cast (Ty.path "u16") (M.read (| new_len |))
                   |) in
                 let~ _ :=
                   M.alloc (|
@@ -12016,7 +12021,7 @@ Module collections.
                       "alloc::collections::btree::node::LeafNode",
                       "len"
                     |),
-                    M.rust_cast (M.read (| new_len |))
+                    M.cast (Ty.path "u16") (M.read (| new_len |))
                   |) in
                 let~ k :=
                   M.alloc (|
@@ -12392,7 +12397,8 @@ Module collections.
                         ]
                       |)
                     |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u16")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
@@ -13316,7 +13322,8 @@ Module collections.
                         ]
                       |)
                     |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u16")
                       (BinOp.Wrap.sub (| M.read (| old_len |), Value.Integer IntegerKind.Usize 1 |))
                   |) in
                 M.alloc (|
@@ -14485,7 +14492,7 @@ Module collections.
                                   [ M.borrow (| Pointer.Kind.MutRef, left_node |) ]
                                 |)
                               |),
-                              M.rust_cast (M.read (| new_left_len |))
+                              M.cast (Ty.path "u16") (M.read (| new_left_len |))
                             |) in
                           let~ parent_key :=
                             M.alloc (|
@@ -16427,7 +16434,7 @@ Module collections.
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| left_node |) |) |) ]
                       |)
                     |),
-                    M.rust_cast (M.read (| new_left_len |))
+                    M.cast (Ty.path "u16") (M.read (| new_left_len |))
                   |) in
                 let~ _ :=
                   M.write (|
@@ -16451,7 +16458,7 @@ Module collections.
                         ]
                       |)
                     |),
-                    M.rust_cast (M.read (| new_right_len |))
+                    M.cast (Ty.path "u16") (M.read (| new_right_len |))
                   |) in
                 let~ _ :=
                   let~ _ :=
@@ -17727,7 +17734,7 @@ Module collections.
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| left_node |) |) |) ]
                       |)
                     |),
-                    M.rust_cast (M.read (| new_left_len |))
+                    M.cast (Ty.path "u16") (M.read (| new_left_len |))
                   |) in
                 let~ _ :=
                   M.write (|
@@ -17751,7 +17758,7 @@ Module collections.
                         ]
                       |)
                     |),
-                    M.rust_cast (M.read (| new_right_len |))
+                    M.cast (Ty.path "u16") (M.read (| new_right_len |))
                   |) in
                 let~ _ :=
                   let~ k :=
@@ -19546,7 +19553,7 @@ Module collections.
                                 [ M.borrow (| Pointer.Kind.MutRef, left_node |) ]
                               |)
                             |),
-                            M.rust_cast (M.read (| new_left_len |))
+                            M.cast (Ty.path "u16") (M.read (| new_left_len |))
                           |) in
                         let~ _ :=
                           M.write (|
@@ -19570,7 +19577,7 @@ Module collections.
                                 [ M.borrow (| Pointer.Kind.MutRef, right_node |) ]
                               |)
                             |),
-                            M.rust_cast (M.read (| new_right_len |))
+                            M.cast (Ty.path "u16") (M.read (| new_right_len |))
                           |) in
                         let~ _ :=
                           M.alloc (|

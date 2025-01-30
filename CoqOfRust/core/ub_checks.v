@@ -882,7 +882,9 @@ Module ub_checks.
                     ltac:(M.monadic
                       (M.alloc (|
                         BinOp.Wrap.div (|
-                          M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (| M.get_constant (| "core::num::MAX" |) |)),
                           M.read (| size |)
                         |)
                       |)))

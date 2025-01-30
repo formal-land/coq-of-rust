@@ -201,7 +201,8 @@ Module instructions.
                                                                 |)
                                                               |)
                                                             |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.get_constant (|
                                                                   "core::num::MAX"
@@ -287,7 +288,8 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
@@ -764,7 +766,8 @@ Module instructions.
                                                                 |)
                                                               |)
                                                             |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.get_constant (|
                                                                   "core::num::MAX"
@@ -850,7 +853,8 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
@@ -1272,7 +1276,8 @@ Module instructions.
                                                                 |)
                                                               |)
                                                             |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.get_constant (|
                                                                   "core::num::MAX"
@@ -1358,7 +1363,8 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
@@ -2023,7 +2029,8 @@ Module instructions.
                                                                 |)
                                                               |)
                                                             |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.get_constant (|
                                                                   "core::num::MAX"
@@ -2109,7 +2116,8 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
@@ -2347,7 +2355,8 @@ Module instructions.
                                                                 |)
                                                               |)
                                                             |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.get_constant (|
                                                                   "core::num::MAX"
@@ -2433,7 +2442,8 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
@@ -2492,7 +2502,8 @@ Module instructions.
                                                                 |)
                                                               |)
                                                             |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.get_constant (|
                                                                   "core::num::MAX"
@@ -2578,7 +2589,8 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),

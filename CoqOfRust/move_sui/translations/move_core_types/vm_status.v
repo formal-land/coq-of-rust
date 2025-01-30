@@ -8561,7 +8561,7 @@ Module vm_status.
       | [], [], [ status ] =>
         ltac:(M.monadic
           (let status := M.alloc (| status |) in
-          M.rust_cast (M.read (| status |))))
+          M.cast (Ty.path "u64") (M.read (| status |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

@@ -2016,7 +2016,8 @@ Module slice.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.apply (Ty.path "*const") [] [ T ])
             (M.read (|
               M.use
                 (M.alloc (|
@@ -2041,7 +2042,8 @@ Module slice.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.apply (Ty.path "*mut") [] [ T ])
             (M.read (|
               M.use
                 (M.alloc (|
@@ -7111,7 +7113,8 @@ Module slice.
                           M.alloc (|
                             BinOp.Wrap.add (|
                               M.read (| base |),
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "usize")
                                 (M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
@@ -9895,7 +9898,8 @@ Module slice.
                                                       [ U ]
                                                     |),
                                                     [
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.apply (Ty.path "*const") [] [ U ])
                                                         (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [] [ T ],
@@ -10264,7 +10268,9 @@ Module slice.
                                                       [ U ]
                                                     |),
                                                     [
-                                                      M.rust_cast (M.read (| mut_ptr |));
+                                                      M.cast
+                                                        (Ty.apply (Ty.path "*mut") [] [ U ])
+                                                        (M.read (| mut_ptr |));
                                                       M.read (| us_len |)
                                                     ]
                                                   |)
@@ -12534,7 +12540,8 @@ Module slice.
                   |) in
                 let~ self_start :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
@@ -12547,7 +12554,8 @@ Module slice.
                   |) in
                 let~ elem_start :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.use
                           (M.alloc (|
@@ -12731,7 +12739,8 @@ Module slice.
                   |) in
                 let~ self_start :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
@@ -12744,7 +12753,8 @@ Module slice.
                   |) in
                 let~ subslice_start :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],

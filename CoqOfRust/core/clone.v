@@ -170,7 +170,9 @@ Module clone.
                   |)
                 |)
               |);
-              M.rust_cast (M.read (| dst |))
+              M.cast
+                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                (M.read (| dst |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -227,7 +229,9 @@ Module clone.
                   |)
                 |)
               |);
-              M.rust_cast (M.read (| dst |))
+              M.cast
+                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                (M.read (| dst |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

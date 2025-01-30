@@ -121,7 +121,7 @@ Module gas_algebra.
                               M.read (| Value.String "GasQuantity" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -2233,10 +2233,10 @@ Module gas_algebra.
             M.alloc (|
               BinOp.Wrap.div (|
                 BinOp.Wrap.mul (|
-                  M.rust_cast (M.read (| val |)),
-                  M.rust_cast (M.read (| nominator |))
+                  M.cast (Ty.path "u128") (M.read (| val |)),
+                  M.cast (Ty.path "u128") (M.read (| nominator |))
                 |),
-                M.rust_cast (M.read (| denominator |))
+                M.cast (Ty.path "u128") (M.read (| denominator |))
               |)
             |) in
           M.match_operator (|
@@ -2249,12 +2249,14 @@ Module gas_algebra.
                       (M.alloc (|
                         BinOp.gt (|
                           M.read (| res |),
-                          M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          M.cast
+                            (Ty.path "u128")
+                            (M.read (| M.get_constant (| "core::num::MAX" |) |))
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.get_constant (| "core::num::MAX" |)));
-              fun γ => ltac:(M.monadic (M.alloc (| M.rust_cast (M.read (| res |)) |)))
+              fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)
         |)))
@@ -2445,11 +2447,11 @@ Module gas_algebra.
           let~ n :=
             M.alloc (|
               BinOp.Wrap.mul (|
-                M.rust_cast (M.read (| val |)),
-                M.rust_cast (M.read (| nominator |))
+                M.cast (Ty.path "u128") (M.read (| val |)),
+                M.cast (Ty.path "u128") (M.read (| nominator |))
               |)
             |) in
-          let~ d := M.alloc (| M.rust_cast (M.read (| denominator |)) |) in
+          let~ d := M.alloc (| M.cast (Ty.path "u128") (M.read (| denominator |)) |) in
           let~ res :=
             M.alloc (|
               BinOp.Wrap.add (|
@@ -2487,12 +2489,14 @@ Module gas_algebra.
                       (M.alloc (|
                         BinOp.gt (|
                           M.read (| res |),
-                          M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          M.cast
+                            (Ty.path "u128")
+                            (M.read (| M.get_constant (| "core::num::MAX" |) |))
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.get_constant (| "core::num::MAX" |)));
-              fun γ => ltac:(M.monadic (M.alloc (| M.rust_cast (M.read (| res |)) |)))
+              fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)
         |)))

@@ -883,11 +883,13 @@ Module gas.
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |),
-                M.rust_cast
+                M.cast
+                  (Ty.path "i64")
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "min", [], [] |),
                     [
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",

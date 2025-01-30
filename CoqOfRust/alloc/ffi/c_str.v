@@ -1981,7 +1981,11 @@ Module ffi.
                           []
                         |),
                         [
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                             (M.read (|
                               M.use
                                 (M.alloc (|
@@ -2011,7 +2015,8 @@ Module ffi.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
@@ -2540,7 +2545,8 @@ Module ffi.
                 []
               |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::c_str::CStr" ])
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
@@ -3411,7 +3417,8 @@ Module ffi.
                     []
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::c_str::CStr" ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -3552,7 +3559,11 @@ Module ffi.
             M.read (|
               let~ raw :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*mut")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -3988,7 +3999,8 @@ Module ffi.
                     []
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ Ty.path "core::ffi::c_str::CStr" ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -4082,7 +4094,8 @@ Module ffi.
                     []
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ Ty.path "core::ffi::c_str::CStr" ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -4184,7 +4197,8 @@ Module ffi.
                     []
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ Ty.path "core::ffi::c_str::CStr" ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -4278,7 +4292,8 @@ Module ffi.
                     []
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ Ty.path "core::ffi::c_str::CStr" ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -4428,7 +4443,8 @@ Module ffi.
                     []
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::c_str::CStr" ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply

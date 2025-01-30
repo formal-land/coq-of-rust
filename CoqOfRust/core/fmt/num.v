@@ -22,7 +22,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "i8") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -32,7 +32,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -42,7 +42,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -52,7 +52,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -87,7 +87,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "i16") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -97,7 +97,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -107,7 +107,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -117,7 +117,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -152,7 +152,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "i32") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -162,7 +162,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -172,7 +172,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -182,7 +182,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -217,7 +217,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "i64") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -227,7 +227,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -237,7 +237,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -247,7 +247,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -282,7 +282,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "i128") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -292,7 +292,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -302,7 +302,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -312,7 +312,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -347,7 +347,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "isize") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -357,7 +357,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -367,7 +367,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -377,7 +377,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -432,7 +432,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -442,7 +442,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -477,7 +477,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "u16") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -487,7 +487,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -497,7 +497,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -507,7 +507,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -542,7 +542,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "u32") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -552,7 +552,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -562,7 +562,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -572,7 +572,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -607,7 +607,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "u64") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -617,7 +617,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -637,7 +637,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -672,7 +672,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "u128") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -682,7 +682,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -692,7 +692,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -737,7 +737,7 @@ Module fmt.
         | [], [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
-            M.rust_cast (M.read (| u |))))
+            M.cast (Ty.path "usize") (M.read (| u |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -747,7 +747,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -757,7 +757,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -767,7 +767,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
+            M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2439,7 +2439,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -2483,7 +2483,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -2527,7 +2527,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -2571,7 +2571,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -2791,7 +2791,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -2835,7 +2835,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -2879,7 +2879,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -2923,7 +2923,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3143,7 +3143,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3187,7 +3187,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3231,7 +3231,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3275,7 +3275,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3495,7 +3495,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3539,7 +3539,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3583,7 +3583,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3627,7 +3627,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3847,7 +3847,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3891,7 +3891,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3935,7 +3935,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -3979,7 +3979,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -4199,7 +4199,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -4243,7 +4243,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -4287,7 +4287,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -4331,7 +4331,7 @@ Module fmt.
                   Pointer.Kind.Ref,
                   M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
                 |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
@@ -6483,7 +6483,8 @@ Module fmt.
                                 |) in
                               let~ rem :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (BinOp.Wrap.rem (|
                                       M.read (| n |),
                                       Value.Integer IntegerKind.U64 10000
@@ -6612,7 +6613,7 @@ Module fmt.
                         ]
                       |)))
                   |) in
-                let~ n := M.alloc (| M.rust_cast (M.read (| n |)) |) in
+                let~ n := M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |) in
                 let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -6718,7 +6719,7 @@ Module fmt.
                               |)
                             |),
                             BinOp.Wrap.add (|
-                              M.rust_cast (M.read (| n |)),
+                              M.cast (Ty.path "u8") (M.read (| n |)),
                               M.read (| UnsupportedLiteral |)
                             |)
                           |) in
@@ -8692,7 +8693,8 @@ Module fmt.
                                     let~ d1 :=
                                       M.alloc (|
                                         BinOp.Wrap.shl (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "usize")
                                             (BinOp.Wrap.rem (|
                                               M.read (| n |),
                                               Value.Integer IntegerKind.U64 100
@@ -8777,7 +8779,7 @@ Module fmt.
                               ]
                             |)))
                         |) in
-                      let~ n := M.alloc (| M.rust_cast (M.read (| n |)) |) in
+                      let~ n := M.alloc (| M.cast (Ty.path "isize") (M.read (| n |)) |) in
                       let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -8822,7 +8824,7 @@ Module fmt.
                                       |),
                                       BinOp.Wrap.add (|
                                         BinOp.Wrap.rem (|
-                                          M.rust_cast (M.read (| n |)),
+                                          M.cast (Ty.path "u8") (M.read (| n |)),
                                           Value.Integer IntegerKind.U8 10
                                         |),
                                         M.read (| UnsupportedLiteral |)
@@ -8927,7 +8929,7 @@ Module fmt.
                                 |)
                               |),
                               BinOp.Wrap.add (|
-                                M.rust_cast (M.read (| n |)),
+                                M.cast (Ty.path "u8") (M.read (| n |)),
                                 M.read (| UnsupportedLiteral |)
                               |)
                             |) in
@@ -9086,7 +9088,7 @@ Module fmt.
                                             |)
                                           |),
                                           BinOp.Wrap.add (|
-                                            M.rust_cast (M.read (| exponent |)),
+                                            M.cast (Ty.path "u8") (M.read (| exponent |)),
                                             M.read (| UnsupportedLiteral |)
                                           |)
                                         |) in
@@ -12269,7 +12271,8 @@ Module fmt.
                                   let~ d1 :=
                                     M.alloc (|
                                       BinOp.Wrap.shl (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "usize")
                                           (BinOp.Wrap.rem (|
                                             M.read (| n |),
                                             Value.Integer IntegerKind.U128 100
@@ -12354,7 +12357,7 @@ Module fmt.
                             ]
                           |)))
                       |) in
-                    let~ n := M.alloc (| M.rust_cast (M.read (| n |)) |) in
+                    let~ n := M.alloc (| M.cast (Ty.path "isize") (M.read (| n |)) |) in
                     let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -12399,7 +12402,7 @@ Module fmt.
                                     |),
                                     BinOp.Wrap.add (|
                                       BinOp.Wrap.rem (|
-                                        M.rust_cast (M.read (| n |)),
+                                        M.cast (Ty.path "u8") (M.read (| n |)),
                                         Value.Integer IntegerKind.U8 10
                                       |),
                                       M.read (| UnsupportedLiteral |)
@@ -12504,7 +12507,7 @@ Module fmt.
                               |)
                             |),
                             BinOp.Wrap.add (|
-                              M.rust_cast (M.read (| n |)),
+                              M.cast (Ty.path "u8") (M.read (| n |)),
                               M.read (| UnsupportedLiteral |)
                             |)
                           |) in
@@ -12663,7 +12666,7 @@ Module fmt.
                                           |)
                                         |),
                                         BinOp.Wrap.add (|
-                                          M.rust_cast (M.read (| exponent |)),
+                                          M.cast (Ty.path "u8") (M.read (| exponent |)),
                                           M.read (| UnsupportedLiteral |)
                                         |)
                                       |) in
@@ -13485,7 +13488,7 @@ Module fmt.
                           (M.alloc (|
                             BinOp.ge (|
                               M.read (| n |),
-                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                              M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13493,7 +13496,7 @@ Module fmt.
                         M.alloc (|
                           BinOp.Wrap.rem (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                            M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                           |)
                         |) in
                       let~ _ :=
@@ -13502,7 +13505,7 @@ Module fmt.
                           β,
                           BinOp.Wrap.div (|
                             M.read (| β |),
-                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                            M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                           |)
                         |) in
                       let~ d1 :=
@@ -13511,7 +13514,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13524,7 +13527,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13537,7 +13540,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13550,7 +13553,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13563,7 +13566,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13576,7 +13579,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13589,7 +13592,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13602,7 +13605,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13631,7 +13634,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d1 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13668,7 +13671,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d2 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d2 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13705,7 +13708,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d3 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d3 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13742,7 +13745,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d4 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d4 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13779,7 +13782,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d5 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d5 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13816,7 +13819,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d6 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d6 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13853,7 +13856,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d7 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d7 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13890,7 +13893,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d8 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d8 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13926,7 +13929,7 @@ Module fmt.
                           (M.alloc (|
                             BinOp.ge (|
                               M.read (| n |),
-                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                              M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13934,7 +13937,7 @@ Module fmt.
                         M.alloc (|
                           BinOp.Wrap.rem (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                            M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                           |)
                         |) in
                       let~ _ :=
@@ -13943,7 +13946,7 @@ Module fmt.
                           β,
                           BinOp.Wrap.div (|
                             M.read (| β |),
-                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                            M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                           |)
                         |) in
                       let~ d1 :=
@@ -13952,7 +13955,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13965,7 +13968,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13978,7 +13981,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -13991,7 +13994,7 @@ Module fmt.
                             BinOp.Wrap.rem (|
                               BinOp.Wrap.div (|
                                 M.read (| to_parse |),
-                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                                M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |))
                               |),
                               Value.Integer IntegerKind.U64 100
                             |),
@@ -14020,7 +14023,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d1 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14057,7 +14060,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d2 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d2 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14094,7 +14097,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d3 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d3 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14131,7 +14134,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d4 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d4 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14156,7 +14159,7 @@ Module fmt.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ n := M.alloc (| M.rust_cast (M.read (| n |)) |) in
+            let~ n := M.alloc (| M.cast (Ty.path "u32") (M.read (| n |)) |) in
             let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -14168,7 +14171,7 @@ Module fmt.
                           (M.alloc (|
                             BinOp.ge (|
                               M.read (| n |),
-                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                              M.cast (Ty.path "u32") (M.read (| UnsupportedLiteral |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -14176,7 +14179,7 @@ Module fmt.
                         M.alloc (|
                           BinOp.Wrap.rem (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                            M.cast (Ty.path "u32") (M.read (| UnsupportedLiteral |))
                           |)
                         |) in
                       let~ _ :=
@@ -14185,7 +14188,7 @@ Module fmt.
                           β,
                           BinOp.Wrap.div (|
                             M.read (| β |),
-                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                            M.cast (Ty.path "u32") (M.read (| UnsupportedLiteral |))
                           |)
                         |) in
                       let~ d1 :=
@@ -14230,7 +14233,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d1 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14267,7 +14270,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d2 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d2 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14292,7 +14295,7 @@ Module fmt.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ n := M.alloc (| M.rust_cast (M.read (| n |)) |) in
+            let~ n := M.alloc (| M.cast (Ty.path "u16") (M.read (| n |)) |) in
             let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -14340,7 +14343,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
+                                [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d1 |)) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14391,7 +14394,7 @@ Module fmt.
                           |)
                         |),
                         BinOp.Wrap.add (|
-                          M.rust_cast (M.read (| n |)),
+                          M.cast (Ty.path "u8") (M.read (| n |)),
                           M.read (| UnsupportedLiteral |)
                         |)
                       |) in
@@ -14424,7 +14427,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
+                              [ M.read (| lut_ptr |); M.cast (Ty.path "usize") (M.read (| d1 |)) ]
                             |);
                             M.call_closure (|
                               M.get_associated_function (|
@@ -14968,7 +14971,7 @@ Module fmt.
                                                     |)
                                                   |),
                                                   BinOp.Wrap.add (|
-                                                    M.rust_cast (M.read (| n |)),
+                                                    M.cast (Ty.path "u8") (M.read (| n |)),
                                                     M.read (| UnsupportedLiteral |)
                                                   |)
                                                 |) in
@@ -15124,9 +15127,11 @@ Module fmt.
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u128")
                             (BinOp.Wrap.div (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "u64")
                                 (BinOp.Wrap.shr (|
                                   M.read (| n |),
                                   Value.Integer IntegerKind.I32 19
@@ -15158,12 +15163,14 @@ Module fmt.
               |) in
             let~ rem :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u64")
                   (BinOp.Wrap.sub (|
                     M.read (| n |),
                     BinOp.Wrap.mul (|
                       M.read (| quot |),
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u128")
                         (M.read (| M.get_constant (| "core::fmt::num::udiv_1e19::DIV" |) |))
                     |)
                   |))
@@ -15177,7 +15184,8 @@ Module fmt.
     
     Module udiv_1e19.
       Definition value_DIV : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| M.rust_cast (M.read (| UnsupportedLiteral |)) |))).
+        M.run
+          ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |)) |))).
       
       Definition value_FACTOR : Value.t :=
         M.run
@@ -15210,22 +15218,26 @@ Module fmt.
           (let x := M.alloc (| x |) in
           let y := M.alloc (| y |) in
           M.read (|
-            let~ x_lo := M.alloc (| M.rust_cast (M.read (| x |)) |) in
+            let~ x_lo := M.alloc (| M.cast (Ty.path "u64") (M.read (| x |)) |) in
             let~ x_hi :=
               M.alloc (|
-                M.rust_cast (BinOp.Wrap.shr (| M.read (| x |), Value.Integer IntegerKind.I32 64 |))
+                M.cast
+                  (Ty.path "u64")
+                  (BinOp.Wrap.shr (| M.read (| x |), Value.Integer IntegerKind.I32 64 |))
               |) in
-            let~ y_lo := M.alloc (| M.rust_cast (M.read (| y |)) |) in
+            let~ y_lo := M.alloc (| M.cast (Ty.path "u64") (M.read (| y |)) |) in
             let~ y_hi :=
               M.alloc (|
-                M.rust_cast (BinOp.Wrap.shr (| M.read (| y |), Value.Integer IntegerKind.I32 64 |))
+                M.cast
+                  (Ty.path "u64")
+                  (BinOp.Wrap.shr (| M.read (| y |), Value.Integer IntegerKind.I32 64 |))
               |) in
             let~ carry :=
               M.alloc (|
                 BinOp.Wrap.shr (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast (M.read (| x_lo |)),
-                    M.rust_cast (M.read (| y_lo |))
+                    M.cast (Ty.path "u128") (M.read (| x_lo |)),
+                    M.cast (Ty.path "u128") (M.read (| y_lo |))
                   |),
                   Value.Integer IntegerKind.I32 64
                 |)
@@ -15234,24 +15246,24 @@ Module fmt.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast (M.read (| x_lo |)),
-                    M.rust_cast (M.read (| y_hi |))
+                    M.cast (Ty.path "u128") (M.read (| x_lo |)),
+                    M.cast (Ty.path "u128") (M.read (| y_hi |))
                   |),
                   M.read (| carry |)
                 |)
               |) in
             let~ high1 :=
               M.alloc (| BinOp.Wrap.shr (| M.read (| m |), Value.Integer IntegerKind.I32 64 |) |) in
-            let~ m_lo := M.alloc (| M.rust_cast (M.read (| m |)) |) in
+            let~ m_lo := M.alloc (| M.cast (Ty.path "u64") (M.read (| m |)) |) in
             let~ high2 :=
               M.alloc (|
                 BinOp.Wrap.shr (|
                   BinOp.Wrap.add (|
                     BinOp.Wrap.mul (|
-                      M.rust_cast (M.read (| x_hi |)),
-                      M.rust_cast (M.read (| y_lo |))
+                      M.cast (Ty.path "u128") (M.read (| x_hi |)),
+                      M.cast (Ty.path "u128") (M.read (| y_lo |))
                     |),
-                    M.rust_cast (M.read (| m_lo |))
+                    M.cast (Ty.path "u128") (M.read (| m_lo |))
                   |),
                   Value.Integer IntegerKind.I32 64
                 |)
@@ -15260,8 +15272,8 @@ Module fmt.
               BinOp.Wrap.add (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast (M.read (| x_hi |)),
-                    M.rust_cast (M.read (| y_hi |))
+                    M.cast (Ty.path "u128") (M.read (| x_hi |)),
+                    M.cast (Ty.path "u128") (M.read (| y_hi |))
                   |),
                   M.read (| high1 |)
                 |),

@@ -947,11 +947,11 @@ Module slice.
                           Value.Integer IntegerKind.U64 1,
                           Value.Integer IntegerKind.I32 62
                         |),
-                        M.rust_cast (M.read (| n |))
+                        M.cast (Ty.path "u64") (M.read (| n |))
                       |),
                       Value.Integer IntegerKind.U64 1
                     |),
-                    M.rust_cast (M.read (| n |))
+                    M.cast (Ty.path "u64") (M.read (| n |))
                   |)
                 |)
               |)))
@@ -982,19 +982,20 @@ Module slice.
                 let~ x :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast (M.read (| left |)),
-                      M.rust_cast (M.read (| mid |))
+                      M.cast (Ty.path "u64") (M.read (| left |)),
+                      M.cast (Ty.path "u64") (M.read (| mid |))
                     |)
                   |) in
                 let~ y :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast (M.read (| mid |)),
-                      M.rust_cast (M.read (| right |))
+                      M.cast (Ty.path "u64") (M.read (| mid |)),
+                      M.cast (Ty.path "u64") (M.read (| right |))
                     |)
                   |) in
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "u8")
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                       [

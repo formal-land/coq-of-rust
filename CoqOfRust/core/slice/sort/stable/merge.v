@@ -447,7 +447,9 @@ Module slice.
                                       |),
                                       ltac:(M.monadic
                                         (BinOp.ne (|
-                                          M.rust_cast (M.read (| right |)),
+                                          M.cast
+                                            (Ty.apply (Ty.path "*const") [] [ T ])
+                                            (M.read (| right |)),
                                           M.read (| right_end |)
                                         |)))
                                     |)
@@ -557,7 +559,7 @@ Module slice.
                                     |),
                                     [
                                       M.read (| M.deref (| M.read (| left |) |) |);
-                                      M.rust_cast (M.read (| consume_left |))
+                                      M.cast (Ty.path "usize") (M.read (| consume_left |))
                                     ]
                                   |)
                                 |) in
@@ -573,7 +575,9 @@ Module slice.
                                     |),
                                     [
                                       M.read (| right |);
-                                      M.rust_cast (UnOp.not (| M.read (| consume_left |) |))
+                                      M.cast
+                                        (Ty.path "usize")
+                                        (UnOp.not (| M.read (| consume_left |) |))
                                     ]
                                   |)
                                 |) in
@@ -811,7 +815,7 @@ Module slice.
                             |),
                             [
                               M.read (| left |);
-                              M.rust_cast (UnOp.not (| M.read (| consume_left |) |))
+                              M.cast (Ty.path "usize") (UnOp.not (| M.read (| consume_left |) |))
                             ]
                           |)
                         |) in
@@ -829,7 +833,10 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| right |); M.rust_cast (M.read (| consume_left |)) ]
+                            [
+                              M.read (| right |);
+                              M.cast (Ty.path "usize") (M.read (| consume_left |))
+                            ]
                           |)
                         |) in
                       M.match_operator (|
@@ -842,7 +849,8 @@ Module slice.
                                   (M.alloc (|
                                     LogicalOp.or (|
                                       BinOp.eq (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply (Ty.path "*const") [] [ T ])
                                           (* MutToConstPointer *)
                                           (M.pointer_coercion
                                             (M.read (|
@@ -856,7 +864,8 @@ Module slice.
                                       |),
                                       ltac:(M.monadic
                                         (BinOp.eq (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.apply (Ty.path "*const") [] [ T ])
                                             (* MutToConstPointer *)
                                             (M.pointer_coercion
                                               (M.read (|

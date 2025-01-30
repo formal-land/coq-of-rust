@@ -312,7 +312,8 @@ Module mem.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*const") [] [ T ])
               (M.read (|
                 M.use
                   (M.alloc (|
@@ -338,7 +339,8 @@ Module mem.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*mut") [] [ T ])
               (M.read (|
                 M.use
                   (M.alloc (|
@@ -721,7 +723,8 @@ Module mem.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ])
                       (M.read (|
                         M.use
                           (M.alloc (|
@@ -772,7 +775,8 @@ Module mem.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -813,7 +817,8 @@ Module mem.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*const") [] [ T ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
@@ -849,7 +854,8 @@ Module mem.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*mut") [] [ T ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
@@ -2085,7 +2091,16 @@ Module mem.
                     ]
                   |),
                   [
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [ Ty.path "u8" ]
+                        ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
@@ -2150,7 +2165,16 @@ Module mem.
                             ]
                           |),
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ Ty.path "u8" ]
+                                ])
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
@@ -2238,7 +2262,16 @@ Module mem.
                         ]
                       |),
                       [
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply
+                            (Ty.path "*const")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [ Ty.path "u8" ]
+                            ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -2323,7 +2356,16 @@ Module mem.
                                 ]
                               |),
                               [
-                                M.rust_cast
+                                M.cast
+                                  (Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ])
                                   (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply

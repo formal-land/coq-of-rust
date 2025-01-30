@@ -71,7 +71,8 @@ Module file_format_common.
           (M.alloc (|
             BinOp.Wrap.add (|
               BinOp.Wrap.mul (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (M.call_closure (|
                     M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
                     []
@@ -3781,7 +3782,8 @@ Module file_format_common.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| binary |) |)
                                           |);
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u8")
                                             (BinOp.bit_or
                                               (M.read (| cur |))
                                               (Value.Integer IntegerKind.U64 128))
@@ -3885,7 +3887,7 @@ Module file_format_common.
                                                   Pointer.Kind.MutRef,
                                                   M.deref (| M.read (| binary |) |)
                                                 |);
-                                                M.rust_cast (M.read (| cur |))
+                                                M.cast (Ty.path "u8") (M.read (| cur |))
                                               ]
                                             |)
                                           ]
@@ -4523,7 +4525,8 @@ Module file_format_common.
                               let byte := M.copy (| γ0_0 |) in
                               let~ cur :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u64")
                                     (BinOp.bit_and
                                       (M.read (| byte |))
                                       (Value.Integer IntegerKind.U8 127))
@@ -5964,7 +5967,7 @@ Module file_format_common.
                 ]
               |)
             |) in
-          M.alloc (| M.rust_cast (M.read (| opcode |)) |)
+          M.alloc (| M.cast (Ty.path "u8") (M.read (| opcode |)) |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -2233,7 +2233,8 @@ Module evm.
                   |) in
                 let~ eip7702_gas_refund :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i64")
                       (M.read (|
                         M.match_operator (|
                           M.alloc (|

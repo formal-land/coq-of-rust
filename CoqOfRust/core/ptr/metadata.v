@@ -167,7 +167,8 @@ Module ptr.
             M.call_closure (|
               M.get_function (| "core::intrinsics::vtable_size", [], [] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
@@ -201,7 +202,8 @@ Module ptr.
             M.call_closure (|
               M.get_function (| "core::intrinsics::vtable_align", [], [] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],

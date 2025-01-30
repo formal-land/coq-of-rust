@@ -665,7 +665,8 @@ Module iter.
                                                 |),
                                                 BinOp.Wrap.add (|
                                                   M.read (| idx |),
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "usize")
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply

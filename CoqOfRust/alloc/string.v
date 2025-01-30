@@ -4406,7 +4406,7 @@ Module string.
                               "vec"
                             |)
                           |);
-                          M.rust_cast (M.read (| ch |))
+                          M.cast (Ty.path "u8") (M.read (| ch |))
                         ]
                       |)
                     |)));
@@ -12963,7 +12963,8 @@ Module string.
                                       |),
                                       [
                                         M.borrow (| Pointer.Kind.MutRef, buf |);
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "char")
                                           (BinOp.Wrap.add (|
                                             M.read (| UnsupportedLiteral |),
                                             BinOp.Wrap.div (|
@@ -12998,7 +12999,8 @@ Module string.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, buf |);
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "char")
                                 (BinOp.Wrap.add (|
                                   M.read (| UnsupportedLiteral |),
                                   BinOp.Wrap.div (|
@@ -13025,7 +13027,8 @@ Module string.
                   M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, buf |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "char")
                       (BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| n |) |))
                   ]
                 |)
@@ -13191,7 +13194,8 @@ Module string.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, buf |);
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "char")
                                 (BinOp.Wrap.add (|
                                   M.read (| UnsupportedLiteral |),
                                   BinOp.Wrap.div (|
@@ -13218,7 +13222,8 @@ Module string.
                   M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, buf |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "char")
                       (BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| n |) |))
                   ]
                 |)

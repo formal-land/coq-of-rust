@@ -61,7 +61,7 @@ Module slice.
                           []
                         |),
                         [
-                          M.rust_cast (M.read (| b |));
+                          M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| b |));
                           M.read (| len |);
                           M.read (| len |);
                           M.read (| alloc |)
@@ -1024,7 +1024,8 @@ Module slice.
                                   ltac:(M.monadic
                                     (BinOp.le (|
                                       M.read (| len |),
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (| M.get_constant (| "core::num::MAX" |) |))
                                     |)))
                                 |)
@@ -1190,7 +1191,9 @@ Module slice.
                                                                   Value.Tuple
                                                                     [
                                                                       M.read (| k |);
-                                                                      M.rust_cast (M.read (| i |))
+                                                                      M.cast
+                                                                        (Ty.path "u32")
+                                                                        (M.read (| i |))
                                                                     ]))
                                                             ]
                                                           |)))
@@ -1385,7 +1388,9 @@ Module slice.
                                                                             M.use
                                                                               (M.alloc (|
                                                                                 BinOp.lt (|
-                                                                                  M.rust_cast
+                                                                                  M.cast
+                                                                                    (Ty.path
+                                                                                      "usize")
                                                                                     (M.read (|
                                                                                       index
                                                                                     |)),
@@ -1434,7 +1439,9 @@ Module slice.
                                                                                           Pointer.Kind.Ref,
                                                                                           indices
                                                                                         |);
-                                                                                        M.rust_cast
+                                                                                        M.cast
+                                                                                          (Ty.path
+                                                                                            "usize")
                                                                                           (M.read (|
                                                                                             index
                                                                                           |))
@@ -1526,7 +1533,9 @@ Module slice.
                                                                       |)
                                                                     |);
                                                                     M.read (| i |);
-                                                                    M.rust_cast (M.read (| index |))
+                                                                    M.cast
+                                                                      (Ty.path "usize")
+                                                                      (M.read (| index |))
                                                                   ]
                                                                 |)
                                                               |) in

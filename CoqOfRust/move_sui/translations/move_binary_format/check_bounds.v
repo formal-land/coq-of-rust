@@ -6003,7 +6003,8 @@ Module check_bounds.
                                     M.use
                                       (M.alloc (|
                                         BinOp.ge (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "usize")
                                             (M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.deref (| M.read (| field_handle |) |),
@@ -7807,7 +7808,7 @@ Module check_bounds.
                       [
                         Value.StructTuple
                           "move_binary_format::file_format::FunctionDefinitionIndex"
-                          [ M.rust_cast (M.read (| function_def_idx |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| function_def_idx |)) ]
                       ]
                   |) in
                 let~ _ :=
@@ -8296,7 +8297,7 @@ Module check_bounds.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
                                             [];
-                                          M.rust_cast (M.read (| function_def_idx |))
+                                          M.cast (Ty.path "u16") (M.read (| function_def_idx |))
                                         ]
                                       |)
                                     ]
@@ -8456,7 +8457,7 @@ Module check_bounds.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
                                             [];
-                                          M.rust_cast (M.read (| function_def_idx |))
+                                          M.cast (Ty.path "u16") (M.read (| function_def_idx |))
                                         ]
                                       |)
                                     ]
@@ -9050,7 +9051,9 @@ Module check_bounds.
                               (M.alloc (|
                                 BinOp.gt (|
                                   M.read (| locals_count |),
-                                  M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (| M.get_constant (| "core::num::MAX" |) |))
                                 |)
                               |)) in
                           let _ :=
@@ -9075,7 +9078,7 @@ Module check_bounds.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
                                             [];
-                                          M.rust_cast (M.read (| index |))
+                                          M.cast (Ty.path "u16") (M.read (| index |))
                                         ]
                                       |)
                                     ]
@@ -12149,7 +12152,8 @@ Module check_bounds.
                                                           ltac:(M.monadic
                                                             (let~ offset :=
                                                               M.alloc (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "usize")
                                                                   (M.read (|
                                                                     M.deref (|
                                                                       M.read (| offset |)
@@ -12210,7 +12214,9 @@ Module check_bounds.
                                                                                     M.read (|
                                                                                       code_len
                                                                                     |);
-                                                                                    M.rust_cast
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "u16")
                                                                                       (M.read (|
                                                                                         bytecode_offset
                                                                                       |))
@@ -12298,7 +12304,8 @@ Module check_bounds.
                                                           ltac:(M.monadic
                                                             (let~ idx :=
                                                               M.alloc (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "usize")
                                                                   (M.read (|
                                                                     M.deref (| M.read (| idx |) |)
                                                                   |))
@@ -12359,7 +12366,9 @@ Module check_bounds.
                                                                                     M.read (|
                                                                                       locals_count
                                                                                     |);
-                                                                                    M.rust_cast
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "u16")
                                                                                       (M.read (|
                                                                                         bytecode_offset
                                                                                       |))
@@ -14831,7 +14840,8 @@ Module check_bounds.
                                                             M.use
                                                               (M.alloc (|
                                                                 BinOp.ge (|
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "usize")
                                                                     (M.read (|
                                                                       M.deref (| M.read (| idx |) |)
                                                                     |)),
@@ -15143,7 +15153,7 @@ Module check_bounds.
                               |);
                               M.read (| idx |);
                               M.read (| len |);
-                              M.rust_cast (M.read (| bytecode_offset |))
+                              M.cast (Ty.path "u16") (M.read (| bytecode_offset |))
                             ]
                           |)
                         ]
@@ -15310,7 +15320,8 @@ Module check_bounds.
                                 "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
                                 [];
                               Value.StructTuple "move_binary_format::IndexKind::Signature" [];
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "u16")
                                 (M.call_closure (|
                                   M.get_trait_method (|
                                     "move_binary_format::internals::ModuleIndex",
@@ -15653,7 +15664,7 @@ Module check_bounds.
                                 "move_binary_format::internals::ModuleIndex::KIND"
                               |)
                             |);
-                            M.rust_cast (M.read (| idx |));
+                            M.cast (Ty.path "u16") (M.read (| idx |));
                             M.read (| len |)
                           ]
                         |)

@@ -327,7 +327,8 @@ Module struct_defs.
                                   Value.StructTuple
                                     "move_binary_format::IndexKind::StructDefinition"
                                     [];
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u16")
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "move_binary_format::internals::ModuleIndex",
@@ -603,7 +604,7 @@ Module struct_defs.
                                               M.read (| sh_idx |);
                                               Value.StructTuple
                                                 "move_binary_format::file_format::StructDefinitionIndex"
-                                                [ M.rust_cast (M.read (| idx |)) ]
+                                                [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                             ]
                                           |)
                                         |) in
@@ -800,7 +801,7 @@ Module struct_defs.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.rust_cast (M.read (| idx |)) ]
+                                                [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                               |)
                                             |) in
                                           M.match_operator (|

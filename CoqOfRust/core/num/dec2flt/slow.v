@@ -136,7 +136,8 @@ Module num.
                                                       Value.Bool true
                                                     |) in
                                                   M.alloc (|
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "usize")
                                                       (M.read (|
                                                         M.SubPointer.get_array_field (|
                                                           M.get_constant (|
@@ -300,7 +301,8 @@ Module num.
                                   |) in
                                 let~ n :=
                                   M.alloc (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "usize")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           d,
@@ -386,7 +388,7 @@ Module num.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.rust_cast (M.read (| shift |))
+                                      M.cast (Ty.path "i32") (M.read (| shift |))
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -547,7 +549,8 @@ Module num.
                                                   M.borrow (| Pointer.Kind.Ref, get_shift |);
                                                   Value.Tuple
                                                     [
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.path "usize")
                                                         (UnOp.neg (|
                                                           M.read (|
                                                             M.SubPointer.get_struct_record_field (|
@@ -619,7 +622,7 @@ Module num.
                                     β,
                                     BinOp.Wrap.sub (|
                                       M.read (| β |),
-                                      M.rust_cast (M.read (| shift |))
+                                      M.cast (Ty.path "i32") (M.read (| shift |))
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -675,7 +678,8 @@ Module num.
                                   |) in
                                 let~ n :=
                                   M.alloc (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "usize")
                                       (BinOp.Wrap.sub (|
                                         BinOp.Wrap.add (|
                                           M.read (|
@@ -742,7 +746,7 @@ Module num.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.rust_cast (M.read (| n |))
+                                      M.cast (Ty.path "i32") (M.read (| n |))
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));

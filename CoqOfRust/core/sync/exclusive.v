@@ -282,7 +282,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|

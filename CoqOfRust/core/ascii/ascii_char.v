@@ -1175,7 +1175,7 @@ Module ascii.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| self |))))
+            M.cast (Ty.path "u8") (M.read (| self |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1191,7 +1191,7 @@ Module ascii.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.rust_cast (M.read (| self |)))))
+            M.cast (Ty.path "char") (M.cast (Ty.path "u8") (M.read (| self |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1254,7 +1254,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.read (| M.use (M.alloc (| M.rust_cast (M.read (| chr |)) |)) |)))
+            M.read (| M.use (M.alloc (| M.cast (Ty.path "u8") (M.read (| chr |)) |)) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1279,7 +1279,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u16") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1304,7 +1304,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u32") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1329,7 +1329,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u64") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1354,7 +1354,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u128") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1379,7 +1379,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "char") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1414,7 +1414,10 @@ Module ascii.
                 M.alloc (|
                   M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
                 |) in
-              let~ str_ptr := M.alloc (| M.rust_cast (M.read (| ascii_ptr |)) |) in
+              let~ str_ptr :=
+                M.alloc (|
+                  M.cast (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ]) (M.read (| ascii_ptr |))
+                |) in
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,

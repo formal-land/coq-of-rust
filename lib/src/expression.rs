@@ -103,6 +103,10 @@ pub(crate) enum Expr {
         lhs: Rc<Expr>,
         rhs: Rc<Expr>,
     },
+    Cast {
+        target_ty: Rc<CoqType>,
+        source: Rc<Expr>,
+    },
     Lambda {
         args: Vec<(String, Option<Rc<CoqType>>)>,
         body: Rc<Expr>,
@@ -253,6 +257,10 @@ impl Expr {
                 kind: _,
             } => func.has_return() || args.iter().any(|arg| arg.has_return()),
             Expr::LogicalOperator { name: _, lhs, rhs } => lhs.has_return() || rhs.has_return(),
+            Expr::Cast {
+                target_ty: _,
+                source,
+            } => source.has_return(),
             Expr::Lambda {
                 args: _,
                 body,
@@ -540,6 +548,8 @@ impl Expr {
             },
             Expr::LogicalOperator { name, lhs, rhs } => coq::Expression::just_name(name.as_str())
                 .monadic_apply_many(&[lhs.to_coq(), coq::Expression::monadic(&rhs.to_coq())]),
+            Expr::Cast { target_ty, source } => coq::Expression::just_name("M.cast")
+                .apply_many(&[target_ty.to_coq(), source.to_coq()]),
             Expr::Lambda {
                 args,
                 body,

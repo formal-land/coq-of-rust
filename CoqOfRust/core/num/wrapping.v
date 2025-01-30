@@ -629,10 +629,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |))))
                   ]
                 |)
@@ -726,10 +728,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |))))
                   ]
                 |)
@@ -823,10 +827,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u16" |)
                           |))))
@@ -922,10 +928,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u16" |)
                           |))))
@@ -1021,10 +1029,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u32" |)
                           |))))
@@ -1120,10 +1130,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u32" |)
                           |))))
@@ -1219,10 +1231,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u64" |)
                           |))))
@@ -1318,10 +1332,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u64" |)
                           |))))
@@ -1417,10 +1433,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u128" |)
                           |))))
@@ -1516,10 +1534,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::u128" |)
                           |))))
@@ -1615,10 +1635,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::platform::usize" |)
                           |))))
@@ -1714,10 +1736,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::platform::usize" |)
                           |))))
@@ -1813,10 +1837,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |))))
                   ]
                 |)
@@ -1910,10 +1936,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |))))
                   ]
                 |)
@@ -2007,10 +2035,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i16" |)
                           |))))
@@ -2106,10 +2136,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i16" |)
                           |))))
@@ -2205,10 +2237,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i32" |)
                           |))))
@@ -2304,10 +2338,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i32" |)
                           |))))
@@ -2403,10 +2439,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i64" |)
                           |))))
@@ -2502,10 +2540,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i64" |)
                           |))))
@@ -2601,10 +2641,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i128" |)
                           |))))
@@ -2700,10 +2742,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::i128" |)
                           |))))
@@ -2799,10 +2843,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::platform::isize" |)
                           |))))
@@ -2898,10 +2944,12 @@ Module num.
                         0
                       |)
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.bit_and
                         (M.read (| other |))
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.get_constant (| "core::num::wrapping::shift_max::platform::isize" |)
                           |))))

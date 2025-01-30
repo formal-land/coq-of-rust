@@ -434,7 +434,8 @@ Module slice.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::function::FnMut",

@@ -66,8 +66,11 @@ Module main.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (|
             BinOp.Wrap.add (|
-              BinOp.Wrap.shl (| M.rust_cast (M.read (| hi |)), Value.Integer IntegerKind.I32 64 |),
-              M.rust_cast (M.read (| lo |))
+              BinOp.Wrap.shl (|
+                M.cast (Ty.path "u128") (M.read (| hi |)),
+                Value.Integer IntegerKind.I32 64
+              |),
+              M.cast (Ty.path "u128") (M.read (| lo |))
             |)
           |)
         |)))

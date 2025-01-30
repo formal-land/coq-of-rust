@@ -5590,7 +5590,8 @@ Module str.
             []
           |),
           [
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
@@ -5963,7 +5964,8 @@ Module str.
                                     M.use
                                       (M.alloc (|
                                         BinOp.ne (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "usize")
                                             (M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
@@ -6045,7 +6047,8 @@ Module str.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let x := M.copy (| γ |) in
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.path "u8")
                                                                         (M.read (|
                                                                           M.deref (|
                                                                             M.read (| x |)

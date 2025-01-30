@@ -1062,7 +1062,8 @@ Module vec.
                                                     |)
                                                   ]
                                                 |),
-                                                M.rust_cast
+                                                M.cast
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
                                                   (M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.deref (| M.read (| self |) |),
@@ -1161,7 +1162,17 @@ Module vec.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.apply
+                                                          (Ty.path "*const")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [ T ]
+                                                          ])
                                                         (M.borrow (|
                                                           Pointer.Kind.ConstPointer,
                                                           M.SubPointer.get_struct_record_field (|
@@ -1338,7 +1349,12 @@ Module vec.
                               [
                                 M.read (|
                                   M.deref (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.apply
+                                        (Ty.path "*const")
+                                        []
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ])
                                       (M.borrow (|
                                         Pointer.Kind.ConstPointer,
                                         M.SubPointer.get_struct_record_field (|
@@ -1916,7 +1932,8 @@ Module vec.
                                                 |)
                                               ]
                                             |));
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.apply (Ty.path "*mut") [] [ T ])
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -2015,7 +2032,8 @@ Module vec.
                                 |)
                               ]
                             |));
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -2332,7 +2350,16 @@ Module vec.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.apply
+                                                      (Ty.path "*const")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
+                                                          [ T ]
+                                                      ])
                                                     (M.borrow (|
                                                       Pointer.Kind.ConstPointer,
                                                       M.SubPointer.get_struct_record_field (|
@@ -2740,7 +2767,17 @@ Module vec.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.apply
+                                                          (Ty.path "*const")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [ T ]
+                                                          ])
                                                         (M.borrow (|
                                                           Pointer.Kind.ConstPointer,
                                                           M.SubPointer.get_struct_record_field (|
@@ -3083,7 +3120,8 @@ Module vec.
                                                 |)
                                               ]
                                             |),
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.apply (Ty.path "*mut") [] [ T ])
                                               (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.deref (| M.read (| self |) |),
@@ -3210,7 +3248,16 @@ Module vec.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.apply
+                                                      (Ty.path "*const")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
+                                                          [ T ]
+                                                      ])
                                                     (M.borrow (|
                                                       Pointer.Kind.ConstPointer,
                                                       M.SubPointer.get_struct_record_field (|
@@ -3428,7 +3475,8 @@ Module vec.
                   M.call_closure (|
                     M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                     [
-                      M.rust_cast
+                      M.cast
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
                         (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),
@@ -3560,7 +3608,8 @@ Module vec.
                               |)
                             ]
                           |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
                             (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.deref (| M.read (| self |) |),
@@ -3595,7 +3644,11 @@ Module vec.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.rust_cast
+                                M.cast
+                                  (Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ])
                                   (M.borrow (|
                                     Pointer.Kind.ConstPointer,
                                     M.SubPointer.get_struct_record_field (|

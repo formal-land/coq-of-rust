@@ -296,7 +296,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u8", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.rust_cast (M.read (| i |))
+              M.cast (Ty.path "u8") (M.read (| i |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -313,7 +313,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u16", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.rust_cast (M.read (| i |))
+              M.cast (Ty.path "u16") (M.read (| i |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -330,7 +330,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u32", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.rust_cast (M.read (| i |))
+              M.cast (Ty.path "u32") (M.read (| i |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -347,7 +347,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u64", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.rust_cast (M.read (| i |))
+              M.cast (Ty.path "u64") (M.read (| i |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -364,7 +364,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u128", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.rust_cast (M.read (| i |))
+              M.cast (Ty.path "u128") (M.read (| i |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -387,7 +387,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_usize", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.rust_cast (M.read (| i |))
+              M.cast (Ty.path "usize") (M.read (| i |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1261,7 +1261,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -1361,7 +1362,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
@@ -1461,7 +1463,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
@@ -1561,7 +1564,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
@@ -1661,7 +1665,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
@@ -1761,7 +1766,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
@@ -1861,7 +1867,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ],
@@ -1961,7 +1968,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
@@ -2061,7 +2069,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ],
@@ -2161,7 +2170,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ],
@@ -2261,7 +2271,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
@@ -2361,7 +2372,8 @@ Module hash.
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ],
@@ -2424,7 +2436,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))
+                M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2456,7 +2468,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
-                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

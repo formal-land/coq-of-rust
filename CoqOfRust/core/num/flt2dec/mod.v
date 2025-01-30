@@ -581,7 +581,11 @@ Module num.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ minus_exp :=
-                      M.alloc (| M.rust_cast (UnOp.neg (| M.rust_cast (M.read (| exp |)) |)) |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "usize")
+                          (UnOp.neg (| M.cast (Ty.path "i32") (M.read (| exp |)) |))
+                      |) in
                     let~ _ :=
                       M.write (|
                         M.SubPointer.get_array_field (|
@@ -885,7 +889,7 @@ Module num.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ exp := M.alloc (| M.rust_cast (M.read (| exp |)) |) in
+                    (let~ exp := M.alloc (| M.cast (Ty.path "usize") (M.read (| exp |)) |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2009,7 +2013,10 @@ Module num.
               |) in
             let~ exp :=
               M.alloc (|
-                BinOp.Wrap.sub (| M.rust_cast (M.read (| exp |)), Value.Integer IntegerKind.I32 1 |)
+                BinOp.Wrap.sub (|
+                  M.cast (Ty.path "i32") (M.read (| exp |)),
+                  Value.Integer IntegerKind.I32 1
+                |)
               |) in
             let~ _ :=
               M.match_operator (|
@@ -2094,7 +2101,7 @@ Module num.
                             [
                               Value.StructTuple
                                 "core::num::fmt::Part::Num"
-                                [ M.rust_cast (UnOp.neg (| M.read (| exp |) |)) ]
+                                [ M.cast (Ty.path "u16") (UnOp.neg (| M.read (| exp |) |)) ]
                             ]
                           |)
                         |) in
@@ -2172,7 +2179,7 @@ Module num.
                             [
                               Value.StructTuple
                                 "core::num::fmt::Part::Num"
-                                [ M.rust_cast (M.read (| exp |)) ]
+                                [ M.cast (Ty.path "u16") (M.read (| exp |)) ]
                             ]
                           |)
                         |) in
@@ -4070,7 +4077,7 @@ Module num.
                                     let~ vis_exp :=
                                       M.alloc (|
                                         BinOp.Wrap.sub (|
-                                          M.rust_cast (M.read (| exp |)),
+                                          M.cast (Ty.path "i32") (M.read (| exp |)),
                                           Value.Integer IntegerKind.I32 1
                                         |)
                                       |) in
@@ -4086,7 +4093,8 @@ Module num.
                                                     (M.alloc (|
                                                       LogicalOp.and (|
                                                         BinOp.le (|
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "i32")
                                                             (M.read (|
                                                               M.SubPointer.get_tuple_field (|
                                                                 dec_bounds,
@@ -4098,7 +4106,8 @@ Module num.
                                                         ltac:(M.monadic
                                                           (BinOp.lt (|
                                                             M.read (| vis_exp |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i32")
                                                               (M.read (|
                                                                 M.SubPointer.get_tuple_field (|
                                                                   dec_bounds,
@@ -4208,7 +4217,8 @@ Module num.
           BinOp.Wrap.add (|
             Value.Integer IntegerKind.Usize 21,
             BinOp.Wrap.shr (|
-              M.rust_cast
+              M.cast
+                (Ty.path "usize")
                 (BinOp.Wrap.mul (|
                   M.read (|
                     M.match_operator (|
@@ -4228,7 +4238,7 @@ Module num.
                       ]
                     |)
                   |),
-                  M.rust_cast (M.read (| exp |))
+                  M.cast (Ty.path "i32") (M.read (| exp |))
                 |)),
               Value.Integer IntegerKind.I32 4
             |)
@@ -6081,7 +6091,9 @@ Module num.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
-                                          UnOp.neg (| M.rust_cast (M.read (| frac_digits |)) |)
+                                          UnOp.neg (|
+                                            M.cast (Ty.path "i16") (M.read (| frac_digits |))
+                                          |)
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))

@@ -1599,7 +1599,8 @@ Module f16.
           M.read (|
             let~ left :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i16")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "f16", "to_bits", [], [] |),
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
@@ -1607,7 +1608,8 @@ Module f16.
               |) in
             let~ right :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i16")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "f16", "to_bits", [], [] |),
                     [ M.read (| M.deref (| M.read (| other |) |) |) ]
@@ -1619,9 +1621,11 @@ Module f16.
                 β,
                 BinOp.bit_xor
                   (M.read (| β |))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "i16")
                     (BinOp.Wrap.shr (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u16")
                         (BinOp.Wrap.shr (| M.read (| left |), Value.Integer IntegerKind.I32 15 |)),
                       Value.Integer IntegerKind.I32 1
                     |)))
@@ -1632,9 +1636,11 @@ Module f16.
                 β,
                 BinOp.bit_xor
                   (M.read (| β |))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "i16")
                     (BinOp.Wrap.shr (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u16")
                         (BinOp.Wrap.shr (| M.read (| right |), Value.Integer IntegerKind.I32 15 |)),
                       Value.Integer IntegerKind.I32 1
                     |)))

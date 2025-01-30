@@ -485,7 +485,8 @@ Module str.
                                           β,
                                           BinOp.Wrap.sub (|
                                             M.read (| β |),
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "usize")
                                               (M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
@@ -554,7 +555,8 @@ Module str.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let i := M.copy (| γ |) in
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "u8")
                                                                           (M.read (| i |))))
                                                                   ]
                                                                 |)))

@@ -598,7 +598,7 @@ Module language_storage.
                                 BinOp.Wrap.add (|
                                   BinOp.Wrap.add (|
                                     BinOp.Wrap.add (|
-                                      M.rust_cast (Value.Bool false),
+                                      M.cast (Ty.path "usize") (Value.Bool false),
                                       Value.Integer IntegerKind.Usize 1
                                     |),
                                     Value.Integer IntegerKind.Usize 1
@@ -1025,7 +1025,7 @@ Module language_storage.
                               M.read (| Value.String "ResourceKey" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -1304,7 +1304,7 @@ Module language_storage.
                               M.read (| Value.String "ModuleId" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1

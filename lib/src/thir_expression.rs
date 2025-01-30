@@ -574,15 +574,10 @@ pub(crate) fn compile_expr<'a>(
             .alloc()
         }
         thir::ExprKind::Cast { source } => {
-            let func = Expr::local_var("M.rust_cast");
-            let source = compile_expr(env, generics, thir, source);
+            let source = compile_expr(env, generics, thir, source).read();
+            let target_ty = compile_type(env, &expr.span, generics, &expr.ty);
 
-            Rc::new(Expr::Call {
-                func,
-                args: vec![source.read()],
-                kind: CallKind::Pure,
-            })
-            .alloc()
+            Rc::new(Expr::Cast { target_ty, source }).alloc()
         }
         thir::ExprKind::Use { source } => {
             let source = compile_expr(env, generics, thir, source);

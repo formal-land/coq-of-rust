@@ -572,7 +572,7 @@ Module instantiation_loops.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.rust_cast (M.read (| def_idx |)) ]
+                                                [ M.cast (Ty.path "u16") (M.read (| def_idx |)) ]
                                               |)
                                             ]))
                                     ]
@@ -1930,7 +1930,9 @@ Module instantiation_loops.
                                     let formal_idx := M.copy (| γ1_0 |) in
                                     let ty := M.copy (| γ1_1 |) in
                                     let~ formal_idx :=
-                                      M.alloc (| M.rust_cast (M.read (| formal_idx |)) |) in
+                                      M.alloc (|
+                                        M.cast (Ty.path "u16") (M.read (| formal_idx |))
+                                      |) in
                                     M.match_operator (|
                                       ty,
                                       [
@@ -2781,7 +2783,7 @@ Module instantiation_loops.
                                               [],
                                               []
                                             |),
-                                            [ M.rust_cast (M.read (| def_idx |)) ]
+                                            [ M.cast (Ty.path "u16") (M.read (| def_idx |)) ]
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,

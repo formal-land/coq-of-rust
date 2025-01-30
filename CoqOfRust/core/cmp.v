@@ -4022,8 +4022,8 @@ Module cmp.
               M.match_operator (|
                 M.alloc (|
                   BinOp.Wrap.sub (|
-                    M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)),
-                    M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |))
+                    M.cast (Ty.path "i8") (M.read (| M.deref (| M.read (| self |) |) |)),
+                    M.cast (Ty.path "i8") (M.read (| M.deref (| M.read (| other |) |) |))
                   |)
                 |),
                 [

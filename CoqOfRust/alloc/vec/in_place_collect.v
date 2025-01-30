@@ -494,7 +494,8 @@ Module vec.
                         |)
                       ]
                     |);
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ T ])
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| inner |) |),
@@ -555,7 +556,8 @@ Module vec.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, iterator |) |)
                             |);
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
@@ -1653,7 +1655,11 @@ Module vec.
                                                                 (M.alloc (|
                                                                   UnOp.not (|
                                                                     BinOp.le (|
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.apply
+                                                                          (Ty.path "*const")
+                                                                          []
+                                                                          [ T ])
                                                                         (* MutToConstPointer *)
                                                                         (M.pointer_coercion
                                                                           (M.read (|
@@ -2126,7 +2132,11 @@ Module vec.
                                                                 (M.alloc (|
                                                                   UnOp.not (|
                                                                     BinOp.le (|
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.apply
+                                                                          (Ty.path "*const")
+                                                                          []
+                                                                          [ T ])
                                                                         (* MutToConstPointer *)
                                                                         (M.pointer_coercion
                                                                           (M.read (| dst |))),

@@ -52,7 +52,8 @@ Module unicode.
               (M.read (|
                 let~ xupper :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u8")
                       (BinOp.Wrap.shr (| M.read (| x |), Value.Integer IntegerKind.I32 8 |))
                   |) in
                 let~ lowerstart := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
@@ -139,7 +140,7 @@ Module unicode.
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.read (| lowerstart |),
-                                                M.rust_cast (M.read (| lowercount |))
+                                                M.cast (Ty.path "usize") (M.read (| lowercount |))
                                               |)
                                             |) in
                                           let~ _ :=
@@ -308,7 +309,9 @@ Module unicode.
                                                                                             M.read (|
                                                                                               lower
                                                                                             |),
-                                                                                            M.rust_cast
+                                                                                            M.cast
+                                                                                              (Ty.path
+                                                                                                "u8")
                                                                                               (M.read (|
                                                                                                 x
                                                                                               |))
@@ -386,7 +389,7 @@ Module unicode.
                             |)))
                       ]
                     |)) in
-                let~ x := M.alloc (| M.rust_cast (M.read (| x |)) |) in
+                let~ x := M.alloc (| M.cast (Ty.path "i32") (M.read (| x |)) |) in
                 let~ normal :=
                   M.alloc (|
                     M.call_closure (|
@@ -476,13 +479,15 @@ Module unicode.
                                           M.alloc (|
                                             BinOp.bit_or
                                               (BinOp.Wrap.shl (|
-                                                M.rust_cast
+                                                M.cast
+                                                  (Ty.path "i32")
                                                   (BinOp.bit_and
                                                     (M.read (| v |))
                                                     (Value.Integer IntegerKind.U8 127)),
                                                 Value.Integer IntegerKind.I32 8
                                               |))
-                                              (M.rust_cast
+                                              (M.cast
+                                                (Ty.path "i32")
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.apply
@@ -520,7 +525,7 @@ Module unicode.
                                           |)));
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (| M.rust_cast (M.read (| v |)) |)))
+                                          (M.alloc (| M.cast (Ty.path "i32") (M.read (| v |)) |)))
                                     ]
                                   |)
                                 |) in
@@ -640,8 +645,8 @@ Module unicode.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ x := M.alloc (| M.rust_cast (M.read (| x |)) |) in
-                let~ lower := M.alloc (| M.rust_cast (M.read (| x |)) |) in
+                let~ x := M.alloc (| M.cast (Ty.path "u32") (M.read (| x |)) |) in
+                let~ lower := M.alloc (| M.cast (Ty.path "u16") (M.read (| x |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

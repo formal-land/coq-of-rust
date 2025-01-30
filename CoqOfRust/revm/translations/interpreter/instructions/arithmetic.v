@@ -2216,7 +2216,8 @@ Module instructions.
                                   |) in
                                 let~ bit_index :=
                                   M.alloc (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "usize")
                                       (BinOp.Wrap.add (|
                                         BinOp.Wrap.mul (|
                                           Value.Integer IntegerKind.U64 8,

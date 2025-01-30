@@ -849,7 +849,11 @@ Module array.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ ptr :=
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply
+                            (Ty.path "*const")
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
@@ -954,7 +958,8 @@ Module array.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ ptr :=
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],

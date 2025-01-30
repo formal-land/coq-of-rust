@@ -1614,7 +1614,8 @@ Module account_address.
               []
             |),
             [
-              M.rust_cast
+              M.cast
+                (Ty.path "u64")
                 (M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |))
             ]
           |)))

@@ -110,7 +110,20 @@ Module slice.
                 M.alloc (|
                   M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
                 |) in
-              let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
+              let~ ascii_ptr :=
+                M.alloc (|
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                      ])
+                    (M.read (| byte_ptr |))
+                |) in
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1435,7 +1448,9 @@ Module slice.
                                                                     Pointer.Kind.MutRef,
                                                                     M.deref (| M.read (| f |) |)
                                                                   |);
-                                                                  M.rust_cast (M.read (| byte |))
+                                                                  M.cast
+                                                                    (Ty.path "char")
+                                                                    (M.read (| byte |))
                                                                 ]
                                                               |)
                                                             ]
@@ -2155,7 +2170,9 @@ Module slice.
                                                                     Pointer.Kind.MutRef,
                                                                     M.deref (| M.read (| f |) |)
                                                                   |);
-                                                                  M.rust_cast (M.read (| byte |))
+                                                                  M.cast
+                                                                    (Ty.path "char")
+                                                                    (M.read (| byte |))
                                                                 ]
                                                               |)
                                                             ]
@@ -2677,7 +2694,11 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.rust_cast (M.read (| start |)) ]
+                      [
+                        M.cast
+                          (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ])
+                          (M.read (| start |))
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -2758,7 +2779,8 @@ Module slice.
                   |) in
                 let~ word_ptr :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
@@ -3237,7 +3259,8 @@ Module slice.
                         []
                       |),
                       [
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],

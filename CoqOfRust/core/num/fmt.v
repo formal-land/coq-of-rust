@@ -977,7 +977,8 @@ Module num.
                                                             M.deref (| M.read (| c |) |),
                                                             BinOp.Wrap.add (|
                                                               M.read (| UnsupportedLiteral |),
-                                                              M.rust_cast
+                                                              M.cast
+                                                                (Ty.path "u8")
                                                                 (BinOp.Wrap.rem (|
                                                                   M.read (| v |),
                                                                   Value.Integer IntegerKind.U16 10

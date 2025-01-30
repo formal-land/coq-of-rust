@@ -371,7 +371,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u8") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -450,7 +450,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u8") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -471,7 +471,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "unchecked_add", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u8") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -490,7 +490,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "unchecked_sub", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u8") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -530,7 +530,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (BinOp.Wrap.sub (|
                                 M.read (| M.deref (| M.read (| end_ |) |) |),
                                 M.read (| M.deref (| M.read (| start |) |) |)
@@ -760,7 +761,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i8") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -839,7 +840,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i8") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -868,7 +869,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "checked_add_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u8") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -897,7 +898,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "checked_sub_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u8") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -943,7 +944,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "isize",
@@ -952,8 +954,12 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -1024,7 +1030,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i8", "wrapping_add", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i8") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -1124,7 +1130,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i8", "wrapping_sub", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i8") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -1259,7 +1265,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u16") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -1338,7 +1344,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u16") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -1359,7 +1365,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "unchecked_add", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u16") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1378,7 +1384,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "unchecked_sub", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u16") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1418,7 +1424,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (BinOp.Wrap.sub (|
                                 M.read (| M.deref (| M.read (| end_ |) |) |),
                                 M.read (| M.deref (| M.read (| start |) |) |)
@@ -1648,7 +1655,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i16") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -1727,7 +1734,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i16") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -1756,7 +1763,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "checked_add_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u16") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -1785,7 +1792,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "checked_sub_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u16") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -1831,7 +1838,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "isize",
@@ -1840,8 +1848,12 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -1912,7 +1924,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i16", "wrapping_add", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i16") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -2012,7 +2024,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i16", "wrapping_sub", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i16") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -2147,7 +2159,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u32") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -2226,7 +2238,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u32") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -2247,7 +2259,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "unchecked_add", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u32") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2266,7 +2278,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "unchecked_sub", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u32") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2306,7 +2318,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (BinOp.Wrap.sub (|
                                 M.read (| M.deref (| M.read (| end_ |) |) |),
                                 M.read (| M.deref (| M.read (| start |) |) |)
@@ -2536,7 +2549,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i32") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -2615,7 +2628,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i32") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -2644,7 +2657,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "checked_add_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u32") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -2673,7 +2686,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "checked_sub_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u32") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -2719,7 +2732,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "isize",
@@ -2728,8 +2742,12 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -2800,7 +2818,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i32", "wrapping_add", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i32") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -2900,7 +2918,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i32") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -3035,7 +3053,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u64") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -3114,7 +3132,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u64") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -3135,7 +3153,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "unchecked_add", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u64") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3154,7 +3172,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "unchecked_sub", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u64") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3194,7 +3212,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (BinOp.Wrap.sub (|
                                 M.read (| M.deref (| M.read (| end_ |) |) |),
                                 M.read (| M.deref (| M.read (| start |) |) |)
@@ -3424,7 +3443,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i64") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -3503,7 +3522,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i64") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -3532,7 +3551,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "checked_add_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u64") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -3561,7 +3580,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "checked_sub_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u64") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -3607,7 +3626,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "isize",
@@ -3616,8 +3636,12 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.cast
+                                    (Ty.path "isize")
+                                    (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -3688,7 +3712,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i64", "wrapping_add", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i64") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -3788,7 +3812,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i64", "wrapping_sub", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "i64") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -4316,7 +4340,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "isize") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -4395,7 +4419,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "isize") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -4499,7 +4523,8 @@ Module iter.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "usize")
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "isize",
@@ -4580,7 +4605,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "isize", "wrapping_add", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "isize") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -4680,7 +4705,7 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
-                            [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                            [ M.read (| start |); M.cast (Ty.path "isize") (M.read (| n |)) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -4815,7 +4840,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -4894,7 +4919,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -4915,7 +4940,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "unchecked_add", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4934,7 +4959,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "unchecked_sub", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5023,7 +5048,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "checked_add", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5041,7 +5066,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "checked_sub", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5138,7 +5163,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "wrapping_add", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i128") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -5217,7 +5242,7 @@ Module iter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "wrapping_sub", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "i128") (M.read (| n |)) ]
                 |)
               |)
             |)))
@@ -5246,7 +5271,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "checked_add_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -5275,7 +5300,7 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "checked_sub_unsigned", [], [] |),
-                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                  [ M.read (| start |); M.cast (Ty.path "u128") (M.read (| n |)) ]
                 |)
               ]
             |)))
@@ -5393,7 +5418,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "checked_add", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "i128") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5411,7 +5436,7 @@ Module iter.
             let n := M.alloc (| n |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "checked_sub", [], [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+              [ M.read (| start |); M.cast (Ty.path "i128") (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5473,8 +5498,10 @@ Module iter.
                             (let γ := M.read (| γ |) in
                             let end_ := M.copy (| γ |) in
                             M.read (|
-                              let~ start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
-                              let~ end_ := M.alloc (| M.rust_cast (M.read (| end_ |)) |) in
+                              let~ start :=
+                                M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
+                              let~ end_ :=
+                                M.alloc (| M.cast (Ty.path "u32") (M.read (| end_ |)) |) in
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -5628,7 +5655,7 @@ Module iter.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
+                  let~ start := M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
                   let~ res :=
                     M.copy (|
                       M.match_operator (|
@@ -5835,7 +5862,8 @@ Module iter.
                               (M.alloc (|
                                 BinOp.le (|
                                   M.read (| res |),
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (M.read (| M.get_constant (| "core::char::methods::MAX" |) |))
                                 |)
                               |)) in
@@ -5887,7 +5915,7 @@ Module iter.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
+                  let~ start := M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
                   let~ res :=
                     M.copy (|
                       M.match_operator (|
@@ -6127,7 +6155,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let count := M.alloc (| count |) in
             M.read (|
-              let~ start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
+              let~ start := M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
               let~ res :=
                 M.alloc (|
                   M.call_closure (|
@@ -6219,7 +6247,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let count := M.alloc (| count |) in
             M.read (|
-              let~ start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
+              let~ start := M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
               let~ res :=
                 M.alloc (|
                   M.call_closure (|

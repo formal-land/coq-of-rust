@@ -294,7 +294,12 @@ Module boxed.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ]
+                        ])
                       (M.borrow (|
                         Pointer.Kind.ConstPointer,
                         M.SubPointer.get_struct_record_field (|
@@ -594,7 +599,10 @@ Module boxed.
                       [],
                       [ T; Ty.tuple [] ]
                     |),
-                    [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
+                    [
+                      M.cast (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]) (M.read (| value |));
+                      M.read (| metadata |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -671,7 +679,12 @@ Module boxed.
                           [],
                           [ T; Ty.tuple [] ]
                         |),
-                        [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
+                        [
+                          M.cast
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                            (M.read (| value |));
+                          M.read (| metadata |)
+                        ]
                       |)
                     |) in
                   M.alloc (|
@@ -1232,7 +1245,8 @@ Module boxed.
                                     |) in
                                   let~ ptr :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
@@ -1597,7 +1611,8 @@ Module boxed.
                                         |) in
                                       let~ ptr :=
                                         M.alloc (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
@@ -2063,7 +2078,8 @@ Module boxed.
             M.read (|
               let~ hp :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*mut") [] [ H ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],

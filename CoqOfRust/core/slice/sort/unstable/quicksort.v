@@ -1933,7 +1933,9 @@ Module slice.
                                                 β,
                                                 BinOp.Wrap.add (|
                                                   M.read (| β |),
-                                                  M.rust_cast (M.read (| right_is_lt |))
+                                                  M.cast
+                                                    (Ty.path "usize")
+                                                    (M.read (| right_is_lt |))
                                                 |)
                                               |) in
                                             let~ _ :=

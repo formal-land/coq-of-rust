@@ -681,7 +681,7 @@ Module abi.
                                   BinOp.Wrap.add (|
                                     BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
-                                        M.rust_cast (Value.Bool false),
+                                        M.cast (Ty.path "usize") (Value.Bool false),
                                         Value.Integer IntegerKind.Usize 1
                                       |),
                                       Value.Integer IntegerKind.Usize 1
@@ -1187,7 +1187,7 @@ Module abi.
                                   BinOp.Wrap.add (|
                                     BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
-                                        M.rust_cast (Value.Bool false),
+                                        M.cast (Ty.path "usize") (Value.Bool false),
                                         Value.Integer IntegerKind.Usize 1
                                       |),
                                       Value.Integer IntegerKind.Usize 1
@@ -1710,7 +1710,7 @@ Module abi.
                               M.read (| Value.String "ArgumentABI" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -1986,7 +1986,7 @@ Module abi.
                               M.read (| __serializer |);
                               M.read (| Value.String "TypeArgumentABI" |);
                               BinOp.Wrap.add (|
-                                M.rust_cast (Value.Bool false),
+                                M.cast (Ty.path "usize") (Value.Bool false),
                                 Value.Integer IntegerKind.Usize 1
                               |)
                             ]

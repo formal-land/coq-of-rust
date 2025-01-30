@@ -363,7 +363,8 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.path "usize")
               (M.read (|
                 M.SubPointer.get_struct_tuple_field (| self, "core::ptr::alignment::Alignment", 0 |)
               |))))

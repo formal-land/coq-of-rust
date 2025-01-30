@@ -391,7 +391,7 @@ Module code_unit_verifier.
                                                   |);
                                                   Value.StructTuple
                                                     "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                    [ M.rust_cast (M.read (| idx |)) ]
+                                                    [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                                 ]
                                               |)
                                             |) in
@@ -546,7 +546,7 @@ Module code_unit_verifier.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                [ M.rust_cast (M.read (| idx |)) ]
+                                                [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                             |) in
                                           let~ num_back_edges :=
                                             M.copy (|

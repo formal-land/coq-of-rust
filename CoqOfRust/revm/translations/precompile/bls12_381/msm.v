@@ -221,7 +221,8 @@ Module bls12_381.
                   |) in
                 let~ discount :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u64")
                       (M.read (|
                         M.SubPointer.get_array_field (|
                           M.deref (|
@@ -238,7 +239,10 @@ Module bls12_381.
                 M.alloc (|
                   BinOp.Wrap.div (|
                     BinOp.Wrap.mul (|
-                      BinOp.Wrap.mul (| M.rust_cast (M.read (| k |)), M.read (| discount |) |),
+                      BinOp.Wrap.mul (|
+                        M.cast (Ty.path "u64") (M.read (| k |)),
+                        M.read (| discount |)
+                      |),
                       M.read (| multiplication_cost |)
                     |),
                     M.read (|

@@ -595,7 +595,8 @@ Module control_flow.
                               ]
                             |);
                             M.read (| current_function |);
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.sub (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1786,7 +1787,9 @@ Module control_flow.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.gt (|
-                                                                M.rust_cast (M.read (| depth |)),
+                                                                M.cast
+                                                                  (Ty.path "usize")
+                                                                  (M.read (| depth |)),
                                                                 M.read (| max_depth |)
                                                               |)
                                                             |)) in

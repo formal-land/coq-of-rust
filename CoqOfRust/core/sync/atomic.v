@@ -463,7 +463,7 @@ Module sync.
                       [],
                       []
                     |),
-                    [ M.rust_cast (M.read (| v |)) ]
+                    [ M.cast (Ty.path "u8") (M.read (| v |)) ]
                   |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -529,7 +529,8 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ])
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
@@ -585,7 +586,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.path "core::sync::atomic::AtomicBool" ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -631,7 +636,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -679,7 +688,16 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "core::sync::atomic::AtomicBool" ]
+                                ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -825,7 +843,7 @@ Module sync.
                           |)
                         ]
                       |);
-                      M.rust_cast (M.read (| val |));
+                      M.cast (Ty.path "u8") (M.read (| val |));
                       M.read (| order |)
                     ]
                   |)
@@ -943,7 +961,7 @@ Module sync.
                                   |)
                                 ]
                               |);
-                              M.rust_cast (M.read (| val |));
+                              M.cast (Ty.path "u8") (M.read (| val |));
                               M.read (| order |)
                             ]
                           |),
@@ -1415,8 +1433,8 @@ Module sync.
                                   |)
                                 ]
                               |);
-                              M.rust_cast (M.read (| current |));
-                              M.rust_cast (M.read (| new |));
+                              M.cast (Ty.path "u8") (M.read (| current |));
+                              M.cast (Ty.path "u8") (M.read (| new |));
                               M.read (| success |);
                               M.read (| failure |)
                             ]
@@ -1562,8 +1580,8 @@ Module sync.
                               |)
                             ]
                           |);
-                          M.rust_cast (M.read (| current |));
-                          M.rust_cast (M.read (| new |));
+                          M.cast (Ty.path "u8") (M.read (| current |));
+                          M.cast (Ty.path "u8") (M.read (| new |));
                           M.read (| success |);
                           M.read (| failure |)
                         ]
@@ -1643,7 +1661,7 @@ Module sync.
                       |)
                     ]
                   |);
-                  M.rust_cast (M.read (| val |));
+                  M.cast (Ty.path "u8") (M.read (| val |));
                   M.read (| order |)
                 ]
               |),
@@ -1761,7 +1779,7 @@ Module sync.
                       |)
                     ]
                   |);
-                  M.rust_cast (M.read (| val |));
+                  M.cast (Ty.path "u8") (M.read (| val |));
                   M.read (| order |)
                 ]
               |),
@@ -1807,7 +1825,7 @@ Module sync.
                       |)
                     ]
                   |);
-                  M.rust_cast (M.read (| val |));
+                  M.cast (Ty.path "u8") (M.read (| val |));
                   M.read (| order |)
                 ]
               |),
@@ -2204,7 +2222,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::sync::atomic::AtomicPtr")
+                                                []
+                                                [ T ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -2262,7 +2289,16 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.apply (Ty.path "*mut") [] [ T ] ]
+                                ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -2319,7 +2355,16 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ]
+                                ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -3718,7 +3763,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicI8" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -3768,7 +3817,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -3826,7 +3879,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicI8" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -5019,7 +5081,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicU8" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -5069,7 +5135,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -5127,7 +5197,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicU8" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -6330,7 +6409,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicI16" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -6380,7 +6463,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -6438,7 +6525,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicI16" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -7641,7 +7737,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicU16" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -7691,7 +7791,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -7749,7 +7853,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicU16" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -8952,7 +9065,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicI32" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -9002,7 +9119,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -9060,7 +9181,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicI32" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -10263,7 +10393,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicU32" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -10313,7 +10447,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -10371,7 +10509,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicU32" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -11574,7 +11721,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicI64" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -11624,7 +11775,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -11682,7 +11837,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicI64" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -12885,7 +13049,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicU64" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -12935,7 +13103,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -12993,7 +13165,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicU64" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -14196,7 +14377,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicIsize" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -14246,7 +14431,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -14304,7 +14493,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicIsize" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -15511,7 +15709,11 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.path "core::sync::atomic::AtomicUsize" ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
@@ -15561,7 +15763,11 @@ Module sync.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ])
                               (M.read (|
                                 M.use
                                   (M.alloc (|
@@ -15619,7 +15825,16 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.path "core::sync::atomic::AtomicUsize" ]
+                                            ])
                                           (M.read (|
                                             M.use
                                               (M.alloc (|

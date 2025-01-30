@@ -2455,7 +2455,8 @@ Module bn128.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     BinOp.Wrap.mul (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (BinOp.Wrap.div (|
                           M.call_closure (|
                             M.get_associated_function (|

@@ -75,8 +75,10 @@ Module num.
                   |)
                 |) in
               M.alloc (|
-                M.rust_cast
-                  (M.rust_cast
+                M.cast
+                  (Ty.path "u64")
+                  (M.cast
+                    (Ty.path "u32")
                     (BinOp.Wrap.shr (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
@@ -347,7 +349,7 @@ Module num.
                                                           Value.Integer IntegerKind.U64 10
                                                         ]
                                                       |);
-                                                      M.rust_cast (M.read (| digit |))
+                                                      M.cast (Ty.path "u64") (M.read (| digit |))
                                                     ]
                                                   |)
                                                 |) in
@@ -495,7 +497,7 @@ Module num.
                                                     M.read (| M.deref (| M.read (| x |) |) |),
                                                     Value.Integer IntegerKind.U64 10
                                                   |),
-                                                  M.rust_cast (M.read (| digit |))
+                                                  M.cast (Ty.path "u64") (M.read (| digit |))
                                                 |)
                                               |) in
                                             let~ _ :=
@@ -770,7 +772,9 @@ Module num.
                                                                         10,
                                                                       M.read (| exponent |)
                                                                     |),
-                                                                    M.rust_cast (M.read (| digit |))
+                                                                    M.cast
+                                                                      (Ty.path "i64")
+                                                                      (M.read (| digit |))
                                                                   |)
                                                                 |) in
                                                               M.alloc (| Value.Tuple [] |)));
@@ -1122,7 +1126,7 @@ Module num.
                             let~ _ :=
                               M.write (|
                                 exponent,
-                                M.rust_cast (UnOp.neg (| M.read (| n_after_dot |) |))
+                                M.cast (Ty.path "i64") (UnOp.neg (| M.read (| n_after_dot |) |))
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1338,7 +1342,8 @@ Module num.
                     |) in
                   let~ len :=
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "usize")
                         (M.call_closure (|
                           M.get_trait_method (|
                             "core::num::dec2flt::common::ByteSlice",
@@ -1473,7 +1478,8 @@ Module num.
                                             β,
                                             BinOp.Wrap.sub (|
                                               M.read (| β |),
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "isize")
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "u8",
@@ -1565,7 +1571,8 @@ Module num.
                             let~ _ :=
                               M.write (|
                                 exponent,
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "i64")
                                   (M.read (|
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
@@ -1991,7 +1998,8 @@ Module num.
                                       |) in
                                     let~ a :=
                                       M.alloc (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u64")
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.deref (| M.read (| s |) |),
@@ -2001,7 +2009,8 @@ Module num.
                                       |) in
                                     let~ b :=
                                       M.alloc (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u64")
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.deref (| M.read (| s |) |),
@@ -2011,7 +2020,8 @@ Module num.
                                       |) in
                                     let~ c :=
                                       M.alloc (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u64")
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.deref (| M.read (| s |) |),

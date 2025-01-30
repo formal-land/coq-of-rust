@@ -3214,7 +3214,7 @@ Module normalized.
                               M.read (| Value.String "Field" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -3493,7 +3493,7 @@ Module normalized.
                               M.read (| Value.String "Constant" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -3778,7 +3778,7 @@ Module normalized.
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   BinOp.Wrap.add (|
-                                    M.rust_cast (Value.Bool false),
+                                    M.cast (Ty.path "usize") (Value.Bool false),
                                     Value.Integer IntegerKind.Usize 1
                                   |),
                                   Value.Integer IntegerKind.Usize 1
@@ -4147,7 +4147,7 @@ Module normalized.
                                     BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
                                         BinOp.Wrap.add (|
-                                          M.rust_cast (Value.Bool false),
+                                          M.cast (Ty.path "usize") (Value.Bool false),
                                           Value.Integer IntegerKind.Usize 1
                                         |),
                                         Value.Integer IntegerKind.Usize 1
@@ -4738,7 +4738,7 @@ Module normalized.
                               M.read (| Value.String "FieldRef" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -5017,7 +5017,7 @@ Module normalized.
                               M.read (| Value.String "FunctionRef" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -7994,7 +7994,7 @@ Module normalized.
                                         BinOp.Wrap.add (|
                                           BinOp.Wrap.add (|
                                             BinOp.Wrap.add (|
-                                              M.rust_cast (Value.Bool false),
+                                              M.cast (Ty.path "usize") (Value.Bool false),
                                               Value.Integer IntegerKind.Usize 1
                                             |),
                                             Value.Integer IntegerKind.Usize 1
@@ -28480,7 +28480,9 @@ Module normalized.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| type_args |) |)
                                       |);
-                                      M.rust_cast (M.read (| M.deref (| M.read (| i |) |) |))
+                                      M.cast
+                                        (Ty.path "usize")
+                                        (M.read (| M.deref (| M.read (| i |) |) |))
                                     ]
                                   |);
                                   M.borrow (|

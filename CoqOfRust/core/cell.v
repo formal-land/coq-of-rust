@@ -1136,7 +1136,11 @@ Module cell.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [ Ty.apply (Ty.path "core::cell::Cell") [] [ T ] ])
                     (M.read (|
                       M.use
                         (M.alloc (|
@@ -1241,7 +1245,16 @@ Module cell.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::cell::Cell") [] [ T ] ]
+                      ])
                     (M.read (|
                       M.use
                         (M.alloc (|
@@ -1288,7 +1301,16 @@ Module cell.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.apply (Ty.path "core::cell::Cell") [] [ T ] ]
+                      ])
                     (M.read (|
                       M.use
                         (M.alloc (|
@@ -5779,7 +5801,11 @@ Module cell.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.deref (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ T ] ])
                             (M.read (|
                               M.use
                                 (M.alloc (|
@@ -5818,8 +5844,10 @@ Module cell.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
-            (M.rust_cast
+          M.cast
+            (Ty.apply (Ty.path "*mut") [] [ T ])
+            (M.cast
+              (Ty.apply (Ty.path "*const") [] [ T ])
               (M.read (|
                 M.use
                   (M.alloc (|
@@ -5881,7 +5909,9 @@ Module cell.
       | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          M.rust_cast (M.rust_cast (M.read (| this |)))))
+          M.cast
+            (Ty.apply (Ty.path "*mut") [] [ T ])
+            (M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| this |)))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6164,7 +6194,9 @@ Module cell.
       | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          M.rust_cast (M.rust_cast (M.read (| this |)))))
+          M.cast
+            (Ty.apply (Ty.path "*mut") [] [ T ])
+            (M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| this |)))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

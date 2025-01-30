@@ -794,7 +794,7 @@ Parameter pointer_coercion : Value.t -> Value.t.
 (** This function is explicitly called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of
     integers. *)
-Parameter rust_cast : Value.t -> Value.t.
+Parameter cast : Ty.t -> Value.t -> Value.t.
 
 Definition closure (f : list Value.t -> M) : Value.t :=
   Value.Closure (existS (_, _) f).

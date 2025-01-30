@@ -792,7 +792,8 @@ Module slice.
           (let ptr := M.alloc (| ptr |) in
           let index := M.alloc (| index |) in
           M.read (|
-            let~ ptr := M.alloc (| M.rust_cast (M.read (| ptr |)) |) in
+            let~ ptr :=
+              M.alloc (| M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| ptr |)) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -823,7 +824,8 @@ Module slice.
           (let ptr := M.alloc (| ptr |) in
           let index := M.alloc (| index |) in
           M.read (|
-            let~ ptr := M.alloc (| M.rust_cast (M.read (| ptr |)) |) in
+            let~ ptr :=
+              M.alloc (| M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| ptr |)) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_function (|

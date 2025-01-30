@@ -2901,7 +2901,8 @@ Module u256.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u8")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
@@ -2931,7 +2932,8 @@ Module u256.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u16")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
@@ -2961,7 +2963,8 @@ Module u256.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u32")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
@@ -2991,7 +2994,8 @@ Module u256.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u64")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
@@ -3308,7 +3312,8 @@ Module u256.
                               (M.alloc (|
                                 BinOp.ge (|
                                   M.read (| rhs |),
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (M.read (|
                                       M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |)
                                     |))
@@ -3392,7 +3397,8 @@ Module u256.
                               (M.alloc (|
                                 BinOp.ge (|
                                   M.read (| rhs |),
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (M.read (|
                                       M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |)
                                     |))
@@ -4660,7 +4666,9 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4687,7 +4695,9 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| n |)) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ M.cast (Ty.path "u8") (M.read (| n |)) ]
                     |)))
               ]
             |)
@@ -4753,7 +4763,9 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4780,7 +4792,9 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| n |)) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ M.cast (Ty.path "u16") (M.read (| n |)) ]
                     |)))
               ]
             |)
@@ -4846,7 +4860,9 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4873,7 +4889,9 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| n |)) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ M.cast (Ty.path "u32") (M.read (| n |)) ]
                     |)))
               ]
             |)
@@ -4939,7 +4957,9 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u128")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4966,7 +4986,9 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| n |)) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ M.cast (Ty.path "u64") (M.read (| n |)) ]
                     |)))
               ]
             |)

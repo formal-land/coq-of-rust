@@ -1362,7 +1362,8 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "u32")
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -2132,7 +2133,8 @@ Module Impl_multisig_Multisig.
                 M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [
                   BinOp.Wrap.add (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -2262,7 +2264,8 @@ Module Impl_multisig_Multisig.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
-        M.rust_cast
+        M.cast
+          (Ty.path "u32")
           (M.call_closure (|
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -2729,7 +2732,8 @@ Module Impl_multisig_Multisig.
           let~ len :=
             M.alloc (|
               BinOp.Wrap.sub (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
@@ -2779,7 +2783,8 @@ Module Impl_multisig_Multisig.
             |) in
           let~ owner_index :=
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "usize")
                 (M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "multisig::Multisig",
@@ -3011,7 +3016,7 @@ Module Impl_multisig_Multisig.
                         "owners"
                       |)
                     |);
-                    M.rust_cast (M.read (| owner_index |))
+                    M.cast (Ty.path "usize") (M.read (| owner_index |))
                   ]
                 |)
               |),
@@ -3177,7 +3182,8 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "u32")
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply

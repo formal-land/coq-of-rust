@@ -229,7 +229,7 @@ Module instructions.
                                                   |)
                                                 |)
                                               |);
-                                              M.rust_cast (M.read (| basefee |))
+                                              M.cast (Ty.path "u128") (M.read (| basefee |))
                                             ]
                                           |)
                                         ]

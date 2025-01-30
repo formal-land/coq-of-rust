@@ -5444,7 +5444,9 @@ Module deserializer.
                                                   M.use
                                                     (M.alloc (|
                                                       BinOp.gt (|
-                                                        M.rust_cast (M.read (| current_offset |)),
+                                                        M.cast
+                                                          (Ty.path "usize")
+                                                          (M.read (| current_offset |)),
                                                         M.read (| binary_len |)
                                                       |)
                                                     |)) in
@@ -6517,7 +6519,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -6940,7 +6943,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -7363,7 +7367,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -7786,7 +7791,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -8207,7 +8213,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -8628,7 +8635,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -9407,7 +9415,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -9830,7 +9839,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -10729,7 +10739,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -11157,7 +11168,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -11585,7 +11597,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -12013,7 +12026,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -12441,7 +12455,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -12869,7 +12884,8 @@ Module deserializer.
                                                                               |)
                                                                             ]
                                                                           |),
-                                                                          M.rust_cast
+                                                                          M.cast
+                                                                            (Ty.path "usize")
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.read (|
@@ -13260,7 +13276,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -13273,7 +13290,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -13320,7 +13338,8 @@ Module deserializer.
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u64")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| table |) |),
@@ -13619,7 +13638,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -13632,7 +13652,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -13679,7 +13700,8 @@ Module deserializer.
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u64")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| table |) |),
@@ -14190,7 +14212,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -14203,7 +14226,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -14250,7 +14274,8 @@ Module deserializer.
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u64")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| table |) |),
@@ -14855,7 +14880,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -14868,7 +14894,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -14915,7 +14942,8 @@ Module deserializer.
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u64")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| table |) |),
@@ -15217,7 +15245,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -15230,7 +15259,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -15277,7 +15307,8 @@ Module deserializer.
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u64")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| table |) |),
@@ -15582,7 +15613,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -15595,7 +15627,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -16185,7 +16218,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -16205,7 +16239,8 @@ Module deserializer.
                             (M.alloc (|
                               BinOp.ne (|
                                 BinOp.Wrap.rem (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| table |) |),
@@ -16302,7 +16337,8 @@ Module deserializer.
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",
                                 BinOp.Wrap.div (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| table |) |),
@@ -16604,7 +16640,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -16617,7 +16654,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -17094,7 +17132,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -17107,7 +17146,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -18037,7 +18077,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -18050,7 +18091,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -22096,7 +22138,8 @@ Module deserializer.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| cursor |) |)
                                       |);
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u64")
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::file_format::AbilitySet",
@@ -23274,7 +23317,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -23287,7 +23331,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -24436,7 +24481,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -24449,7 +24495,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -24703,7 +24750,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -24716,7 +24764,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -25059,7 +25108,8 @@ Module deserializer.
             (M.read (|
               let~ start :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "usize")
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| table |) |),
@@ -25072,7 +25122,8 @@ Module deserializer.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| start |),
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| table |) |),
@@ -37800,7 +37851,7 @@ Module deserializer.
                               (M.alloc (|
                                 BinOp.gt (|
                                   BinOp.Wrap.add (|
-                                    M.rust_cast (M.read (| table_size |)),
+                                    M.cast (Ty.path "u64") (M.read (| table_size |)),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -37811,7 +37862,7 @@ Module deserializer.
                                       [ M.borrow (| Pointer.Kind.Ref, versioned_cursor |) ]
                                     |)
                                   |),
-                                  M.rust_cast (M.read (| binary_len |))
+                                  M.cast (Ty.path "u64") (M.read (| binary_len |))
                                 |)
                               |)) in
                           let _ :=
@@ -37875,7 +37926,8 @@ Module deserializer.
                   |) in
                 let~ data_offset :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -37907,10 +37959,11 @@ Module deserializer.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.MutRef, versioned_cursor |);
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u64")
                                       (BinOp.Wrap.add (|
                                         M.read (| data_offset |),
-                                        M.rust_cast (M.read (| table_size |))
+                                        M.cast (Ty.path "usize") (M.read (| table_size |))
                                       |))
                                   ]
                                 |)
@@ -38024,7 +38077,8 @@ Module deserializer.
                   |) in
                 let~ binary_end_offset :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "move_binary_format::deserializer::VersionedCursor",

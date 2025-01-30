@@ -1296,7 +1296,20 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
+                        [
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ T ]
+                              ])
+                            (M.read (| raw |));
+                          M.read (| alloc |)
+                        ]
                       |)
                     |)))
               ]
@@ -3351,7 +3364,10 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
+                        [
+                          M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
+                          M.read (| alloc |)
+                        ]
                       |)
                     |)))
               ]
@@ -3483,7 +3499,12 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
+                        [
+                          M.cast
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ])
+                            (M.read (| raw |));
+                          M.read (| alloc |)
+                        ]
                       |)
                     |)))
               ]
@@ -3787,7 +3808,8 @@ Module boxed.
                       []
                     |),
                     [
-                      M.rust_cast
+                      M.cast
+                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ])
                         (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -5463,7 +5485,15 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
+                        [
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                            (M.read (| raw |));
+                          M.read (| alloc |)
+                        ]
                       |)
                     |)))
               ]
@@ -5704,7 +5734,12 @@ Module boxed.
                         [],
                         []
                       |),
-                      [ M.rust_cast (M.read (| ptr |)); M.read (| alloc |) ]
+                      [
+                        M.cast
+                          (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                          (M.read (| ptr |));
+                        M.read (| alloc |)
+                      ]
                     |)
                   |)))
             ]
@@ -6111,7 +6146,10 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
+                        [
+                          M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
+                          M.read (| alloc |)
+                        ]
                       |)
                     |)))
               ]
@@ -6321,7 +6359,10 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
+                        [
+                          M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
+                          M.read (| alloc |)
+                        ]
                       |)
                     |)))
               ]
@@ -6547,7 +6588,10 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
+                        [
+                          M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
+                          M.read (| alloc |)
+                        ]
                       |)
                     |)))
               ]
@@ -8943,7 +8987,7 @@ Module boxed.
                               [],
                               []
                             |),
-                            [ M.rust_cast (M.read (| raw |)) ]
+                            [ M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |)) ]
                           |)
                         ]
                     |)));

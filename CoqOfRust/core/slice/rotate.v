@@ -878,7 +878,8 @@ Module slice.
                                                   |) in
                                                 let~ buf :=
                                                   M.alloc (|
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.apply (Ty.path "*mut") [] [ T ])
                                                       (M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply

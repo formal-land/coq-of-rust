@@ -1794,7 +1794,7 @@ Module absint.
                                                           "code"
                                                         |)
                                                       |);
-                                                      M.rust_cast (M.read (| offset |))
+                                                      M.cast (Ty.path "usize") (M.read (| offset |))
                                                     ]
                                                   |)
                                                 |)

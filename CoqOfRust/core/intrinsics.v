@@ -1329,7 +1329,7 @@ Module intrinsics.
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         let other := M.alloc (| other |) in
-        M.rust_cast (BinOp.eq (| M.read (| ptr |), M.read (| other |) |))))
+        M.cast (Ty.path "u8") (BinOp.eq (| M.read (| ptr |), M.read (| other |) |))))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -1823,8 +1823,12 @@ Module intrinsics.
                             []
                           |),
                           [
-                            M.rust_cast (M.read (| src |));
-                            M.rust_cast (M.read (| dst |));
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                              (M.read (| src |));
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                              (M.read (| dst |));
                             M.call_closure (|
                               M.get_function (| "core::intrinsics::size_of", [], [ T ] |),
                               []
@@ -1918,8 +1922,12 @@ Module intrinsics.
                         M.call_closure (|
                           M.get_function (| "core::intrinsics::copy.precondition_check", [], [] |),
                           [
-                            M.rust_cast (M.read (| src |));
-                            M.rust_cast (M.read (| dst |));
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                              (M.read (| src |));
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                              (M.read (| dst |));
                             M.call_closure (|
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
@@ -2003,7 +2011,9 @@ Module intrinsics.
                             []
                           |),
                           [
-                            M.rust_cast (M.read (| dst |));
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                              (M.read (| dst |));
                             M.call_closure (|
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []

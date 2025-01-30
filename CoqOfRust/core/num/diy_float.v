@@ -668,7 +668,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ edelta := M.alloc (| M.rust_cast (M.read (| edelta |)) |) in
+              let~ edelta := M.alloc (| M.cast (Ty.path "usize") (M.read (| edelta |)) |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (|

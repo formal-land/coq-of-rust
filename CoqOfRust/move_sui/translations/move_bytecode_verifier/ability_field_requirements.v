@@ -974,7 +974,9 @@ Module ability_field_requirements.
                                                                                         Value.StructTuple
                                                                                           "move_binary_format::IndexKind::StructDefinition"
                                                                                           [];
-                                                                                        M.rust_cast
+                                                                                        M.cast
+                                                                                          (Ty.path
+                                                                                            "u16")
                                                                                           (M.read (|
                                                                                             idx
                                                                                           |))

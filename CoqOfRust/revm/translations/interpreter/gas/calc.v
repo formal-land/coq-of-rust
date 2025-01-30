@@ -113,7 +113,8 @@ Module gas.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "i64")
                                     (BinOp.Wrap.add (|
                                       BinOp.Wrap.sub (|
                                         M.read (|
@@ -500,7 +501,8 @@ Module gas.
                                                                   β,
                                                                   BinOp.Wrap.add (|
                                                                     M.read (| β |),
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "i64")
                                                                       (BinOp.Wrap.sub (|
                                                                         M.read (|
                                                                           M.get_constant (|
@@ -520,7 +522,8 @@ Module gas.
                                                                   β,
                                                                   BinOp.Wrap.add (|
                                                                     M.read (| β |),
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "i64")
                                                                       (BinOp.Wrap.sub (|
                                                                         M.read (|
                                                                           gas_sstore_reset
@@ -762,7 +765,8 @@ Module gas.
                                     β,
                                     BinOp.Wrap.sub (|
                                       M.read (| β |),
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u64")
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "u64",
@@ -1611,7 +1615,7 @@ Module gas.
                   |);
                   BinOp.Wrap.mul (|
                     M.read (| M.get_constant (| "revm_interpreter::gas::constants::LOGTOPIC" |) |),
-                    M.rust_cast (M.read (| n |))
+                    M.cast (Ty.path "u64") (M.read (| n |))
                   |)
                 ]
               |)))
@@ -1698,7 +1702,8 @@ Module gas.
             M.get_associated_function (| Ty.path "u64", "checked_mul", [], [] |),
             [
               M.read (| multiple |);
-              M.rust_cast
+              M.cast
+                (Ty.path "u64")
                 (M.call_closure (|
                   M.get_function (|
                     "revm_interpreter::interpreter::shared_memory::num_words",
@@ -2888,7 +2893,7 @@ Module gas.
         ltac:(M.monadic
           (let num_words := M.alloc (| num_words |) in
           M.read (|
-            let~ num_words := M.alloc (| M.rust_cast (M.read (| num_words |)) |) in
+            let~ num_words := M.alloc (| M.cast (Ty.path "u64") (M.read (| num_words |)) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "u64", "saturating_add", [], [] |),
@@ -2984,7 +2989,8 @@ Module gas.
             let~ initial_gas := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
             let~ zero_data_len :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u64")
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -3076,7 +3082,8 @@ Module gas.
             let~ non_zero_data_len :=
               M.alloc (|
                 BinOp.Wrap.sub (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "u64")
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -3196,7 +3203,7 @@ Module gas.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     BinOp.Wrap.mul (|
-                                      M.rust_cast (M.read (| account_num |)),
+                                      M.cast (Ty.path "u64") (M.read (| account_num |)),
                                       M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
@@ -3212,7 +3219,7 @@ Module gas.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     BinOp.Wrap.mul (|
-                                      M.rust_cast (M.read (| storage_num |)),
+                                      M.cast (Ty.path "u64") (M.read (| storage_num |)),
                                       M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"

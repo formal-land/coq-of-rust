@@ -2650,7 +2650,7 @@ Module iter.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
-                    M.rust_cast (M.read (| yield_count |))
+                    M.cast (Ty.path "u8") (M.read (| yield_count |))
                   |) in
                 r
               |)))
@@ -2852,7 +2852,8 @@ Module iter.
               M.read (|
                 let~ remaining :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
@@ -3505,7 +3506,7 @@ Module iter.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
-                    M.rust_cast (M.read (| yield_count |))
+                    M.cast (Ty.path "u16") (M.read (| yield_count |))
                   |) in
                 r
               |)))
@@ -3707,7 +3708,8 @@ Module iter.
               M.read (|
                 let~ remaining :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
@@ -4360,7 +4362,7 @@ Module iter.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
-                    M.rust_cast (M.read (| yield_count |))
+                    M.cast (Ty.path "u32") (M.read (| yield_count |))
                   |) in
                 r
               |)))
@@ -4562,7 +4564,8 @@ Module iter.
               M.read (|
                 let~ remaining :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
@@ -5215,7 +5218,7 @@ Module iter.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
-                    M.rust_cast (M.read (| yield_count |))
+                    M.cast (Ty.path "u64") (M.read (| yield_count |))
                   |) in
                 r
               |)))
@@ -5417,7 +5420,8 @@ Module iter.
               M.read (|
                 let~ remaining :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
@@ -6909,7 +6913,8 @@ Module iter.
               M.read (|
                 let~ step :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u8")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -7453,7 +7458,8 @@ Module iter.
               M.read (|
                 let~ step :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u16")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -7997,7 +8003,8 @@ Module iter.
               M.read (|
                 let~ step :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],

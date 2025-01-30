@@ -14298,7 +14298,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u8" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -14332,7 +14333,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u8" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u8")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -16055,7 +16057,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u16" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u16")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -16089,7 +16092,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u16" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u16")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -17812,7 +17816,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u32" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -17846,7 +17851,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u32" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -19569,7 +19575,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u64" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u64")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -19603,7 +19610,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u64" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u64")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -21326,7 +21334,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u128" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u128")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
@@ -21360,7 +21369,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u128" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "u128")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
@@ -23083,7 +23093,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "usize" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "usize")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -23117,7 +23128,8 @@ Module num.
             M.call_closure (|
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "usize" ] |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.path "usize")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],

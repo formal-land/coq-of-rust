@@ -591,7 +591,8 @@ Module mem.
                     M.call_closure (|
                       M.get_function (| "core::ptr::read_unaligned", [], [ Dst ] |),
                       [
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply (Ty.path "*const") [] [ Dst ])
                           (M.read (|
                             M.use
                               (M.alloc (|
@@ -610,7 +611,8 @@ Module mem.
                     M.call_closure (|
                       M.get_function (| "core::ptr::read", [], [ Dst ] |),
                       [
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply (Ty.path "*const") [] [ Dst ])
                           (M.read (|
                             M.use
                               (M.alloc (|

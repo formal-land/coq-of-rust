@@ -20,7 +20,8 @@ Module num.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.rust_cast
+            M.cast
+              (Ty.path "i8")
               (BinOp.Wrap.shr (|
                 M.read (| M.get_constant (| "core::num::MAX" |) |),
                 Value.Integer IntegerKind.I32 1
@@ -44,7 +45,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u8") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -82,7 +83,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u8", "leading_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u8") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -102,7 +103,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u8", "trailing_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u8") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -122,7 +123,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u8", "leading_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u8") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -141,7 +142,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u8", "trailing_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u8") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -159,7 +160,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "u8") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -177,10 +178,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i8")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "rotate_left", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u8") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -198,10 +200,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i8")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "rotate_right", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u8") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -218,10 +221,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i8")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "swap_bytes", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u8") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -238,10 +242,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i8")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "reverse_bits", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u8") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3242,7 +3247,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i8", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i8") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3283,7 +3288,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i8", "wrapping_sub", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i8") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3558,7 +3563,8 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u8")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "i8", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
@@ -3944,7 +3950,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i8", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i8") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -3982,7 +3988,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i8") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -4087,7 +4093,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i8", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i8") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -4126,7 +4132,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i8") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -5956,7 +5962,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u8", "checked_ilog", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
+                        [
+                          M.cast (Ty.path "u8") (M.read (| self |));
+                          M.cast (Ty.path "u8") (M.read (| base |))
+                        ]
                       |)
                     |)))
               ]
@@ -6161,7 +6170,10 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
+                        [
+                          M.cast (Ty.path "u8") (M.read (| other |));
+                          M.cast (Ty.path "u8") (M.read (| self |))
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -6169,7 +6181,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                        [
+                          M.cast (Ty.path "u8") (M.read (| self |));
+                          M.cast (Ty.path "u8") (M.read (| other |))
+                        ]
                       |)
                     |)))
               ]
@@ -6796,7 +6811,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i8")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -6811,7 +6828,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -6866,7 +6884,7 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast (Ty.path "i8") (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -6922,7 +6940,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i8")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -6937,7 +6957,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -6992,7 +7013,7 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast (Ty.path "i8") (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -7069,13 +7090,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i8")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i8")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -7087,7 +7111,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -7310,13 +7335,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i8")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i8")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -7328,7 +7356,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -7556,7 +7585,8 @@ Module num.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.rust_cast
+            M.cast
+              (Ty.path "i16")
               (BinOp.Wrap.shr (|
                 M.read (| M.get_constant (| "core::num::MAX" |) |),
                 Value.Integer IntegerKind.I32 1
@@ -7580,7 +7610,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u16") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7618,7 +7648,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u16", "leading_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u16") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7638,7 +7668,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u16", "trailing_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u16") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7658,7 +7688,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u16", "leading_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u16") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7677,7 +7707,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u16", "trailing_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u16") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7695,7 +7725,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "u16") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7713,10 +7743,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i16")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "rotate_left", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u16") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7734,10 +7765,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i16")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "rotate_right", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u16") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7754,10 +7786,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i16")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "swap_bytes", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u16") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7774,10 +7807,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i16")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "reverse_bits", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u16") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10778,7 +10812,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i16", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i16") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10819,7 +10853,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i16", "wrapping_sub", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i16") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11095,7 +11129,8 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u16")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "i16", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
@@ -11481,7 +11516,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i16", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i16") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -11519,7 +11554,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i16") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -11624,7 +11659,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i16", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i16") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -11663,7 +11698,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i16") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -13505,7 +13540,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u16", "checked_ilog", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
+                        [
+                          M.cast (Ty.path "u16") (M.read (| self |));
+                          M.cast (Ty.path "u16") (M.read (| base |))
+                        ]
                       |)
                     |)))
               ]
@@ -13710,7 +13748,10 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
+                        [
+                          M.cast (Ty.path "u16") (M.read (| other |));
+                          M.cast (Ty.path "u16") (M.read (| self |))
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13718,7 +13759,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                        [
+                          M.cast (Ty.path "u16") (M.read (| self |));
+                          M.cast (Ty.path "u16") (M.read (| other |))
+                        ]
                       |)
                     |)))
               ]
@@ -14345,7 +14389,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i16")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -14360,7 +14406,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -14415,7 +14462,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i16")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -14471,7 +14520,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i16")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -14486,7 +14537,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -14541,7 +14593,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i16")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -14618,13 +14672,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i16")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i16")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -14636,7 +14693,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -14859,13 +14917,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i16")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i16")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -14877,7 +14938,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -15105,7 +15167,8 @@ Module num.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.rust_cast
+            M.cast
+              (Ty.path "i32")
               (BinOp.Wrap.shr (|
                 M.read (| M.get_constant (| "core::num::MAX" |) |),
                 Value.Integer IntegerKind.I32 1
@@ -15129,7 +15192,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u32") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15167,7 +15230,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u32") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15187,7 +15250,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u32", "trailing_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u32") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15207,7 +15270,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u32", "leading_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u32") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15226,7 +15289,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u32", "trailing_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u32") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15244,7 +15307,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "u32") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -15262,10 +15325,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i32")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "rotate_left", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15283,10 +15347,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i32")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "rotate_right", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15303,10 +15368,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i32")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "swap_bytes", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -15323,10 +15389,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i32")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "reverse_bits", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -18327,7 +18394,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i32", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i32") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -18368,7 +18435,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i32") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -18644,7 +18711,8 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u32")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "i32", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
@@ -19030,7 +19098,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i32") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -19068,7 +19136,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i32") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -19173,7 +19241,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i32") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -19212,7 +19280,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i32") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -21054,7 +21122,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u32", "checked_ilog", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
+                        [
+                          M.cast (Ty.path "u32") (M.read (| self |));
+                          M.cast (Ty.path "u32") (M.read (| base |))
+                        ]
                       |)
                     |)))
               ]
@@ -21259,7 +21330,10 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
+                        [
+                          M.cast (Ty.path "u32") (M.read (| other |));
+                          M.cast (Ty.path "u32") (M.read (| self |))
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -21267,7 +21341,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                        [
+                          M.cast (Ty.path "u32") (M.read (| self |));
+                          M.cast (Ty.path "u32") (M.read (| other |))
+                        ]
                       |)
                     |)))
               ]
@@ -21894,7 +21971,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i32")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -21909,7 +21988,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -21964,7 +22044,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i32")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -22020,7 +22102,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i32")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -22035,7 +22119,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -22090,7 +22175,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i32")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -22167,13 +22254,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i32")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i32")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -22185,7 +22275,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -22408,13 +22499,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i32")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i32")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -22426,7 +22520,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -22654,7 +22749,8 @@ Module num.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.rust_cast
+            M.cast
+              (Ty.path "i64")
               (BinOp.Wrap.shr (|
                 M.read (| M.get_constant (| "core::num::MAX" |) |),
                 Value.Integer IntegerKind.I32 1
@@ -22678,7 +22774,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u64") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22716,7 +22812,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u64") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22736,7 +22832,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "trailing_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u64") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22756,7 +22852,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "leading_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u64") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22775,7 +22871,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "trailing_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u64") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22793,7 +22889,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "u64") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -22811,10 +22907,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i64")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u64") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22832,10 +22929,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i64")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u64") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22852,10 +22950,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i64")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "swap_bytes", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u64") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -22872,10 +22971,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i64")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "reverse_bits", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u64") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -25876,7 +25976,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i64", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i64") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -25917,7 +26017,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i64", "wrapping_sub", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i64") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -26193,7 +26293,8 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u64")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "i64", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
@@ -26579,7 +26680,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i64", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i64") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -26617,7 +26718,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i64") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -26722,7 +26823,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i64", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i64") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -26761,7 +26862,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i64") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -28603,7 +28704,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "checked_ilog", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
+                        [
+                          M.cast (Ty.path "u64") (M.read (| self |));
+                          M.cast (Ty.path "u64") (M.read (| base |))
+                        ]
                       |)
                     |)))
               ]
@@ -28808,7 +28912,10 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
+                        [
+                          M.cast (Ty.path "u64") (M.read (| other |));
+                          M.cast (Ty.path "u64") (M.read (| self |))
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -28816,7 +28923,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                        [
+                          M.cast (Ty.path "u64") (M.read (| self |));
+                          M.cast (Ty.path "u64") (M.read (| other |))
+                        ]
                       |)
                     |)))
               ]
@@ -29443,7 +29553,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i64")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -29458,7 +29570,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -29513,7 +29626,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i64")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -29569,7 +29684,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i64")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -29584,7 +29701,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -29639,7 +29757,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i64")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -29716,13 +29836,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i64")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i64")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -29734,7 +29857,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -29957,13 +30081,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i64")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i64")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -29975,7 +30102,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -30203,7 +30331,8 @@ Module num.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.rust_cast
+            M.cast
+              (Ty.path "i128")
               (BinOp.Wrap.shr (|
                 M.read (| M.get_constant (| "core::num::MAX" |) |),
                 Value.Integer IntegerKind.I32 1
@@ -30227,7 +30356,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u128") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30265,7 +30394,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u128", "leading_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u128") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30285,7 +30414,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u128", "trailing_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u128") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30305,7 +30434,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u128", "leading_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u128") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30324,7 +30453,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u128", "trailing_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "u128") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30342,7 +30471,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "u128") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -30360,10 +30489,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i128")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "rotate_left", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u128") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30381,10 +30511,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i128")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "rotate_right", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "u128") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30401,10 +30532,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i128")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "swap_bytes", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u128") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -30421,10 +30553,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "i128")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "reverse_bits", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u128") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -33453,7 +33586,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i128", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i128") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -33494,7 +33627,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i128", "wrapping_sub", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "i128") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -33770,7 +33903,8 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u128")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
@@ -34160,7 +34294,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i128", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i128") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -34198,7 +34332,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i128") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -34307,7 +34441,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "i128", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "i128") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -34346,7 +34480,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "i128") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -36192,7 +36326,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u128", "checked_ilog", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
+                        [
+                          M.cast (Ty.path "u128") (M.read (| self |));
+                          M.cast (Ty.path "u128") (M.read (| base |))
+                        ]
                       |)
                     |)))
               ]
@@ -36397,7 +36534,10 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
+                        [
+                          M.cast (Ty.path "u128") (M.read (| other |));
+                          M.cast (Ty.path "u128") (M.read (| self |))
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -36405,7 +36545,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                        [
+                          M.cast (Ty.path "u128") (M.read (| self |));
+                          M.cast (Ty.path "u128") (M.read (| other |))
+                        ]
                       |)
                     |)))
               ]
@@ -37032,7 +37175,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i128")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -37047,7 +37192,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -37102,7 +37248,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i128")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -37158,7 +37306,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "i128")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -37173,7 +37323,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -37228,7 +37379,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "i128")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -37305,13 +37458,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i128")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i128")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -37323,7 +37479,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -37546,13 +37703,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "i128")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "i128")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -37564,7 +37724,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -37792,7 +37953,8 @@ Module num.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.rust_cast
+            M.cast
+              (Ty.path "isize")
               (BinOp.Wrap.shr (|
                 M.read (| M.get_constant (| "core::num::MAX" |) |),
                 Value.Integer IntegerKind.I32 1
@@ -37816,7 +37978,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "usize") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -37854,7 +38016,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "leading_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "usize") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -37874,7 +38036,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "trailing_zeros", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "usize") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -37894,7 +38056,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "leading_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "usize") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -37913,7 +38075,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "trailing_ones", [], [] |),
-            [ M.rust_cast (M.read (| self |)) ]
+            [ M.cast (Ty.path "usize") (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -37931,7 +38093,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "usize") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -37949,10 +38111,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "isize")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "rotate_left", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "usize") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -37970,10 +38133,11 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "isize")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "rotate_right", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
+              [ M.cast (Ty.path "usize") (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -37990,10 +38154,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "isize")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "swap_bytes", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "usize") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -38010,10 +38175,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "isize")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "reverse_bits", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "usize") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -40587,10 +40753,11 @@ Module num.
                   ltac:(M.monadic
                     (let~ result :=
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "isize")
                           (M.call_closure (|
                             M.get_function (| "core::num::int_sqrt::i64", [], [] |),
-                            [ M.rust_cast (M.read (| self |)) ]
+                            [ M.cast (Ty.path "i64") (M.read (| self |)) ]
                           |))
                       |) in
                     let~ _ :=
@@ -41051,7 +41218,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "isize", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "isize") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -41092,7 +41259,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "isize") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -41370,7 +41537,8 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.call_closure (|
               M.get_associated_function (| Ty.path "isize", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
@@ -41701,7 +41869,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "i64" ] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "i64") (M.read (| self |));
+                    M.cast (Ty.path "i64") (M.read (| rhs |))
+                  ]
                 |)
               |),
               [
@@ -41711,7 +41882,9 @@ Module num.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
+                    M.alloc (|
+                      Value.Tuple [ M.cast (Ty.path "isize") (M.read (| a |)); M.read (| b |) ]
+                    |)))
               ]
             |)
           |)))
@@ -41761,7 +41934,7 @@ Module num.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "isize") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -41799,7 +41972,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "isize") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -41849,7 +42022,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "i64" ] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "i64") (M.read (| self |));
+                    M.cast (Ty.path "i64") (M.read (| rhs |))
+                  ]
                 |)
               |),
               [
@@ -41859,7 +42035,9 @@ Module num.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
+                    M.alloc (|
+                      Value.Tuple [ M.cast (Ty.path "isize") (M.read (| a |)); M.read (| b |) ]
+                    |)))
               ]
             |)
           |)))
@@ -41909,7 +42087,7 @@ Module num.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "isize") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -41948,7 +42126,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ rhs := M.alloc (| M.rust_cast (M.read (| rhs |)) |) in
+            let~ rhs := M.alloc (| M.cast (Ty.path "isize") (M.read (| rhs |)) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -41998,7 +42176,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "i64" ] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "i64") (M.read (| self |));
+                    M.cast (Ty.path "i64") (M.read (| rhs |))
+                  ]
                 |)
               |),
               [
@@ -42008,7 +42189,9 @@ Module num.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
+                    M.alloc (|
+                      Value.Tuple [ M.cast (Ty.path "isize") (M.read (| a |)); M.read (| b |) ]
+                    |)))
               ]
             |)
           |)))
@@ -43799,7 +43982,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "checked_ilog", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
+                        [
+                          M.cast (Ty.path "usize") (M.read (| self |));
+                          M.cast (Ty.path "usize") (M.read (| base |))
+                        ]
                       |)
                     |)))
               ]
@@ -43907,7 +44093,7 @@ Module num.
                         [
                           M.call_closure (|
                             M.get_function (| "core::num::int_log10::i64", [], [] |),
-                            [ M.rust_cast (M.read (| self |)) ]
+                            [ M.cast (Ty.path "i64") (M.read (| self |)) ]
                           |)
                         ]
                     |)));
@@ -44004,7 +44190,10 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
+                        [
+                          M.cast (Ty.path "usize") (M.read (| other |));
+                          M.cast (Ty.path "usize") (M.read (| self |))
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -44012,7 +44201,10 @@ Module num.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                        [
+                          M.cast (Ty.path "usize") (M.read (| self |));
+                          M.cast (Ty.path "usize") (M.read (| other |))
+                        ]
                       |)
                     |)))
               ]
@@ -44318,7 +44510,9 @@ Module num.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| x |)) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ M.cast (Ty.path "isize") (M.read (| x |)) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -44524,7 +44718,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "i8") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -45247,7 +45441,8 @@ Module num.
           M.read (|
             let~ res :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i8")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
@@ -47296,7 +47491,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u8") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -47519,7 +47714,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "u8") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -48096,7 +48291,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u8") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -48143,7 +48338,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u8") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -48243,7 +48438,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u8", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u8") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -48314,13 +48509,17 @@ Module num.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u8")
                         (M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                              [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                              [
+                                M.cast (Ty.path "i32") (M.read (| self |));
+                                M.cast (Ty.path "i32") (M.read (| other |))
+                              ]
                             |)
                           ]
                         |))
@@ -49732,14 +49931,18 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "unchecked_mul", [], [] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u16") (M.read (| self |));
+                    M.cast (Ty.path "u16") (M.read (| rhs |))
+                  ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u8") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u8")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 8 |))
                 ]
             |)
@@ -49775,17 +49978,21 @@ Module num.
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "u16", "unchecked_mul", [], [] |),
-                      [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                      [
+                        M.cast (Ty.path "u16") (M.read (| self |));
+                        M.cast (Ty.path "u16") (M.read (| rhs |))
+                      ]
                     |);
-                    M.rust_cast (M.read (| carry |))
+                    M.cast (Ty.path "u16") (M.read (| carry |))
                   ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u8") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u8")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 8 |))
                 ]
             |)
@@ -49806,9 +50013,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u8")
             (BinOp.Wrap.div (|
-              BinOp.Wrap.add (| M.rust_cast (M.read (| self |)), M.rust_cast (M.read (| rhs |)) |),
+              BinOp.Wrap.add (|
+                M.cast (Ty.path "u16") (M.read (| self |)),
+                M.cast (Ty.path "u16") (M.read (| rhs |))
+              |),
               Value.Integer IntegerKind.U16 2
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -49873,7 +50084,8 @@ Module num.
           BinOp.bit_xor
             (M.read (| M.deref (| M.read (| self |) |) |))
             (BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u8")
                 (M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "is_ascii_lowercase", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
@@ -49900,7 +50112,8 @@ Module num.
           BinOp.bit_or
             (M.read (| M.deref (| M.read (| self |) |) |))
             (BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u8")
                 (M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "is_ascii_uppercase", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
@@ -50482,7 +50695,10 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.ge (| M.rust_cast (M.read (| self |)), Value.Integer IntegerKind.I8 (-64) |)))
+          BinOp.ge (|
+            M.cast (Ty.path "i8") (M.read (| self |)),
+            Value.Integer IntegerKind.I8 (-64)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -50844,7 +51060,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u8")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -50859,7 +51077,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -50914,7 +51133,7 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast (Ty.path "u8") (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -50970,7 +51189,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u8")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -50985,7 +51206,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -51040,7 +51262,7 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast (Ty.path "u8") (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -51117,13 +51339,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u8")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u8")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -51135,7 +51360,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -51358,13 +51584,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u8")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u8")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -51376,7 +51605,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -51771,7 +52001,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "i16") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -52494,7 +52724,8 @@ Module num.
           M.read (|
             let~ res :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i16")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
@@ -54543,7 +54774,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u16") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -54766,7 +54997,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "u16") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -55344,7 +55575,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u16") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -55391,7 +55622,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u16") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -55491,7 +55722,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u16", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u16") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -55562,13 +55793,17 @@ Module num.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u16")
                         (M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                              [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                              [
+                                M.cast (Ty.path "i32") (M.read (| self |));
+                                M.cast (Ty.path "i32") (M.read (| other |))
+                              ]
                             |)
                           ]
                         |))
@@ -56980,14 +57215,18 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "unchecked_mul", [], [] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u32") (M.read (| self |));
+                    M.cast (Ty.path "u32") (M.read (| rhs |))
+                  ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u16") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u16")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 16 |))
                 ]
             |)
@@ -57023,17 +57262,21 @@ Module num.
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "u32", "unchecked_mul", [], [] |),
-                      [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                      [
+                        M.cast (Ty.path "u32") (M.read (| self |));
+                        M.cast (Ty.path "u32") (M.read (| rhs |))
+                      ]
                     |);
-                    M.rust_cast (M.read (| carry |))
+                    M.cast (Ty.path "u32") (M.read (| carry |))
                   ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u16") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u16")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 16 |))
                 ]
             |)
@@ -57054,9 +57297,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u16")
             (BinOp.Wrap.div (|
-              BinOp.Wrap.add (| M.rust_cast (M.read (| self |)), M.rust_cast (M.read (| rhs |)) |),
+              BinOp.Wrap.add (|
+                M.cast (Ty.path "u32") (M.read (| self |)),
+                M.cast (Ty.path "u32") (M.read (| rhs |))
+              |),
               Value.Integer IntegerKind.U32 2
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -57444,7 +57691,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -57459,7 +57708,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -57514,7 +57764,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -57570,7 +57822,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -57585,7 +57839,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -57640,7 +57895,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -57717,13 +57974,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u16")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u16")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -57735,7 +57995,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -57958,13 +58219,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u16")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u16")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -57976,7 +58240,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -58371,7 +58636,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "i32") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -59094,7 +59359,8 @@ Module num.
           M.read (|
             let~ res :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i32")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
@@ -61143,7 +61409,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u32") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -61366,7 +61632,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "u32") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -61944,7 +62210,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u32") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -61991,7 +62257,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u32") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -62091,7 +62357,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u32", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u32") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -62162,13 +62428,17 @@ Module num.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u32")
                         (M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                              [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                              [
+                                M.cast (Ty.path "i32") (M.read (| self |));
+                                M.cast (Ty.path "i32") (M.read (| other |))
+                              ]
                             |)
                           ]
                         |))
@@ -63580,14 +63850,18 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "unchecked_mul", [], [] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u64") (M.read (| self |));
+                    M.cast (Ty.path "u64") (M.read (| rhs |))
+                  ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u32") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u32")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 32 |))
                 ]
             |)
@@ -63623,17 +63897,21 @@ Module num.
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "u64", "unchecked_mul", [], [] |),
-                      [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                      [
+                        M.cast (Ty.path "u64") (M.read (| self |));
+                        M.cast (Ty.path "u64") (M.read (| rhs |))
+                      ]
                     |);
-                    M.rust_cast (M.read (| carry |))
+                    M.cast (Ty.path "u64") (M.read (| carry |))
                   ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u32") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u32")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 32 |))
                 ]
             |)
@@ -63654,9 +63932,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u32")
             (BinOp.Wrap.div (|
-              BinOp.Wrap.add (| M.rust_cast (M.read (| self |)), M.rust_cast (M.read (| rhs |)) |),
+              BinOp.Wrap.add (|
+                M.cast (Ty.path "u64") (M.read (| self |)),
+                M.cast (Ty.path "u64") (M.read (| rhs |))
+              |),
               Value.Integer IntegerKind.U64 2
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -64034,7 +64316,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -64160,7 +64443,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -64309,7 +64593,8 @@ Module num.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.path "char")
                                                                         (M.read (|
                                                                           M.deref (|
                                                                             M.read (| c |)
@@ -64548,7 +64833,8 @@ Module num.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.path "char")
                                                                         (M.read (|
                                                                           M.deref (|
                                                                             M.read (| c |)
@@ -64942,7 +65228,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "i64") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -65665,7 +65951,8 @@ Module num.
           M.read (|
             let~ res :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i64")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
@@ -67714,7 +68001,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u64") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -67937,7 +68224,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "u64") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -68515,7 +68802,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u64") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -68562,7 +68849,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u64") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -68662,7 +68949,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u64", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u64") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -68733,13 +69020,17 @@ Module num.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                              [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                              [
+                                M.cast (Ty.path "i32") (M.read (| self |));
+                                M.cast (Ty.path "i32") (M.read (| other |))
+                              ]
                             |)
                           ]
                         |))
@@ -70151,14 +70442,18 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u128") (M.read (| self |));
+                    M.cast (Ty.path "u128") (M.read (| rhs |))
+                  ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u64") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u64")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 64 |))
                 ]
             |)
@@ -70194,17 +70489,21 @@ Module num.
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
-                      [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                      [
+                        M.cast (Ty.path "u128") (M.read (| self |));
+                        M.cast (Ty.path "u128") (M.read (| rhs |))
+                      ]
                     |);
-                    M.rust_cast (M.read (| carry |))
+                    M.cast (Ty.path "u128") (M.read (| carry |))
                   ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "u64") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "u64")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 64 |))
                 ]
             |)
@@ -70225,9 +70524,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u64")
             (BinOp.Wrap.div (|
-              BinOp.Wrap.add (| M.rust_cast (M.read (| self |)), M.rust_cast (M.read (| rhs |)) |),
+              BinOp.Wrap.add (|
+                M.cast (Ty.path "u128") (M.read (| self |)),
+                M.cast (Ty.path "u128") (M.read (| rhs |))
+              |),
               Value.Integer IntegerKind.U128 2
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -70590,7 +70893,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u64")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -70605,7 +70910,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -70660,7 +70966,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "u64")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -70716,7 +71024,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u64")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -70731,7 +71041,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -70786,7 +71097,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "u64")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -70863,13 +71176,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u64")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -70881,7 +71197,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -71104,13 +71421,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u64")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -71122,7 +71442,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -71517,7 +71838,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "i128") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -72240,7 +72561,8 @@ Module num.
           M.read (|
             let~ res :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i128")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
@@ -74300,7 +74622,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u128") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -74526,7 +74848,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "u128") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -75108,7 +75430,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u128") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -75155,7 +75477,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "u128") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -75259,7 +75581,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u128", "overflowing_sub", [], [] |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "u128") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -75330,13 +75652,17 @@ Module num.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u128")
                         (M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                              [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                              [
+                                M.cast (Ty.path "i32") (M.read (| self |));
+                                M.cast (Ty.path "i32") (M.read (| other |))
+                              ]
                             |)
                           ]
                         |))
@@ -77112,7 +77438,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u128")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -77127,7 +77455,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -77182,7 +77511,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.add (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "u128")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -77238,7 +77569,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.mul (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| radix |))
+                                                              M.cast
+                                                                (Ty.path "u128")
+                                                                (M.read (| radix |))
                                                             |)
                                                           |) in
                                                         let~ x :=
@@ -77253,7 +77586,8 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "char")
                                                                       (M.read (|
                                                                         M.deref (| M.read (| c |) |)
                                                                       |));
@@ -77308,7 +77642,9 @@ Module num.
                                                             result,
                                                             BinOp.Wrap.sub (|
                                                               M.read (| result |),
-                                                              M.rust_cast (M.read (| x |))
+                                                              M.cast
+                                                                (Ty.path "u128")
+                                                                (M.read (| x |))
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -77385,13 +77721,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u128")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u128")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -77403,7 +77742,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -77626,13 +77966,16 @@ Module num.
                                                               |),
                                                               [
                                                                 M.read (| result |);
-                                                                M.rust_cast (M.read (| radix |))
+                                                                M.cast
+                                                                  (Ty.path "u128")
+                                                                  (M.read (| radix |))
                                                               ]
                                                             |)
                                                           |) in
                                                         let~ x :=
                                                           M.alloc (|
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u128")
                                                               (M.read (|
                                                                 M.match_operator (|
                                                                   M.alloc (|
@@ -77644,7 +77987,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "char")
                                                                           (M.read (|
                                                                             M.deref (|
                                                                               M.read (| c |)
@@ -77949,7 +78293,7 @@ Module num.
                   M.return_ (|
                     M.call_closure (|
                       M.get_function (| "core::intrinsics::ctlz", [], [ Ty.path "u64" ] |),
-                      [ M.rust_cast (M.read (| self |)) ]
+                      [ M.cast (Ty.path "u64") (M.read (| self |)) ]
                     |)
                   |)
                 |)
@@ -78039,7 +78383,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| self |))))
+          M.cast (Ty.path "isize") (M.read (| self |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -78117,10 +78461,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.call_closure (|
               M.get_function (| "core::intrinsics::bswap", [], [ Ty.path "u64" ] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u64") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -78137,10 +78482,11 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.call_closure (|
               M.get_function (| "core::intrinsics::bitreverse", [], [ Ty.path "u64" ] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u64") (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -78758,7 +79104,8 @@ Module num.
           M.read (|
             let~ res :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "isize")
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
@@ -80828,7 +81175,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "usize") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -81054,7 +81401,7 @@ Module num.
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+            [ M.read (| self |); M.cast (Ty.path "usize") (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -81579,7 +81926,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "u64" ] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u64") (M.read (| self |));
+                    M.cast (Ty.path "u64") (M.read (| rhs |))
+                  ]
                 |)
               |),
               [
@@ -81589,7 +81939,9 @@ Module num.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
+                    M.alloc (|
+                      Value.Tuple [ M.cast (Ty.path "usize") (M.read (| a |)); M.read (| b |) ]
+                    |)))
               ]
             |)
           |)))
@@ -81639,7 +81991,7 @@ Module num.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "usize") (M.read (| carry |)) ]
                         |)
                       |),
                       [
@@ -81686,7 +82038,7 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "overflowing_add", [], [] |),
-                  [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
+                  [ M.read (| self |); M.cast (Ty.path "usize") (M.read (| rhs |)) ]
                 |)
               |),
               [
@@ -81731,7 +82083,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "u64" ] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u64") (M.read (| self |));
+                    M.cast (Ty.path "u64") (M.read (| rhs |))
+                  ]
                 |)
               |),
               [
@@ -81741,7 +82096,9 @@ Module num.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
+                    M.alloc (|
+                      Value.Tuple [ M.cast (Ty.path "usize") (M.read (| a |)); M.read (| b |) ]
+                    |)))
               ]
             |)
           |)))
@@ -81791,7 +82148,7 @@ Module num.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
+                          [ M.read (| a |); M.cast (Ty.path "usize") (M.read (| borrow |)) ]
                         |)
                       |),
                       [
@@ -81862,13 +82219,17 @@ Module num.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "usize")
                         (M.call_closure (|
                           M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
-                              [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
+                              [
+                                M.cast (Ty.path "i32") (M.read (| self |));
+                                M.cast (Ty.path "i32") (M.read (| other |))
+                              ]
                             |)
                           ]
                         |))
@@ -81922,7 +82283,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "u64" ] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u64") (M.read (| self |));
+                    M.cast (Ty.path "u64") (M.read (| rhs |))
+                  ]
                 |)
               |),
               [
@@ -81932,7 +82296,9 @@ Module num.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
+                    M.alloc (|
+                      Value.Tuple [ M.cast (Ty.path "usize") (M.read (| a |)); M.read (| b |) ]
+                    |)))
               ]
             |)
           |)))
@@ -82603,10 +82969,11 @@ Module num.
           M.read (|
             let~ result :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "usize")
                   (M.call_closure (|
                     M.get_function (| "core::num::int_sqrt::u64", [], [] |),
-                    [ M.rust_cast (M.read (| self |)) ]
+                    [ M.cast (Ty.path "u64") (M.read (| self |)) ]
                   |))
               |) in
             let~ _ :=
@@ -83283,14 +83650,18 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
-                  [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                  [
+                    M.cast (Ty.path "u128") (M.read (| self |));
+                    M.cast (Ty.path "u128") (M.read (| rhs |))
+                  ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "usize") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "usize")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 64 |))
                 ]
             |)
@@ -83326,17 +83697,21 @@ Module num.
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
-                      [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
+                      [
+                        M.cast (Ty.path "u128") (M.read (| self |));
+                        M.cast (Ty.path "u128") (M.read (| rhs |))
+                      ]
                     |);
-                    M.rust_cast (M.read (| carry |))
+                    M.cast (Ty.path "u128") (M.read (| carry |))
                   ]
                 |)
               |) in
             M.alloc (|
               Value.Tuple
                 [
-                  M.rust_cast (M.read (| wide |));
-                  M.rust_cast
+                  M.cast (Ty.path "usize") (M.read (| wide |));
+                  M.cast
+                    (Ty.path "usize")
                     (BinOp.Wrap.shr (| M.read (| wide |), Value.Integer IntegerKind.I32 64 |))
                 ]
             |)
@@ -83357,9 +83732,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (BinOp.Wrap.div (|
-              BinOp.Wrap.add (| M.rust_cast (M.read (| self |)), M.rust_cast (M.read (| rhs |)) |),
+              BinOp.Wrap.add (|
+                M.cast (Ty.path "u128") (M.read (| self |)),
+                M.cast (Ty.path "u128") (M.read (| rhs |))
+              |),
               Value.Integer IntegerKind.U128 2
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83443,7 +83822,7 @@ Module num.
                                   |),
                                   [ M.read (| r |); Value.Integer IntegerKind.U32 16 ]
                                 |))
-                                (M.rust_cast (M.read (| x |)))
+                                (M.cast (Ty.path "usize") (M.read (| x |)))
                             |) in
                           let~ _ :=
                             let β := i in
@@ -83504,7 +83883,9 @@ Module num.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| x |)) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ M.cast (Ty.path "usize") (M.read (| x |)) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -84208,7 +84589,7 @@ Module num.
                   M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |),
                   Value.Integer IntegerKind.Usize 2
                 |),
-                M.rust_cast (M.read (| is_signed_ty |))
+                M.cast (Ty.path "usize") (M.read (| is_signed_ty |))
               |)
             |)))
         |)))

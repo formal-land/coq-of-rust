@@ -112,9 +112,11 @@ Module bound.
           M.read (|
             let~ units :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u128")
                   (BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f32")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (|

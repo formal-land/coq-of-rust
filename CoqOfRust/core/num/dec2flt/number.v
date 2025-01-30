@@ -689,7 +689,8 @@ Module num.
                                                           []
                                                         |),
                                                         [
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "usize")
                                                             (UnOp.neg (|
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
@@ -730,7 +731,8 @@ Module num.
                                                           []
                                                         |),
                                                         [
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "usize")
                                                             (M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 M.deref (| M.read (| self |) |),
@@ -803,7 +805,9 @@ Module num.
                                                               "core::num::dec2flt::number::INT_POW10"
                                                             |),
                                                             M.alloc (|
-                                                              M.rust_cast (M.read (| shift |))
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (M.read (| shift |))
                                                             |)
                                                           |)
                                                         |)
@@ -939,7 +943,8 @@ Module num.
                                                   []
                                                 |),
                                                 [
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "usize")
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"

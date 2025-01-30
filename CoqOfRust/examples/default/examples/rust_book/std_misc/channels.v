@@ -395,7 +395,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                       |),
                       [
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "usize")
                           (M.read (|
                             M.deref (| M.read (| M.get_constant (| "channels::NTHREADS" |) |) |)
                           |))

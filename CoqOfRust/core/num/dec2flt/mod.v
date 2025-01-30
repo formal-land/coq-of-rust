@@ -653,7 +653,8 @@ Module num.
                 BinOp.bit_or
                   (M.read (| β |))
                   (BinOp.Wrap.shl (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u64")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           x,

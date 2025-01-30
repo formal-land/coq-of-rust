@@ -207,7 +207,8 @@ Module iter.
                                                 initialized,
                                                 BinOp.Wrap.add (|
                                                   M.read (| idx |),
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "usize")
                                                     (M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::function::FnMut",

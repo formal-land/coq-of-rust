@@ -205,7 +205,7 @@ Module Impl_derive_Inches.
                       "derive::Centimeters"
                       [
                         BinOp.Wrap.mul (|
-                          M.rust_cast (M.read (| inches |)),
+                          M.cast (Ty.path "f64") (M.read (| inches |)),
                           M.read (| UnsupportedLiteral |)
                         |)
                       ]
